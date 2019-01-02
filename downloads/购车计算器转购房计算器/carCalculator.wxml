@@ -1,0 +1,94 @@
+<userinfo></userinfo>
+<view class='carCalculatorMain'>
+  <!-- 头部 -->
+  <view class='calculatorHead'>
+<image  src="http://pdhcn86v0.bkt.clouddn.com/metown/180818/eG9KHgc9D7.jpg" class="img" mode="widthFix" ></image>
+
+    <view class='full_loan'>
+      <view class="fullSection {{flState == 0 ? 'active':''}}" data-flstate='0' bindtap='clickflState'>
+        <span class="flName">全款购房</span><span class="flFrame"></span>
+      </view>
+      <view class="loan {{flState == 1 ? 'active':''}}" data-flstate='1' bindtap='clickflState'>
+        <span class="flName">贷款购房</span><span class="flFrame"></span>
+      </view>
+    </view>
+    <view class='chContent'>
+      <view class='chTitle'>
+        <view class='chtText'>
+          <span>{{result.list.configuration_name}}</span>
+        </view>
+        <view class='chJump' bindtap="addCarModel">
+          <span class='wxicon-jump'></span>
+        </view>
+      </view>
+      <view class='chTotalPrice'>
+        <view class='tpName'>总价(元)</view>
+        <view class='tpPrice'>{{total_price_str}}</view>
+      </view>
+      <view class='chLoan' wx:if="{{flState == 1}}">
+        <view class='downPayments'>
+          <view class='dpName'>首付({{payment_ratio}}%)</view>
+          <view class='dpPrice'>{{payment}} 元</view>
+        </view>
+        <view class='monthlySupply'>
+          <!-- <view class='msName'>月供({{month}}个月)</view>
+          <view class='msPrice'>{{one_month}} 元</view> -->
+          <view class='msName'>平均租金/月</view>
+          <view class='msPrice'>{{pre_month_str}} 元</view>
+        </view>
+        <view class='interest'>
+          <view class='iName'>利息</view>
+          <view class='iPrice'>{{total_interest_str}} 元</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 内容 -->
+  <view class='calculatorContent'>
+    <view class='downPaymentRatio' wx:if="{{flState == 1}}">
+      <view class='dprName'>首付比例</view>
+      <view class='dprData'>
+        <block wx:for="{{ratio}}" wx:key="id">
+          <button class="dprButton {{dprState == index ? 'active' : ''}}" data-dprstate='{{index}}' bindtap='clickDpr'>{{item}}%</button>
+        </block>
+      </view>
+    </view>
+
+    <view class='repaymentTerm' wx:if="{{flState == 1}}">
+      <view class='rtName'>还款期限</view>
+      <view class='rtData'>
+        <button class="rtButton {{rtState == 2 ? 'active' : ''}}" data-rtstate='2' bindtap='clickRt' data-month="36">3年</button>
+        <button class="rtButton {{rtState == 4 ? 'active' : ''}}" data-rtstate='4' bindtap='clickRt' data-month="60">5年</button>
+      </view>
+    </view>
+    <view class='repaymentTerm'>
+      <view class='rtName'>是否装修</view>
+      <view class='rtData'>
+        <button class="rtButton {{bool == 1 ? 'active' : ''}}" bindtap='clickBool' data-bool="1">是</button>
+        <button class="rtButton {{bool == 0 ? 'active' : ''}}" bindtap='clickBool' data-bool="0">否</button>
+      </view>
+    </view>
+    <view class='nakedCarPrice' wx:if="{{bool == 1}}">
+      <view class='ncpName'>装修费</view>
+      <view class='ncpData'>
+        <input type='number' value='30000'></input>
+      </view>
+    </view>
+    <view class='nakedCarPrice'>
+      <view class='ncpName'>裸房价</view>
+      <view class='ncpData'>
+        <input type='number' value='{{price}}' bindinput="setPrice"></input>
+      </view>
+      <span class="wxicon-bi upPrice"></span>
+    </view>
+
+  </view>
+
+  <view class='remarks'>
+    <span>此结果仅供参考，实际应缴费用以当地为准！</span>
+  </view>
+<view style="text-align: center;">
+  <image style="width: 300rpx; height: 100rpx" mode="aspectFit" src="http://pdhcn86v0.bkt.clouddn.com/metown/180818/eIHJ76H7kK.jpg" bindtap="openEvent" data-url="../pages/index/page109"></image>
+</view>
+</view>

@@ -1,0 +1,312 @@
+<userinfo></userinfo>
+<form bindsubmit="submit" report-submit='true'>
+<view class="orderConfirm">
+  
+  <view class="ordConfirmH" wx:if="{{carrier && !createInfo.isverify && !createInfo.isvirtual &&!createInfo.isonlyverifygoods && !createInfo.closedispatch}}">
+    <view class="ordConfirmHL {{!createInfo.iscarry || createInfo.iscarry == 0 ? 'confirmcActive':''}}" data-iscarry="0" bindtap="changeIscarry">快递配送</view>
+    <view class="ordConfirmHR {{createInfo.iscarry==1?'confirmcActive':''}}" data-iscarry="1" bindtap="changeIscarry">上门自提</view>
+  </view>
+
+  <view class="ordConfirmMain">
+    <view class="orderConfirmList">
+      <view class="orderConfirmBody {{(carrier && !createInfo.isverify && !createInfo.isvirtual &&!createInfo.isonlyverifygoods && !createInfo.closedispatch) ? '':'orderConfirmBodyH'}}">
+        <view wx:if="{{!createInfo.isverify && !createInfo.isvirtual && !createInfo.isonlyverifygoods}}">
+          <view class="ordConAdds" wx:if="{{createInfo.iscarry == 0}}">
+            <navigator url="myAddress" hover-class="none" class="ordConAddsAdd" hidden="{{address}}">
+              +添加联系信息
+            </navigator>
+            <navigator url="myAddress" hover-class="none" class="ordConAddsDet" hidden="{{!address}}">
+              <view class="ordConAddsNList">
+                <view class="ordConAddsNTip">收件人：
+                  <span class="ordConAddsName">{{address.realname}} {{address.mobile}}</span>
+                </view>
+                <view class="ordConAddsDetail">收货地址：{{address.address}}</view>
+              </view>
+              <view>
+                <i class="ordConAddsIcon"></i>
+              </view>
+            </navigator>
+          </view>
+          <view class="orderPickAds" wx:if="{{createInfo.iscarry == 1}}">
+            <navigator hover-class="none" url="/shop/store?type=1&merch_id={{merch_id}}" class="ordPickAdsRow">
+              <view class="ordPickAdsRowL">
+                <view class="rdPickAdsRowIcon">
+                  <image class="rdPickAdsRowPic" src="https://www.wsmo.cn/static/images/memberCenter/address-b.png" alt="" />
+                </view>
+              </view>
+              <view class="ordPickAdsRowR">
+                <view class="ordPickAdsRowRL">
+                  <view class="ordPickShop">{{carrier.storename}}</view>
+                  <view class="ordPickBaseInfo">
+                    <span class="ordPickName">{{carrier.realname}}</span>
+                    <span class="ordPickPhone">{{carrier.mobile}}</span>
+                  </view>
+                  <view class="ordPickDetAds">{{carrier.address}}</view>
+                </view>
+                <view class="ordPickAdsRowRR">
+                  <view class="rdPickAdsRowNext">
+                    <image src="https://www.wsmo.cn/dist/static/images/commission/next.svg" />
+                  </view>
+                </view>
+              </view>
+            </navigator>
+          </view>
+        </view>
+        <view class="ordPickBaseRow" wx:if="{{(trade.set_realname != 1 || trade.set_mobile != 1 || (trade.set_time != 1 && pickuptimes.length)) && options.isscan != 1}}">
+          <view hidden="{{createInfo.iscarry == 0 && !createInfo.isverify && !createInfo.isvirtual}}">
+            <view class="ordPickBaseCol" wx:if="{{trade.set_realname != 1}}">
+              <view class="ordPickBaseColL">联系人</view>
+              <view class="ordPickBaseColR">
+                <input type="text" name="carrier_realname" placeholder="请输入联系人" value="{{member.realname}}" />
+              </view>
+            </view>
+            <view class="ordPickBaseCol" wx:if="{{trade.set_mobile != 1}}">
+              <view class="ordPickBaseColL">联系电话</view>
+              <view class="ordPickBaseColR">
+                <input type="text" name="carrier_mobile" placeholder="请输入联系电话" value="{{member.carrier_mobile}}" />
+              </view>
+            </view>
+            <view class="ordPickBaseCol" wx:if="{{trade.set_time != 1 && pickuptimes.length}}" bindtap='toggleTime'>
+              <view class="ordPickBaseColL">自提时间</view>
+              <view class="ordPickBaseColR">
+                {{pickuptimes[timeIndex[0]].riqi}} {{pickuptimes[timeIndex[0]].time[timeIndex[1]]}}
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="ordConfirmList">
+          <view wx:for="{{goods_list}}" wx:key="unique" wx:for-item="list" wx:for-index="sIndex">
+            <view class="ordConfirmShop" wx:if="{{is_openmerch == 1}}">
+              <view class="ordConfirmShopL">
+                <view class="ordConfirmShopPic">
+                  <image src="https://www.wsmo.cn/dist/static/images/shop/merchantIocm.png" />
+                </view>
+              </view>
+              <view class="ordConfirmShopR">
+                <view class="ordConfirmShopN">{{list.shopname}}</view>
+              </view>
+            </view>
+            <view class="ordConfirmRow {{gIndex == list.goods.length-1 ? 'ordConfirmRowLast' : ''}}" wx:for="{{list.goods}}" wx:key="unique" wx:for-item="g" wx:for-index="gIndex" >
+              <view class="ordConfirmRowL">
+                <view class="ordConfirmPic">
+                  <image src="{{g.thumb}}" />
+                </view>
+              </view>
+              <view class="ordConfirmRowR">
+                <view class="ordConfirmTitle">{{g.title}}</view>
+                <view class="ordConfirmType">
+                  <span>{{g.optiontitle}}</span>
+                </view>
+                <view class="ordConfirmNum">
+                  <view class="ordConfirmNumL">￥{{g.marketprice}}</view>
+                  <view class="ordConfirmNumR">
+                    <view class="ordConfirmNumCol" wx:if="{{changenum}}">
+                      <view class="ordConfirmDel" data-sIndex="{{sIndex}}" data-gIndex="{{gIndex}}" data-paramid="{{g.goodsid}}_{{g.optionid}}" data-maxbuy="{{g.totalmaxbuy}}" data-minbuy="{{g.minbuy}}" data-unit="{{g.unit}}" bindtap="minus">-</view>
+                      <view class="ordConfirmNumber">{{g.total}}</view>
+                      <view class="ordConfirmAdd" data-sIndex="{{sIndex}}" data-gIndex="{{gIndex}}" data-paramid="{{g.goodsid}}_{{g.optionid}}" data-maxbuy="{{g.totalmaxbuy}}" data-minbuy="{{g.minbuy}}" data-unit="{{g.unit}}" bindtap="plus">+</view>
+                    </view>
+                    <view class="ordConfirmNumCol" wx:else>
+                      <view>x {{g.total}}</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          
+          <view class="ordConfirmBill" wx:if="{{hasinvoice}}">
+            <view class="ordConfirmBillL">发票抬头</view>
+            <view class="ordConfirmBillR">
+              <input type="text" placeholder="请输入发票抬头" name="invoicename" />
+            </view>
+          </view>
+
+          <view class="orderTotalRow">
+            <view class="orderTotalCol">
+              共 <span class="ordConfirmRed">{{total}}</span> 件商品 合计：<span class="ordConfirmRed">￥{{goodsprice}}</span>
+            </view>
+          </view>
+
+        </view>
+        <view class="ordConfirmLine2" wx:if="{{diyformdata.orderdiyformid != 0}}">
+          <diyform id="diyform" fields="{{diyformdata.fields}}" f_data="{{diyformdata.f_data}}"></diyform>
+        </view>
+        <view class="ordConfirmLine" wx:else>
+          <input class="ordLeave" name="remark" placeholder="选填：买家留言(50字以内)" />
+        </view>
+
+        <view wx:if="{{!if_bargain.bargain && !is_task_goods}}">
+          <!--优惠卷-->
+          <view class="ordConfirmLine" wx:if="{{createInfo.couponcount > 0}}">
+            <view class="ordConfirmLineL">{{coupontext}} <span class="ordConfirmRed">{{couponname}} </span></view>
+            <view class="ordConfirmLineM">
+              <picker bindchange="selectedCoupon" range-key="couponname" value="{{couponIndex}}" range="{{coupons}}">
+                <view class="picker">{{coupons[couponIndex].couponname}}</view>
+                 <view class="ordConfirmLineR">...</view>
+              </picker>
+            </view>
+          </view>
+
+          <!--积分抵扣-->
+          <view class="ordConfirmLine" wx:if="{{deductcredit > 0}}">
+            <view class="ordBalanceL">
+              <span class="ordConfirmRed">{{deductcredit}} </span>{{trade.credittext}}可抵扣
+              <span class="ordConfirmRed">{{deductmoney}}</span> 元</view>
+            <view class="ordBalanceLR">
+              <switch bindchange="deductCredit"/>
+            </view>
+          </view>
+
+          <!--余额抵扣-->
+          <view class="ordConfirmLine" wx:if="{{deductcredit2 > 0}}">
+            <view class="ordBalanceL">{{trade.moneytext}}可抵扣
+              <span class="ordConfirmRed">{{deductcredit2}}</span> 元</view>
+            <view class="ordBalanceLR">
+              <switch bindchange="deductCredit2"/>
+            </view>
+          </view>
+        </view>
+
+        <!--门店-->
+        <view calss="ordConfirmShop" wx:if="{{stores.length}}">
+          <view class="ordConfirmLine" bindtap="storeToggle">
+            <view class="ordStoreL">
+              <view class="ordStoreLPic">
+                <image src="https://www.wsmo.cn/dist/static/images/shop/merchantIocm.png" />
+              </view>
+            </view>
+            <view class="ordStoreR">
+              <view class="ordStoreRHead">
+                <view class="ordStoreRL">适用门店</view>
+                <view class="ordStoreRR">
+                  <view class="ordStoreRRList">
+                    <view class="ordStoreNum">{{stores.length}}</view>
+                    <view class="ordStoreNext">
+                      <view class="ordStoreNextPic">
+                        <image class="{{showStore ? 'ordChangNext':''}}" src="https://www.wsmo.cn/dist/static/images/commission/next.svg" alt="" />
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="ordStoreList" hidden="{{!showStore}}">
+            <view class="ordStoreRow" wx:for="{{stores}}" wx:key="unique">
+              <view class="ordStoreRowL">
+                <view class="ordStoreRowPic">
+                  <image src="https://www.wsmo.cn/dist/static/images/shop/merchantIocm.png" alt="" />
+                </view>
+              </view>
+              <view class="ordStoreRowR">
+                <view class="ordStoreRowRL">
+                  <view class="ordStoreName">{{item.storename}}</view>
+                  <view class="ordStoreAdds">
+                    <span>地址：</span>
+                    <span>{{item.address}}</span>
+                  </view>
+                  <view class="ordStorePhone">
+                    <span>电话：</span>
+                    <span>{{item.tel}}</span>
+                  </view>
+                </view>
+                <view class="ordStoreRowRR">
+                  <view class="ordStoreRowRRT" bindtap="openLocation" data-lng="{{item.lng}}" data-lat="{{item.lat}}" data-address="{{item.address}}">
+                    <view class="ordStoreRowPicT">
+                      <image src="https://www.wsmo.cn/dist/static/images/shop/phone.png" />
+                    </view>
+                  </view>
+                  <view class="ordStoreRowRRB" bindtap="makePhoneCall" data-tel="{{item.tel}}">
+                    <view class="ordStoreRowPicB">
+                      <image src="https://www.wsmo.cn/dist/static/images/shop/addres.png" />
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!--底部总计-->
+        <view class="ordConfirmBotList">
+          <view class="orderBotRow">
+            <span class="orderBotRowL">商品小计</span>
+            <span class="orderBotRowR">￥{{goodsprice}}</span>
+          </view>
+          <view class="orderBotRow" wx:if="{{bagprice > 0}}">
+            <span class="orderBotRowL">购物袋</span>
+            <view class="orderBotRowR">+￥{{bagprice}}</view>
+          </view>
+
+          <view class="orderBotRow" wx:if="{{!if_bargain.bargain && buyagainprice > 0}}">
+            <span class="orderBotRowL">重复购买优惠</span>
+            <view class="orderBotRowR">-￥{{buyagainprice}}</view>
+          </view>
+
+          <view class="orderBotRow" wx:if="{{discountprice2 > 0}}">
+            <span class="orderBotRowL">会员优惠</span>
+            <view class="orderBotRowR">-￥{{discountprice2}}</view>
+          </view>
+
+          <view class="orderBotRow" wx:if="{{isdiscountprice2 > 0}}">
+            <span class="orderBotRowL">促销优惠</span>
+            <view class="orderBotRowR">-￥{{isdiscountprice2}}</view>
+          </view>
+
+           <view class="orderBotRow" wx:if="{{saleset.enoughdeduct > 0}}">
+            <span class="orderBotRowL">商城单笔满 <span class="ordConfirmRed">{{saleset.enoughmoney}}</span> 元立减</span>
+            <view class="orderBotRowR">-￥{{saleset.enoughdeduct}}</view>
+          </view>
+
+          <view class="orderBotRow" wx:if="{{merch_saleset.merch_enoughdeduct > 0}}">
+            <span class="orderBotRowL">商户单笔满 <span class="ordConfirmRed">{{merch_saleset.merch_enoughmoney}}</span> 元立减</span>
+            <view class="orderBotRowR">-￥{{merch_saleset.merch_enoughdeduct}}</view>
+          </view>
+
+          <view class="orderBotRow" wx:if="{{seckillprice > 0}}">
+            <span class="orderBotRowL">秒杀优惠</span>
+            <view class="orderBotRowR">-￥{{seckillprice}}</view>
+          </view>
+
+          <view class="orderBotRow" wx:if="{{coupondeduct_price > 0}}">
+            <span class="orderBotRowL">{{coupondeduct_text}}</span>
+            <view class="orderBotRowR">-￥{{coupondeduct_price}}</view>
+          </view>
+
+          <view class="orderBotRow">
+            <span class="orderBotRowL">使用方法</span>
+            <view class="orderBotRowR" wx:if="{{dispatchprice == 0}}">线下核销</view>
+            <view class="orderBotRowR" wx:else>+￥{{dispatchprice}}</view>
+          </view>
+
+          <view class="orderBotRow">
+            <span class="orderBotRowL">实付(含运费)</span>
+            <view class="orderBotRowR ordConfirmRed">￥{{totalprice}}</view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+
+    <view class="ordConfirmBot">
+      <span class="ordConfirmTot ordConfirmRed">实付款：￥{{totalprice}}</span>
+      <button form-type="submit" class="ordConfirmBtn">提交订单</button>
+    </view>
+  </view>
+</view>
+</form>
+
+<!--自取时间 begin  -->
+<view class="timePickBg" wx:if="{{showTimes}}" bindtap='toggleTime'></view>
+<view class="timePick" wx:if="{{showTimes}}">
+  <picker-view class="timePickBody" indicator-style="height: 50px;" value="{{timeIndex}}" bindchange="changeTime">
+      <picker-view-column>
+        <view wx:for="{{pickuptimes}}" wx:key="unique">{{item.date ? '('+ item.date +')' : ''}} {{item.text}}</view>
+      </picker-view-column>
+      <picker-view-column>
+        <view wx:for="{{pickuptimes[timeIndex[0]].time}}" wx:key="unique">{{item}}</view>
+      </picker-view-column>
+  </picker-view>
+</view>  
+<!--自取时间 end  -->

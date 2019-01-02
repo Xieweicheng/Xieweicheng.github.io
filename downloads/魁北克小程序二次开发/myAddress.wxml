@@ -1,0 +1,79 @@
+<userinfo></userinfo>
+<block wx:if="{{showAddressType==1}}">
+	<view class="shopCartHead">
+		<text class="shopCartTitle">请完善联系方式</text>
+		<view class="shopCartBtns">
+			<view class="shopCartEdit" bindtap="backType1">返回</view>
+		</view>
+	</view>
+	<view class="commodityNo" wx:if="{{addressList[0]?false:true}}">
+		<image class="commo-img" src="http://www.wsmo.cn/dist/static/images/noStudent.png" ></image>
+		<text class="commo-span">联系方式为空，新增一个吧！亲 ^_^</text>
+	</view>
+	<scroll-view scroll-y="{{true}}" wx:if="{{addressList[0]?true:false}}" style="height:calc(100% - 55px);background-color: #f5f5f5;">
+		<view class="productAdress">
+			<radio-group class="radio-group" bindchange="defaultAddress">
+				<view class="proDLi" wx:for="{{addressList}}" wx:key="unique">
+					<i class="proAdsIcon"></i>
+					<view class="productAdsCon">
+						<view class="proAC">{{item.realname}}<text class="proACTel">{{item.mobile}}</text></view>
+						<text class="proACAds">{{item.province}}{{item.city}}{{item.area}}{{item.address}}</text>
+						<view class="proAdsManager">
+							<label><radio value="{{item.id}}" checked="{{item.isdefault==1}}" />设为默认</label>
+							<view class="proAdsBtnGroup">
+								<view class="proAdsEdit proED" bindtap="editAddress" data-index="{{index}}">编辑</view>
+								<view class="proAdsDel proED" bindtap="delAddress" data-id="{{item.id}}">删除</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view style="height:55px;"></view>
+			</radio-group>
+		</view>
+	</scroll-view>
+	<view class="proAddAds" bindtap="editAddress">+添加新联系方式</view>
+</block>
+<!-- 新增/编辑联系方式 -->
+<block wx:elif="{{showAddressType==2}}">
+	<view class="shopCartHead">
+		<text class="shopCartTitle" wx:if="{{!editAddress.id}}">新建联系方式</text>
+		<text class="shopCartTitle" wx:else>编辑联系方式</text>
+		<view class="shopCartBtns">
+			<view class="shopCartEdit" bindtap="backType2">返回</view>
+		</view>
+	</view>
+	<view class="userAddAdeCon">
+		<form bindsubmit="editAddressSubmit">
+			<view class="userAddAdeLi">
+				<view class="userAddAdeL">
+					<text class="pT">收货人：</text>
+					<input class="userAddInfo" name="realname" value="{{editAddress.realname}}"  type="text"/>
+				</view>
+			</view>
+			<view class="userAddAdeLi">
+				<view class="userAddAdeL">
+					<text class="pT">手机号：</text>
+					<input class="userAddInfo" name="mobile" value="{{editAddress.mobile}}" type="number" maxlength="11"/>
+				</view>
+			</view>
+			<view class="adsDetaiSel">
+				<view class="userAddAdeLi">  
+					<view class="bb section__title pT">所在地区：</view> 
+					<view class="userAddInfo">
+						<picker mode="region" bindchange="regionChange" value="{{region}}">
+              <view class="picker">
+                <block wx:if="{{!region.length}}">请选择所在地区</block>
+                <block wx:else>{{region[0]}} {{region[1]}} {{region[2]}}</block>
+              </view>
+            </picker>
+					</view>
+				</view>
+				<view class="userAddAdeLi">
+					<text class="pT">详细地址：</text>
+					<input class="userAddInfo" name="address" value="{{editAddress.address}}" type="text"/>
+				</view>
+			</view>
+			<button class="userAddSave" form-type="submit">保存</button>
+		</form>
+	</view>
+</block>

@@ -1,0 +1,50 @@
+.carCalculatorMain{width: 100%; height: auto;box-sizing: border-box;overflow: hidden;position: relative;}
+
+/* 头部标题 */
+.calculatorHead{width: 100%; height: auto; border-bottom: 5px #f5f7fb solid;}
+.full_loan {width: 100%; height: 40px; display: flex; align-items: center; justify-content: center}
+.full_loan .fullSection,.full_loan .loan {width: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-direction: column;}
+.fullSection .flName,.loan .flName {height: 35px; line-height: 35px;}
+.fullSection .flFrame,.loan .flFrame { visibility: hidden; width: 35px; height: 3px; border-radius: 100px; background-color: #00b1ff;}
+.fullSection.active .flFrame,.loan.active .flFrame {visibility: visible;}
+
+.chContent{width: 100%; height: auto; background-color: #696f7f; padding: 0 4%; box-sizing: border-box; color: #fff;}
+.chTitle {width: 100%; height: 40px; line-height: 40px; font-size: 14px;}
+.chTitle .chtText{width: 92%; display: inline-block;}
+.chTitle .chtText span {padding-right: 5px; box-sizing: border-box;}
+.chTitle .chJump{width: 8%;  display: inline-block; text-align: right;}
+.chTotalPrice {width: 100%; padding-bottom: 10px; box-sizing: border-box;}
+.chTotalPrice .tpName{width: 100%; font-size: 12px; color: #c3c5cc;}
+.chTotalPrice .tpPrice{width: 100%; font-size: 20px;}
+.chLoan{width: 100%; padding-bottom: 5px; box-sizing: border-box; font-size: 14px; line-height: 26px;}
+.chLoan .downPayments,.chLoan .monthlySupply,.chLoan .interest{width: 33.33%; display: inline-block;}
+.chLoan .downPayments .dpName,.chLoan .monthlySupply .msName,.chLoan .interest .iName{ color: #c3c5cc;}
+
+/* 内容 */
+.calculatorContent{width: 100%; height: auto; font-size: 16px;}
+.downPaymentRatio, .repaymentTerm, .nakedCarPrice {width: 100%; padding: 0 4%; box-sizing: border-box; height: 50px; line-height: 50px; border-bottom: 1px #efeff4 solid; overflow: hidden; display: flex; align-items: center; justify-content: space-between;}
+.downPaymentRatio .dprData, .repaymentTerm .rtData {display: flex; align-items: center; justify-content: flex-end;}
+.dprButton,.rtButton{width:40px; font-size: 12px; padding: 0px; margin-left: 5px; line-height: 24px; background-color: #eaeef5; color: #999; border-radius: 25px;}
+.dprButton.active,.rtButton.active{background-color: #ffe433; color: #000;}
+.nakedCarPrice{display: flex;flex-direction:row; align-items: center;}
+.nakedCarPrice .ncpName, .necessaryCost .ncName, .commercialInsurance .ciName{width: 50%; display: inline-block;}
+.nakedCarPrice .upPrice{padding-left: 5px; }
+.nakedCarPrice .ncpData, .necessaryCost .ncData, .commercialInsurance .ciData{width: 50%; display: inline-block; text-align: right;}
+.necessaryCost,.commercialInsurance {width: 100%; padding: 10px 4% 0 4%; box-sizing: border-box; min-height: 50px;border-bottom: 1px #efeff4 solid;}
+.ncDetails,.ciDetails{font-size: 10px; height: 20px; line-height: 20px;}
+.ncdText,.cidText{width: 50%; display: inline-block; color: #cacaca;}
+.ncdData,.cidData{width: 50%; display: inline-block; text-align: right; color: #02b1ff;}
+
+.detailsItem{width: 100%; height: 50px; line-height: 50px; padding-left: 10px; box-sizing: border-box; font-size: 14px; border-bottom: 1px #efeff4 solid;}
+.detailsItem:last-child{border-bottom: 0;}
+.detailsItem checked{display: inline-block;}
+.detailsItem picker{display: inline-block; max-width: 92%; min-width: 90%;}
+.detailsItem .detName{max-width: 70%; min-width: 68%; display: inline-block;}
+.detailsItem .detPrice{max-width: 24%; min-width: 24%; display: inline-block; text-align: right;}
+.detailsItem .detName .datRem{font-size: 12px; color: #cacaca;}
+.detailsItem .yesIcon{width:20px; height:20px; line-height: 20px; text-align: center;background-color:#cacaca; color: #999; font-size: 14px; border-radius: 50%; margin-right: 5px;}
+.detailsItem .yesIcon.active {background-color:#4faef8; color: #fff;}
+
+
+/* 备注 */
+.remarks {width: 100%; height: 50px; line-height: 50px; text-align: center; color: #cacaca; }

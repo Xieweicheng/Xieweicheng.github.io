@@ -1,0 +1,139 @@
+/*订单结算  Tab菜单栏*/
+.orderConfirm{background-color:#f5f5f5;height: calc(100% - 90px);width:100%;}
+page .orderConfirm {height: calc(100% - 45px);}
+.orderConfirm .content-scroll{height: calc(100% - 42px);background-color: #f5f5f5;}
+.ordConfirmMain{width:100%;height:100%;background-color:#f5f5f5;}
+.orderConfirmList {height: 100%;}
+.orderConfirmBody {background-color: #f5f5f5;width: 100%;font-size: 14px; color: #333; }
+page .orderConfirmBody{padding-top: 50px;padding-bottom:50px;}
+.ordConfirmH{width: 100%;height: 40px;line-height: 40px;display: flex;background-color: #fff;margin-bottom: 10px;font-size: 16px;}
+page .ordConfirmH{position:fixed;top:0px;z-index:2;}
+.ordConfirmHL, .ordConfirmHR{box-sizing:border-box;flex: 1;text-align: center;border-bottom: 1px solid #E5E5E5;}
+.confirmcActive{border-bottom:2px solid #e23839; color:#e23839;}
+/*收货地址*/
+.ordConAdds{margin-bottom:10px;border-top: 1px solid #f3f3f3; position: relative;padding: 15px 10px 15px 10px; box-shadow: 0 0 1px rgba(0, 0, 0, .2); -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .2); -moz-box-shadow: 0 0 1px rgba(0, 0, 0, .2); background: url(https://www.wsmo.cn/dist/static/images/shop/add.jpg) 0 bottom #fff repeat-x;background-size: 20%;}
+.ordConAddsAdd{text-align: center;padding: 5px 0;}
+.ordConAddsIcon{position: absolute;top: 25px;right: 12px; -webkit-mask-size: 100% 100%;  background-size: 100% 100%; -webkit-mask-position: center; margin: 0 auto; display: inline-block;width: 26px;height: 26px;}
+.ordConAddsIcon { background-color: #ff5458; -webkit-mask-image: url(https://www.wsmo.cn/dist/static/images/edit.svg)}
+.ordConAddsNList{margin-right: 15px;}
+.ordConAddsDetail{padding-top: 5px;padding-bottom: 5px;}
+/*自提地址*/
+.orderPickAds{height: 80px;padding: 10px;overflow: hidden;background-color: #fff;box-sizing: border-box; margin-bottom: 10px;}
+.ordPickAdsRow{width: 100%;height: 100%;overflow: hidden;}
+.ordPickAdsRowL{width: 20px;height: 100%;display: inline-block;float: left;position: relative;}
+.rdPickAdsRowIcon{height: 20px;width: 20px;position: absolute;top: calc(50% - 10px);}
+.rdPickAdsRowPic{width: 100%;height: 100%;}
+.ordPickAdsRowR{display: inline-block; float: right;width: calc(100% - 30px);overflow: hidden;position: relative;}
+.ordPickAdsRowRL{width: calc(100% - 30px);display: inline-block;float: left}
+.ordPickShop, .ordPickBaseInfo{height: 20px;line-height: 20px;}
+.ordPickDetAds{height: 20px;line-height: 20px;font-size: 12px;color:#7B7B7B;}
+.ordPickAdsRowRR{width:20px;height: 60px;float: right;}
+.rdPickAdsRowNext{width: 20px;height: 20px;position: absolute;top:calc(50% - 10px);}
+.rdPickAdsRowNext img, .rdPickAdsRowNext image{width: 100%;height: 100%;}
+/*联系人*/
+.ordPickBaseRow{margin-bottom: 10px;background-color: #fff;padding: 0px  10px;border-bottom: 1px solid #E5E5E5;border-top: 1px solid #E5E5E5; }
+.ordPickBaseCol{width: 100%;height: 40px;line-height: 40px;overflow: hidden;border-bottom: 1px solid #E5E5E5;}
+.ordPickBaseCol:last-child{border-bottom: none;}
+.ordPickBaseColL{width: 80px;float: left;color:#000;}
+.ordPickBaseColR{width: calc(100% - 80px);float: right;}
+.ordPickBaseColR input {height: 40px;line-height: 40px;width: 100%;border: none;}
+/*店铺*/
+.ordConfirmShop{line-height: 20px;width: 100%;overflow: hidden;padding: 10px;border-bottom: 1px solid #e5e5e5;position: relative;box-sizing: border-box;}
+.ordConfirmShopL{width: 20px;height: 100%;float: left;display: inline-block;}
+.ordConfirmShopPic{width: 20px;height: 20px;position: absolute;top: calc(50% - 10px);}
+.ordConfirmShopR{width: calc(100% - 30px);float: right;font-size: 14px;}
+.ordConfirmShopPic img, .ordConfirmShopPic image{width: 100%; height: 100%;}
+.ordStoreList{background-color: #fff;padding: 0px 10px;width: 100%;position: relative;box-sizing: border-box;}
+.ordStoreRow{width: 100%;overflow: hidden;position: relative;border-bottom: 1px solid #e9e9e9;padding:10px 0px;}
+.ordStoreRowL{width: 20px;display: inline-block;float: left;position: absolute;top: calc(50% - 10px);}
+.ordStoreRowPic{height: 20px;width: 20px;}
+.ordStoreRowPic img, .ordStoreRowPic image{width: 100%;height: 100%;}
+.ordStoreRowR{width: calc(100% - 25px);float: right;overflow: hidden;}
+.ordStoreRowRL{width: calc(100% - 40px);display: inline-block;border-right:1px solid #e9e9e9;}
+.ordStoreRowRRT{margin-bottom: 5px;}
+.ordStoreRowRR{width: 30px;display: inline-block;float: right;}
+.ordStoreRowPicT, .ordStoreRowPicB{width: 30px;height: 30px;}
+.ordStoreRowPicT img, .ordStoreRowPicT image, .ordStoreRowPicB img, .ordStoreRowPicB image{width: 100%;height: 100%;}
+.ordStoreName{height: 25px;line-height: 25px;font-size: 16px;color:#000;}
+.ordStoreAdds, .ordStorePhone{height: 20px;line-height: 20px;color:#5f5f5f;font-size: 14px;}
+.showStore{display: none;}
+.ordChangNext{transform: rotate(90deg)}
+
+/*订单列表*/
+.ordConfirmList{background-color: #fff; border-bottom: 1px solid #e5e5e5;border-top: 1px solid #e5e5e5;margin-bottom: 10px;}
+.ordConfirmRow{border-bottom: 1px solid #e5e5e5;padding: 10px 0px;box-sizing: border-box;overflow: hidden; padding-top:0px;margin: 10px;}
+.ordConfirmRowL{width: 90px;height: 90px;float: left;display: inline-block;}
+.ordConfirmPic{width: 90px;height: 90px;}
+.ordConfirmPic img, .ordConfirmPic image{width: 100%;height: 100%;}
+.ordConfirmRowR{width: calc(100% - 100px);float: right;height: 100%;}
+.ordConfirmTitle{overflow: hidden; text-overflow: ellipsis; max-height: 45px;word-break: break-all;word-wrap: break-word; display: -webkit-box;  -webkit-line-clamp: 2;  -webkit-box-orient: vertical;}
+.ordConfirmType{height: 20px;line-height: 20px; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;overflow: hidden;color: #999;}
+.ordConfirmNum{width: 100%;height: 25px;line-height: 25px;overflow: hidden;color: #999;}
+.ordConfirmNumL{display: inline-block;width: 55%;float: left;}
+.ordConfirmNumR{width: 45%;text-align: right;float: right;}
+.ordConfirmNumCol{display: inline-block;width: 100%;}
+.ordConfirmDel, .ordConfirmAdd{display:inline-block;background-color:#fff;width:25px;height:25px;line-height:25px;text-align:center;float:left;border: 1px solid #dedede;box-sizing: border-box;}
+.ordConfirmDel{margin-right:2px;}
+.ordConfirmAdd{margin-left:2px;}
+.ordConfirmNumber{display:inline-block;background-color:#fff;height:25px;padding:0 7px;line-height:25px;float:left;border: 1px solid #dedede;width: calc(100% - 60px);  text-align: center; overflow: hidden; box-sizing: border-box;}
+/*发票*/
+.ordConfirmBill{height: 40px;line-height: 40px;width: 100%;overflow: hidden;border-bottom: 1px solid #e5e5e5;padding: 0px 10px; box-sizing: border-box;}
+.ordConfirmBillL{width: 80px;height: 100%;display: inline-block;float: left;}
+.ordConfirmBillR{width: calc(100% - 80px);float: right;}
+.ordConfirmBillR input {height: 40px;line-height: 40px;width: 100%;border: none;}
+/*合计*/
+.orderTotalCol{height: 40px; line-height: 40px;padding: 0px 10px;text-align: right;color: #999;}
+/*优惠卷*/
+.ordConfirmLine{position:relative;width: 100%;height: 40px;line-height: 40px;overflow: hidden;padding: 0px 10px;background-color: #fff;margin-bottom: 10px;box-sizing: border-box;}
+.ordConfirmLineL{width:calc(100% - 35px); float: left; display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;word-break: break-all;}
+.ordConfirmLineM{float: left;height: 100%;width:100%;overflow:hidden;position: absolute;top:0px;left: 0px;}
+.ordConfirmLineR{width: 30px;display: inline-block;float: right; line-height:36px;}
+/*留言*/
+.ordLeave{height: 100%;width: 100%;border: none;}
+/*余额抵扣*/
+.ordConfirmRed {color: #e23839;}
+.ordBalanceL{width: calc(100% - 50px);display: inline-block;float: left;}
+.ordBalanceLR{width: 50px;display: inline-block;float: right;text-align: right;}
+/*门店*/
+.ordStoreL{width: 20px;height: 100%;display: inline-block;}
+.ordStoreLPic{width: 20px;height: 20px;position: absolute;top: calc(50% - 17px);}
+.ordStoreLPic img, .ordStoreLPic image{width: 100%;height: 100%;}
+.ordStoreR{width: calc(100% - 25px);display: inline-block;float: right;overflow: hidden;}
+.ordStoreRL{width: 50%;display: inline-block;float: left;}
+.ordStoreRR{width: 50%;display: inline-block;float: right;text-align: right;}
+.ordStoreRRList{display: inline-block;height: 20px;line-height: 20px;margin: 10px 0px;width: 100%;position: relative;}
+.ordStoreNum{width: 25px;height: 100%;background-color: #D9D9D9;border-radius: 50%;text-align: center;display: inline-block;position: absolute;top: 0px;right: 25px;}
+.ordStoreNext{display: inline-block;width: 20px;}
+.ordStoreNextPic{width: 20px;height: 20px;display: inline-block;}
+.ordStoreNextPic img, .ordStoreNextPic image{width: 100%;height: 100%;}
+.ordStoreName,.ordStoreAdds, .ordStorePhone{word-break: break-all;word-wrap: break-word;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;}
+/*底部列表*/
+.ordConfirmBotList{background-color: #fff;padding: 0px 10px;margin-top: 10px; border-bottom: 1px solid #e9e9e9;border-top: 1px solid #e9e9e9;margin-bottom: 30px;}
+.orderBotRow{border-bottom: 1px solid #e5e5e5;height: 40px;line-height: 40px;}
+.orderBotRow:last-child{border-bottom:none;}
+.orderBotRowL{display: inline-block;float: left;text-align: left;}
+.orderBotRowR{display: inline-block; float: right; text-align: right;color: #999;}
+/*底部*/
+.ordConfirmBot{position: absolute;width: 100%;border-top: 1px solid #E5E5E5;display: -moz-flex; display: -webkit-box;display: -ms-flexbox;display: flex; background-color: #fff;bottom:0px;height: 50px;line-height: 50px;}
+view.ordConfirmBot {position: fixed;}
+.ordConfirmTot{text-align: center;padding-right: 10px;-webkit-box-flex: 3;-ms-flex: 2; flex: 3;}
+.ordConfirmBtn{border: none;font-size: 14px;line-height: 50px;-webkit-box-flex: 1.5;-ms-flex: 1.5; flex: 1.5;background-color: #ff4546;color: #fff;border-radius: 0px;}
+/*添加 */
+.ordConfirmShopN{min-height:20px;}
+.ordConfirmRowLast{padding: 10px;margin: 0px;}
+.picker{opacity:0;width:calc(100% - 30px);float:left;}
+page .orderConfirmBodyH{padding-top:0px;}
+.ordConfirmDel, .ordConfirmNumber, .ordConfirmAdd{line-height:23px;}
+.wx-switch-input{width:41px !important;height:20px !important; background-color:#ff4949 !important;}
+.wx-switch-input-checked{border-color:#ff4949 !important;}
+.wx-switch-input::before{width: 40px !important;height: 18px !important;}
+.wx-switch-input::after{width: 20px !important; height: 18px !important;}
+.ordConfirmLine2 {padding: 0 10px; background: #fff; margin-bottom: 10px;}
+
+/*时间弹出框 begin  */
+.noScoll{height:100%;overflow:hidden;}
+.timePickBg{background-color:rgba(0,0,0,.5);position:absolute;top:0;left:0;bottom:0px;right:0;width:100%;height:100%;z-index:5;}
+.timePick{font-size:14px;color:#333; bottom:0;left:0;z-index:999;position:fixed;width:100%;background-color: #fff;box-shadow: 0 2px 6px rgba(0, 0, 0, .1);}
+.timePickBody{background:#fff;height:250px;line-height:50px;text-align:center;}
+.picker-view-column{background-color: #fff;border:none;}
+/*时间弹出框  end */

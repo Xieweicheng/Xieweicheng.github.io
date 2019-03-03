@@ -100,7 +100,8 @@
 <meta property="og:description" content="记录本人在开发过程中，各种docker镜像的安装部署（踩坑）～">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png">
-<meta property="og:updated_time" content="2019-02-19T15:44:00.871Z">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png">
+<meta property="og:updated_time" content="2019-03-03T03:34:27.436Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker上部署常用镜像">
 <meta name="twitter:description" content="记录本人在开发过程中，各种docker镜像的安装部署（踩坑）～">
@@ -472,6 +473,12 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run  \</span><br><span class="line">-v /root/mysql/dump.sql:/docker-entrypoint-initdb.d/dump.sql  \ #把需要启动容器时运行的sql放在`docker-entrypoint-initdb.d`下</span><br><span class="line">-v /root/mysql:/etc/mysql/conf.d  \ #挂载配置文件</span><br><span class="line">-p 3306:3306 --name mysql  \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD=123456 -d mysql #设置登录密码</span><br></pre></td></tr></table></figure>
 <p>4、进入容器，通过<code>mysql</code>命令登录到mysql命令行中</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo docker exec -it mysql /bin/bash</span><br><span class="line"><span class="meta">$</span> mysql -uroot -p123456</span><br></pre></td></tr></table></figure>
+<h2 id="五、Nexus"><a href="#五、Nexus" class="headerlink" title="五、Nexus"></a>五、Nexus</h2><p>1、pull最新的<code>nexus3</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker pull sonatype/nexus3</span><br></pre></td></tr></table></figure>
+<p>2、启动<code>nexus3</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 8081:8081 --name nexus -v /root/nexus-data:/var/nexus-data --restart=always sonatype/nexus3</span><br></pre></td></tr></table></figure>
+<p>3、<code>nexus3</code>启动过程有点慢，稍后在浏览器输入<code>http://localhost:8081</code></p>
+<p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png" alt="1551369256534"></p>
 
       
     </div>
@@ -483,7 +490,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2019-02-19
+    	本文最后更新于：2019-03-03
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>
@@ -718,7 +725,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Redis"><span class="nav-text">一、Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Tomcat"><span class="nav-text">二、Tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Nginx"><span class="nav-text">三、Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Mysql"><span class="nav-text">四、Mysql</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Redis"><span class="nav-text">一、Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Tomcat"><span class="nav-text">二、Tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Nginx"><span class="nav-text">三、Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Mysql"><span class="nav-text">四、Mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Nexus"><span class="nav-text">五、Nexus</span></a></li></ol></div>
             
 
           </div>

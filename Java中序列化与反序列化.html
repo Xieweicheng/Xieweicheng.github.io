@@ -101,7 +101,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://md.mrxiexie.cn/images/Java中序列化与反序列化/Serializable.png">
 <meta property="og:image" content="http://md.mrxiexie.cn/images/Java中序列化与反序列化/car.png">
-<meta property="og:updated_time" content="2019-04-30T07:44:23.279Z">
+<meta property="og:updated_time" content="2019-04-30T07:47:56.532Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中序列化与反序列化">
 <meta name="twitter:description" content="详解Java对象的序列化与反序列化">
@@ -444,7 +444,7 @@
 <p>需要注意的是，该接口需要调用被序列化类的无参构造器，若不提供则会抛出异常 <code>java.io.InvalidClassException: cn.mrxiexie.serializable.Car; no valid constructor</code></p>
 <p><img src="http://md.mrxiexie.cn/images/Java中序列化与反序列化/car.png" alt="car"></p>
 <p>输出结果为 <code>Car{name=&#39;MrXieXie&#39;, brand=&#39;MrXieXie&#39;, price=1234567.89}</code></p>
-<p><strong>注意：序列化到文件后，将 <code>password</code> 的值重置为 <code>null</code>。</strong></p>
+<p><strong>注意：序列化到文件后，将 <code>price</code> 的值重置为 <code>null</code>。</strong></p>
 <p><strong>可以看出即使是静态变量和被 <code>transient</code> 标注的变量还是会被序列化。原因很简单，<code>Serializable</code> 接口是自动序列化，当发现有 <code>transient</code> 标注的变量时则不序列化该变量，而 <code>Externalizable</code> 接口则是需要在 <code>writeExternal</code> 方法中指定需要序列化的变量。</strong></p>
 
       

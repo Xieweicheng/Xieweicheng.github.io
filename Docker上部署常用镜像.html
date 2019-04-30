@@ -101,7 +101,9 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png">
 <meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png">
-<meta property="og:updated_time" content="2019-03-03T03:34:27.436Z">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551768578910.png">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551846988583.png">
+<meta property="og:updated_time" content="2019-04-30T05:54:53.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker上部署常用镜像">
 <meta name="twitter:description" content="记录本人在开发过程中，各种docker镜像的安装部署（踩坑）～">
@@ -479,6 +481,24 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 8081:8081 --name nexus -v /root/nexus-data:/var/nexus-data --restart=always sonatype/nexus3</span><br></pre></td></tr></table></figure>
 <p>3、<code>nexus3</code>启动过程有点慢，稍后在浏览器输入<code>http://localhost:8081</code></p>
 <p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png" alt="1551369256534"></p>
+<h2 id="六、ActiveMq"><a href="#六、ActiveMq" class="headerlink" title="六、ActiveMq"></a>六、ActiveMq</h2><p>1、官网下载最新版本的 <code>ActiveMq</code></p>
+<p>2、解压，并自定义自己需要修改的配置文件，若不需要修改可以跳过这步</p>
+<p>3、编写 <code>Dockerfile</code>，把 <code>Dockerfile</code> 保存在与解压文件夹同级目录下</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> openjdk:<span class="number">8</span></span><br><span class="line"><span class="keyword">RUN</span> mkdir /opt/activemq</span><br><span class="line">WORKDIR /opt/activemq</span><br><span class="line">RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; echo 'Asia/Shanghai' &gt; /etc/timezone</span><br><span class="line">COPY ["apache-activemq-5.15.8", "/opt/activemq"]</span><br><span class="line">EXPOSE 8161</span><br><span class="line">EXPOSE 61616</span><br><span class="line">EXPOSE 5672</span><br><span class="line">EXPOSE 61613</span><br><span class="line">EXPOSE 1883</span><br><span class="line">EXPOSE 61614</span><br><span class="line">ENTRYPOINT /opt/activemq/bin/activemq start &amp;&amp; tail -f /opt/activemq/data/activemq.log</span><br></pre></td></tr></table></figure>
+<p>4、在 <code>Dockerfile</code> 目录下执行命令，构建镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -f Dockerfile -t mrxiexie/activemq .</span><br></pre></td></tr></table></figure>
+<p>5、启动 <code>ActiveMq</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run --name activemq -d -p 8161:8161 -p 61616:61616 mrxiexie/activemq</span><br></pre></td></tr></table></figure>
+<p>6、浏览器输入 <code>http://127.0.0.1:8161</code> 即可正常访问</p>
+<p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551768578910.png" alt="1551768578910"></p>
+<h2 id="七、Gitlab"><a href="#七、Gitlab" class="headerlink" title="七、Gitlab"></a>七、Gitlab</h2><p>1、pull最新的 <code>Gitlab</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker pull gitlab/gitlab-ce</span><br></pre></td></tr></table></figure>
+<p>2、启动 <code>Gitlab</code>，以下配置只为本地测试，使用了 <code>127.0.0.1</code> 本地ip，可以把ip换为公网ip，部署在云服务器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo docker run --detach \                                                                       </span><br><span class="line">        --hostname gitlab.example.com \</span><br><span class="line">        --publish 127.0.0.1:443:443 \</span><br><span class="line">        --publish 127.0.0.1:80:80 \</span><br><span class="line">        --publish 127.0.0.1:66:22 \</span><br><span class="line">        --name gitlab \</span><br><span class="line">        --restart always \</span><br><span class="line">        --volume ~/.docker/srv/gitlab/config:/etc/gitlab \</span><br><span class="line">        --volume ~/.docker/srv/gitlab/logs:/var/log/gitlab \</span><br><span class="line">        --volume ~/.docker/srv/gitlab/data:/var/opt/gitlab \</span><br><span class="line">        gitlab/gitlab-ce:latest</span><br></pre></td></tr></table></figure>
+<p>3、修改 <code>~/.docker/srv/gitlab/config/gitlab.rb</code> 文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> For HTTP</span><br><span class="line">external_url "http://127.0.0.1:80"</span><br><span class="line"><span class="meta">#</span> For HTTPS (notice the https)</span><br><span class="line">external_url "https://127.0.0.1:443"</span><br><span class="line"><span class="meta">#</span> ssh port</span><br><span class="line">gitlab_rails['gitlab_shell_ssh_port'] = 66</span><br></pre></td></tr></table></figure>
+<p>4、浏览器输入 <code>http://127.0.0.1:80</code> 即可正常访问</p>
+<p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551846988583.png" alt="1551846988583"></p>
 
       
     </div>
@@ -490,7 +510,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2019-03-03
+    	本文最后更新于：2019-04-30
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>
@@ -529,6 +549,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/单词本.html" rel="prev" title="单词本">
+                单词本 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -614,7 +638,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -625,7 +649,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -636,7 +660,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -725,7 +749,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Redis"><span class="nav-text">一、Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Tomcat"><span class="nav-text">二、Tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Nginx"><span class="nav-text">三、Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Mysql"><span class="nav-text">四、Mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Nexus"><span class="nav-text">五、Nexus</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Redis"><span class="nav-text">一、Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Tomcat"><span class="nav-text">二、Tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Nginx"><span class="nav-text">三、Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Mysql"><span class="nav-text">四、Mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Nexus"><span class="nav-text">五、Nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、ActiveMq"><span class="nav-text">六、ActiveMq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、Gitlab"><span class="nav-text">七、Gitlab</span></a></li></ol></div>
             
 
           </div>

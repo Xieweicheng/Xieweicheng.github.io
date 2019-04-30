@@ -99,13 +99,13 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="详解Java对象的序列化与反序列化">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://xieweicheng.github.io/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/Java中序列化与反序列化.assets/Serializable.png">
-<meta property="og:image" content="https://xieweicheng.github.io/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/Java中序列化与反序列化.assets/car.png">
-<meta property="og:updated_time" content="2019-04-30T07:42:33.365Z">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/Java中序列化与反序列化/Serializable.png">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/Java中序列化与反序列化/car.png">
+<meta property="og:updated_time" content="2019-04-30T07:44:23.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中序列化与反序列化">
 <meta name="twitter:description" content="详解Java对象的序列化与反序列化">
-<meta name="twitter:image" content="https://xieweicheng.github.io/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/Java中序列化与反序列化.assets/Serializable.png">
+<meta name="twitter:image" content="http://md.mrxiexie.cn/images/Java中序列化与反序列化/Serializable.png">
 
 
 
@@ -435,14 +435,14 @@
 <p>序列化就可以帮我们做到，序列化是将对象的状态信息转换成可取的格式的过程，可以存储为文件，或者透过网络发送数据时进行编码的过程，可以是字节或是XML等格式。其相反的过程就被称为反序列化。</p>
 <p>Java中准备了 <code>Serializable</code>、<code>Externalizable</code>两个接口（需要序列化的类必须实现这两个接口其一），和 <code>ObjectOutputStream</code>、<code>ObjectInputStream</code>两个类来帮助开发者实现序列化与反序列化。</p>
 <h3 id="Serializable-Code"><a href="#Serializable-Code" class="headerlink" title="Serializable Code"></a>Serializable Code</h3><p>只需在需要序列化的类上实现 <code>Serializable</code> 接口，即可通过 <code>ObjectOutputStream</code> 实现序列化到文件系统中。</p>
-<p><img src="/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/Java中序列化与反序列化.assets/Serializable.png" alt="Serializable"></p>
+<p><img src="http://md.mrxiexie.cn/images/Java中序列化与反序列化/Serializable.png" alt="Serializable"></p>
 <p>输出结果为 <code>Person{name=&#39;MrXieXie&#39;, age=null, password=&#39;null&#39;}</code></p>
 <p><strong>注意：序列化到文件后，将 <code>password</code> 的值重置为 <code>null</code>。</strong></p>
 <p><strong>可以看出在 <code>Serializable</code>，静态变量还有被 <code>transient</code> 标注的变量不会被序列化。</strong></p>
 <p>那么是不是所有的静态变量和被 <code>transient</code> 标注的变量就不会被序列化呢？让我们来看一下 <code>Externalizable</code> 接口。</p>
 <h3 id="Externalizable-Code"><a href="#Externalizable-Code" class="headerlink" title="Externalizable Code"></a>Externalizable Code</h3><p>使用 <code>Externalizable</code> 实现序列化要比 <code>Serializable</code> 复杂一丢丢，需要实现 <code>writeExternal</code> 和 <code>readExternal</code> 方法，这两个方法会在序列化和反序列化时调用。</p>
 <p>需要注意的是，该接口需要调用被序列化类的无参构造器，若不提供则会抛出异常 <code>java.io.InvalidClassException: cn.mrxiexie.serializable.Car; no valid constructor</code></p>
-<p><img src="/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/Java中序列化与反序列化.assets/car.png" alt="car"></p>
+<p><img src="http://md.mrxiexie.cn/images/Java中序列化与反序列化/car.png" alt="car"></p>
 <p>输出结果为 <code>Car{name=&#39;MrXieXie&#39;, brand=&#39;MrXieXie&#39;, price=1234567.89}</code></p>
 <p><strong>注意：序列化到文件后，将 <code>password</code> 的值重置为 <code>null</code>。</strong></p>
 <p><strong>可以看出即使是静态变量和被 <code>transient</code> 标注的变量还是会被序列化。原因很简单，<code>Serializable</code> 接口是自动序列化，当发现有 <code>transient</code> 标注的变量时则不序列化该变量，而 <code>Externalizable</code> 接口则是需要在 <code>writeExternal</code> 方法中指定需要序列化的变量。</strong></p>

@@ -99,13 +99,13 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="记录在Android开发中配置Lombok与Logback，防止遗忘">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/181017/G3BlJkG7Cj.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/181017/ml2mh77mf3.png">
-<meta property="og:updated_time" content="2018-12-28T00:44:08.320Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/181017/G3BlJkG7Cj.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/181017/ml2mh77mf3.png">
+<meta property="og:updated_time" content="2019-04-30T14:49:22.961Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中配置Lombok和Logback">
 <meta name="twitter:description" content="记录在Android开发中配置Lombok与Logback，防止遗忘">
-<meta name="twitter:image" content="http://md.mrxiexie.cn/images/181017/G3BlJkG7Cj.png">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/images/181017/G3BlJkG7Cj.png">
 
 
 
@@ -432,7 +432,7 @@
       
         <h2 id="一、安装Lombok插件"><a href="#一、安装Lombok插件" class="headerlink" title="一、安装Lombok插件"></a>一、安装Lombok插件</h2><p>之前有写过安装插件的教程，虽然是基于IDEA的，但是AS就是IDEA的儿子，照搬就行~<a href="/IDEA安装插件.html">传送门在此</a></p>
 <h2 id="二、Gradle修改如下"><a href="#二、Gradle修改如下" class="headerlink" title="二、Gradle修改如下"></a>二、Gradle修改如下</h2><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">        javaCompileOptions &#123; annotationProcessorOptions &#123; includeCompileClasspath = <span class="literal">true</span> &#125; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    compileOnly <span class="string">group:</span> <span class="string">'org.projectlombok'</span>, <span class="string">name:</span> <span class="string">'lombok'</span>, <span class="string">version:</span> <span class="string">'1.16.18'</span></span><br><span class="line">    implementation <span class="string">'org.glassfish:javax.annotation:10.0-b28'</span></span><br><span class="line">    implementation <span class="string">'ch.qos.logback:logback-classic:1.2.3'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="三、项目根目录添加lombok-config文件"><a href="#三、项目根目录添加lombok-config文件" class="headerlink" title="三、项目根目录添加lombok.config文件"></a>三、项目根目录添加lombok.config文件</h2><p><img src="http://md.mrxiexie.cn/images/181017/G3BlJkG7Cj.png" alt="mark"></p>
+<h2 id="三、项目根目录添加lombok-config文件"><a href="#三、项目根目录添加lombok-config文件" class="headerlink" title="三、项目根目录添加lombok.config文件"></a>三、项目根目录添加lombok.config文件</h2><p><img src="https://md.mrxiexie.cn/images/181017/G3BlJkG7Cj.png" alt="mark"></p>
 <ul>
 <li>修改文件内容如下</li>
 </ul>
@@ -440,7 +440,7 @@
 <h2 id="四、创建logback配置文件在raw目录下"><a href="#四、创建logback配置文件在raw目录下" class="headerlink" title="四、创建logback配置文件在raw目录下"></a>四、创建logback配置文件在raw目录下</h2><ul>
 <li>文件名想怎么起就怎么起~</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/images/181017/ml2mh77mf3.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/181017/ml2mh77mf3.png" alt="mark"></p>
 <h2 id="五、启动时识别logback配置文件"><a href="#五、启动时识别logback配置文件" class="headerlink" title="五、启动时识别logback配置文件"></a>五、启动时识别logback配置文件</h2><ul>
 <li>要想直接通过注解<code>@Slf4j</code>打印日志是已经ok了~</li>
 <li>但要logback还是默认的配置，只需要在<code>Application</code>中调用下面方法，就能用到<code>R.raw.app_log_config</code>里面的配置了~</li>
@@ -458,7 +458,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2018-12-28
+    	本文最后更新于：2019-04-30
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>

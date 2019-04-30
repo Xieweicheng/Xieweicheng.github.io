@@ -99,17 +99,17 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="记录第一次使用Docker部署SpringBoot项目~">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/180927/5hBGb7CA77.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/180927/1j4kB25jjH.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/180927/E002DIklH7.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/180927/kCKDi3F8kA.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/180927/lemCJb2Ljk.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/180927/hjI274eEa1.png">
-<meta property="og:updated_time" content="2018-12-28T00:44:08.323Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/180927/5hBGb7CA77.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/180927/1j4kB25jjH.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/180927/E002DIklH7.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/180927/kCKDi3F8kA.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/180927/lemCJb2Ljk.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/180927/hjI274eEa1.png">
+<meta property="og:updated_time" content="2019-04-30T14:49:39.837Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Docker部署SpringBoot项目">
 <meta name="twitter:description" content="记录第一次使用Docker部署SpringBoot项目~">
-<meta name="twitter:image" content="http://md.mrxiexie.cn/images/180927/5hBGb7CA77.png">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/images/180927/5hBGb7CA77.png">
 
 
 
@@ -454,8 +454,8 @@
 <ul>
 <li>在window下使用navicat连接数据库，并导入对应数据库即可</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/images/180927/5hBGb7CA77.png" alt="mark"></p>
-<h2 id="三、SpringBoot导出jar包"><a href="#三、SpringBoot导出jar包" class="headerlink" title="三、SpringBoot导出jar包"></a>三、SpringBoot导出jar包</h2><p><img src="http://md.mrxiexie.cn/images/180927/1j4kB25jjH.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/180927/5hBGb7CA77.png" alt="mark"></p>
+<h2 id="三、SpringBoot导出jar包"><a href="#三、SpringBoot导出jar包" class="headerlink" title="三、SpringBoot导出jar包"></a>三、SpringBoot导出jar包</h2><p><img src="https://md.mrxiexie.cn/images/180927/1j4kB25jjH.png" alt="mark"></p>
 <h2 id="四、使用Dockerfile构建openjdk镜像"><a href="#四、使用Dockerfile构建openjdk镜像" class="headerlink" title="四、使用Dockerfile构建openjdk镜像"></a>四、使用Dockerfile构建openjdk镜像</h2><ul>
 <li>使用scp命令将jar包从window导入linux（<strong>注：该操作要在window命令行执行</strong>）</li>
 </ul>
@@ -487,16 +487,16 @@
 <ul>
 <li>可以看到项目已经正常启动了，打开浏览器输入ip地址加8080就可以访问了<strong>（注：项目的端口要与容器的端口一致才能正常访问）</strong></li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/images/180927/E002DIklH7.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/180927/E002DIklH7.png" alt="mark"></p>
 <h2 id="五、配置Nginx服务器，使用二级域名访问服务器"><a href="#五、配置Nginx服务器，使用二级域名访问服务器" class="headerlink" title="五、配置Nginx服务器，使用二级域名访问服务器"></a>五、配置Nginx服务器，使用二级域名访问服务器</h2><ul>
 <li>上诉操作我是在本地Linux虚拟机上操作的，剩下的操作将转移到腾讯云的Linux服务器上</li>
 <li>首先在腾讯云后台操作，把二级域名解析到云服务器ip地址上</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/images/180927/kCKDi3F8kA.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/180927/kCKDi3F8kA.png" alt="mark"></p>
 <ul>
 <li>稍等片刻，即可在浏览器上通过域名+端口访问项目（解析需要一段时间，期间可以使用 <code>ping 域名</code> 命令来判断是否正确指向ip）</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/images/180927/lemCJb2Ljk.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/180927/lemCJb2Ljk.png" alt="mark"></p>
 <ul>
 <li>从docker hub拉取最新的Nginx镜像</li>
 </ul>
@@ -528,7 +528,7 @@
 <ul>
 <li>浏览器输入二级域名即可访问~</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/images/180927/hjI274eEa1.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/180927/hjI274eEa1.png" alt="mark"></p>
 <p>以上所有配置仅供参考，详细配置请参照对应官方文档~</p>
 
       
@@ -541,7 +541,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2018-12-28
+    	本文最后更新于：2019-04-30
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>

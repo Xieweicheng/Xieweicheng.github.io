@@ -99,13 +99,13 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="Java中的线程池十分重要，无论是在实际应用中还是应对面试。因此本文根据 “Java并发编程的艺术总结” 讲解Java线程池~">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/Java线程池/5679451-2c3d68cec695c1ac.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/Java线程池/5679451-ed94c30bd45c6a34.png">
-<meta property="og:updated_time" content="2019-04-30T07:44:24.325Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/Java线程池/5679451-2c3d68cec695c1ac.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/Java线程池/5679451-ed94c30bd45c6a34.png">
+<meta property="og:updated_time" content="2019-04-30T14:49:35.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java线程池">
 <meta name="twitter:description" content="Java中的线程池十分重要，无论是在实际应用中还是应对面试。因此本文根据 “Java并发编程的艺术总结” 讲解Java线程池~">
-<meta name="twitter:image" content="http://md.mrxiexie.cn/images/Java线程池/5679451-2c3d68cec695c1ac.png">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/images/Java线程池/5679451-2c3d68cec695c1ac.png">
 
 
 
@@ -437,11 +437,11 @@
 </ul>
 <h3 id="一、线程池原理"><a href="#一、线程池原理" class="headerlink" title="一、线程池原理"></a>一、线程池原理</h3><h4 id="1-1-使用线程池的好处"><a href="#1-1-使用线程池的好处" class="headerlink" title="1.1 使用线程池的好处"></a>1.1 使用线程池的好处</h4><p>第一：降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。<br>第二：提高响应速度。当任务到达时，任务可以不需要等到线程创建就能立即执行。<br>第三：提高线程的可管理性。线程是稀缺资源，如果无限制地创建，不仅会消耗系统资源,还会降低系统的稳定性，使用线程池可以进行统一分配、调优和监控。</p>
 <h4 id="1-2-线程池的实现原理"><a href="#1-2-线程池的实现原理" class="headerlink" title="1.2 线程池的实现原理"></a>1.2 线程池的实现原理</h4><p>当向线程池提交任务后，线程池会按下图所示流程去处理这个任务：</p>
-<p><img src="http://md.mrxiexie.cn/images/Java线程池/5679451-2c3d68cec695c1ac.png" alt="1551583784009"></p>
+<p><img src="https://md.mrxiexie.cn/images/Java线程池/5679451-2c3d68cec695c1ac.png" alt="1551583784009"></p>
 <p>线程池的主要处理流程</p>
 <p>1）线程池判断核心线程池里的线程是否都在执行任务。如果不是，则创建一个新的工作线程来执行任务。如果核心线程池里的线程都在执行任务，则进入下个流程。<br>2）线程池判断工作队列是否已经满。如果工作队列没有满，则将新提交的任务存储在这个工作队列里。如果工作队列满了，则进入下个流程。<br>3）线程池判断线程池的线程是否都处于工作状态。如果没有，则创建一个新的工作线程来执行任务。如果已经满了，则交给饱和策略来处理这个任务。</p>
 <p>对应到代码层面就是<code>ThreadPoolExecutor</code>执行<code>execute()</code>方法。如下图所示：</p>
-<p><img src="http://md.mrxiexie.cn/images/Java线程池/5679451-ed94c30bd45c6a34.png" alt="1551583784009"></p>
+<p><img src="https://md.mrxiexie.cn/images/Java线程池/5679451-ed94c30bd45c6a34.png" alt="1551583784009"></p>
 <p>ThreadPoolExecutor执行示意图</p>
 <p>1）如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（注意，执行这一步骤需要获取全局锁）。</p>
 <p>2）如果运行的线程等于或多于corePoolSize，则将任务加入BlockingQueue。</p>

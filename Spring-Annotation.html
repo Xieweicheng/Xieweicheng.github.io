@@ -99,15 +99,15 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="本文主要记录Spring注解驱动开发学习笔记~">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://md.mrxiexie.cn/spring-annotation/180730/DBCALlbHdL.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/spring-annotation/180730/eeHIF7mb8G.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/spring-annotation/180730/6J5FmL3Fe0.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/180811/ajL86A2dEm.png">
-<meta property="og:updated_time" content="2018-12-28T00:44:08.323Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/spring-annotation/180730/DBCALlbHdL.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/spring-annotation/180730/eeHIF7mb8G.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/spring-annotation/180730/6J5FmL3Fe0.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/180811/ajL86A2dEm.png">
+<meta property="og:updated_time" content="2019-04-30T14:49:38.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring注解驱动开发">
 <meta name="twitter:description" content="本文主要记录Spring注解驱动开发学习笔记~">
-<meta name="twitter:image" content="http://md.mrxiexie.cn/spring-annotation/180730/DBCALlbHdL.png">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/spring-annotation/180730/DBCALlbHdL.png">
 
 
 
@@ -482,11 +482,11 @@
 <h4 id="使用IDEA，修改当前操作系统属性"><a href="#使用IDEA，修改当前操作系统属性" class="headerlink" title="使用IDEA，修改当前操作系统属性"></a>使用IDEA，修改当前操作系统属性</h4><ul>
 <li>进入Edit Configuration</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/spring-annotation/180730/DBCALlbHdL.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/spring-annotation/180730/DBCALlbHdL.png" alt="mark"></p>
 <ul>
 <li>修改VM options值为 -Dos.name=Linux保存即可</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/spring-annotation/180730/eeHIF7mb8G.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/spring-annotation/180730/eeHIF7mb8G.png" alt="mark"></p>
 <h3 id="（6）使用-Import注解注入Bean"><a href="#（6）使用-Import注解注入Bean" class="headerlink" title="（6）使用@Import注解注入Bean"></a>（6）使用@Import注解注入Bean</h3><ol>
 <li><p>在类上使用@Import(要导入容器的组件)，会自动注入该组件，<strong>其名默认为全类名</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Import</span>(Red.class) <span class="comment">//注入Red组件，其名字为pers.mrxiexie.springannotation.bean.Red</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainConfig2</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
@@ -624,7 +624,7 @@
 </li>
 <li><p>Aware；把Spring底层一些组件注入到自定义的Bean中；xxxAware：功能使用xxxProcessor；</p>
 <p>如：ApplicationContextAware —&gt; ApplicationContextAwareProcessor（后置处理器）；</p>
-<p><img src="http://md.mrxiexie.cn/spring-annotation/180730/6J5FmL3Fe0.png" alt="Aware"></p>
+<p><img src="https://md.mrxiexie.cn/spring-annotation/180730/6J5FmL3Fe0.png" alt="Aware"></p>
 </li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在Red中使用&#123;<span class="doctag">@link</span> ApplicationContext,StringValueResolver,Environment&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Red</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span>, <span class="title">EmbeddedValueResolverAware</span>, <span class="title">EnvironmentAware</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取IOC容器</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        System.out.println(applicationContext);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取字符串处理器</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEmbeddedValueResolver</span><span class="params">(StringValueResolver resolver)</span> </span>&#123;</span><br><span class="line">        String s = resolver.resolveStringValue(<span class="string">"你好我是$&#123;os.name&#125;，今年#&#123;20-2&#125;"</span>);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//IOC运行环境</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEnvironment</span><span class="params">(Environment environment)</span> </span>&#123;</span><br><span class="line">        System.out.println(environment.getProperty(<span class="string">"os.name"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -683,7 +683,7 @@
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AspectJAutoProxyRegistrar</span> <span class="keyword">implements</span> <span class="title">ImportBeanDefinitionRegistrar</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerBeanDefinitions</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">         AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry)</span> </span>&#123;</span><br><span class="line">      <span class="comment">//给容器注册一个AnnotationAwareAspectJAutoProxyCreator</span></span><br><span class="line">      <span class="comment">//名为org.springframework.aop.config.internalAutoProxyCreator</span></span><br><span class="line">      AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry);</span><br><span class="line">       </span><br><span class="line">      AnnotationAttributes enableAspectJAutoProxy =</span><br><span class="line">            AnnotationConfigUtils.attributesFor(importingClassMetadata, EnableAspectJAutoProxy.class);</span><br><span class="line">      <span class="keyword">if</span> (enableAspectJAutoProxy.getBoolean(<span class="string">"proxyTargetClass"</span>)) &#123;</span><br><span class="line">         AopConfigUtils.forceAutoProxyCreatorToUseClassProxying(registry);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (enableAspectJAutoProxy.getBoolean(<span class="string">"exposeProxy"</span>)) &#123;</span><br><span class="line">         AopConfigUtils.forceAutoProxyCreatorToExposeProxy(registry);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>4、查看<strong>ImportBeanDefinitionRegistrar</strong>的继承树</p>
-<p><img src="http://md.mrxiexie.cn/images/180811/ajL86A2dEm.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/180811/ajL86A2dEm.png" alt="mark"></p>
 <p>ProxyConfig (org.springframework.aop.framework)<br>    ProxyProcessorSupport (org.springframework.aop.framework)<br>        <strong>AbstractAutoProxyCreator (org.springframework.aop.framework.autoproxy)</strong><br>            AbstractAdvisorAutoProxyCreator (org.springframework.aop.framework.autoproxy)<br>                AspectJAwareAdvisorAutoProxyCreator (org.springframework.aop.aspectj.autoproxy)<br>                    AnnotationAwareAspectJAutoProxyCreator (org.springframework.aop.aspectj.annotation)</p>
 <p>可以看出  <strong>AbstractAutoProxyCreator (org.springframework.aop.framework.autoproxy)</strong> 实现了：</p>
 <ul>
@@ -926,7 +926,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2018-12-28
+    	本文最后更新于：2019-04-30
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>

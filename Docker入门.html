@@ -99,22 +99,22 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="docker入门介绍~">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/181106/kBLCE914l7.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/181106/HBaC5ajJcf.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/181106/bmmAeHg2Fg.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/181106/adbif7LEAB.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181114/7cWPfFOsgbTf.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181114/MESvWVmBBFkw.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181114/nyov8Gfs7Gov.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181114/4FMiDiySF88b.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181114/YSit1IMIx3EU.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181114/8K0IXhD9Ac2u.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181114/sGaYuM7nu8Bp.png">
-<meta property="og:updated_time" content="2018-12-28T00:44:08.320Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/181106/kBLCE914l7.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/181106/HBaC5ajJcf.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/181106/bmmAeHg2Fg.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/181106/adbif7LEAB.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181114/7cWPfFOsgbTf.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181114/MESvWVmBBFkw.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181114/nyov8Gfs7Gov.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181114/4FMiDiySF88b.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181114/YSit1IMIx3EU.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181114/8K0IXhD9Ac2u.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181114/sGaYuM7nu8Bp.png">
+<meta property="og:updated_time" content="2019-04-30T14:49:33.057Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker入门">
 <meta name="twitter:description" content="docker入门介绍~">
-<meta name="twitter:image" content="http://md.mrxiexie.cn/images/181106/kBLCE914l7.png">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/images/181106/kBLCE914l7.png">
 
 
 
@@ -454,7 +454,7 @@
 <h3 id="3、docker底层原理"><a href="#3、docker底层原理" class="headerlink" title="3、docker底层原理"></a>3、docker底层原理</h3><ul>
 <li>Docker是一个Client-Server结构的系统，Docker守护进程运行在主机上，然后通过Socket连接从客户端访问，守护进程从客户端接收命令并管理运行在主机上的容器。容器，是一个运行时环境。</li>
 </ul>
-<h3 id="4、虚拟机与Docker的对比"><a href="#4、虚拟机与Docker的对比" class="headerlink" title="4、虚拟机与Docker的对比"></a>4、虚拟机与Docker的对比</h3><p><img src="http://md.mrxiexie.cn/images/181106/kBLCE914l7.png" alt="mark"></p>
+<h3 id="4、虚拟机与Docker的对比"><a href="#4、虚拟机与Docker的对比" class="headerlink" title="4、虚拟机与Docker的对比"></a>4、虚拟机与Docker的对比</h3><p><img src="https://md.mrxiexie.cn/images/181106/kBLCE914l7.png" alt="mark"></p>
 <ul>
 <li>Docker有这比虚拟机更少的抽象层。由于Docker不需要Hypervisor实现硬件资源虚拟化，运行在docker容器上的程序直接使用的都是实际物理机的硬件资源。因此在CPU、内存利用率上docker将会在效率上有明显优势。</li>
 <li>docker利用的是宿主机的内核，而不是Guest OS。因此，当新建一个容器时，docker不需要和虚拟机一样重新加载一个操作系统内核。仍而避免引寻、加载操作系统内核返个比较费时费资源的过程，当新建一个虚拟机时，虚拟机软件需要加载Guest OS，返个新建过程是分钟级别。而docker由于直接利用宿主机的操作系统，则省略了返个过程，因此新建一个docker容器只需要几秒钟。</li>
@@ -554,13 +554,13 @@
 <h2 id="四、使用阿里云镜像加速"><a href="#四、使用阿里云镜像加速" class="headerlink" title="四、使用阿里云镜像加速"></a>四、使用阿里云镜像加速</h2><blockquote>
 <p>为什么要使用阿里云镜像加速？<br>是因为我国伟大的防火墙导致访问国外网站慢或者无法访问，这时我们就需要访问阿里云所同步的镜像</p>
 </blockquote>
-<h3 id="1、注册阿里云账号"><a href="#1、注册阿里云账号" class="headerlink" title="1、注册阿里云账号"></a>1、注册阿里云账号</h3><h3 id="2、进入容器镜像服务"><a href="#2、进入容器镜像服务" class="headerlink" title="2、进入容器镜像服务"></a>2、进入容器镜像服务</h3><p><img src="http://md.mrxiexie.cn/images/181106/HBaC5ajJcf.png" alt="mark"></p>
-<h3 id="3、获取加速地址"><a href="#3、获取加速地址" class="headerlink" title="3、获取加速地址"></a>3、获取加速地址</h3><p><img src="http://md.mrxiexie.cn/images/181106/bmmAeHg2Fg.png" alt="mark"></p>
+<h3 id="1、注册阿里云账号"><a href="#1、注册阿里云账号" class="headerlink" title="1、注册阿里云账号"></a>1、注册阿里云账号</h3><h3 id="2、进入容器镜像服务"><a href="#2、进入容器镜像服务" class="headerlink" title="2、进入容器镜像服务"></a>2、进入容器镜像服务</h3><p><img src="https://md.mrxiexie.cn/images/181106/HBaC5ajJcf.png" alt="mark"></p>
+<h3 id="3、获取加速地址"><a href="#3、获取加速地址" class="headerlink" title="3、获取加速地址"></a>3、获取加速地址</h3><p><img src="https://md.mrxiexie.cn/images/181106/bmmAeHg2Fg.png" alt="mark"></p>
 <h3 id="4、配置镜像加速地址"><a href="#4、配置镜像加速地址" class="headerlink" title="4、配置镜像加速地址"></a>4、配置镜像加速地址</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装docker后默认是没有`daemon.json`文件的，需要用root权限创建</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo vim /etc/docker/daemon.json</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改文件内容如下，后面参数填上一步所复制的阿里云加速器地址</span></span><br><span class="line">&#123;</span><br><span class="line">  "registry-mirrors": ["https://lolololo.mirror.aliyuncs.com"]</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新加载daemon</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo systemctl daemon-reload</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新启动docker</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo systemctl restart docker</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看docker信息</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo docker info</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用docker info 查看docker信息，查看Registry Mirrors内容为阿里云加速器地址则说明设置成功。</li>
 </ul>
-<p><img src="http://md.mrxiexie.cn/images/181106/adbif7LEAB.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/181106/adbif7LEAB.png" alt="mark"></p>
 <h3 id="5、执行HelloWorld"><a href="#5、执行HelloWorld" class="headerlink" title="5、执行HelloWorld"></a>5、执行HelloWorld</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 运行hello-world镜像，若本地没有，则会自动从云端pull，并执行，云端没有显示没有该镜像。</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo docker run hello-world</span></span><br></pre></td></tr></table></figure>
 <h2 id="五、Docker命令"><a href="#五、Docker命令" class="headerlink" title="五、Docker命令"></a>五、Docker命令</h2><h3 id="（1）帮助命令"><a href="#（1）帮助命令" class="headerlink" title="（1）帮助命令"></a>（1）帮助命令</h3><h4 id="1、docker-version"><a href="#1、docker-version" class="headerlink" title="1、docker version"></a>1、<code>docker version</code></h4><ul>
 <li>查看docker版本信息</li>
@@ -828,18 +828,18 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">"http://xmlns.jcp.org/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">version</span>=<span class="string">"3.1"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>在浏览器中，输入<code>http://localhost:8080/test/a.jsp</code>正常访问，说明配置成功</p>
 <h2 id="九、将镜像推送到阿里云"><a href="#九、将镜像推送到阿里云" class="headerlink" title="九、将镜像推送到阿里云"></a>九、将镜像推送到阿里云</h2><h3 id="（1）登录到阿里云镜像管理"><a href="#（1）登录到阿里云镜像管理" class="headerlink" title="（1）登录到阿里云镜像管理"></a>（1）登录到阿里云镜像管理</h3><p>登录阿里云，<a href="https://dev.aliyun.com/" target="_blank" rel="noopener">传送门</a>，点击<strong>创建我的容器镜像</strong></p>
-<p><img src="http://md.mrxiexie.cn/images/20181114/7cWPfFOsgbTf.png" alt="mark"></p>
-<h3 id="（2）创建镜像仓库"><a href="#（2）创建镜像仓库" class="headerlink" title="（2）创建镜像仓库"></a>（2）创建镜像仓库</h3><p><img src="http://md.mrxiexie.cn/images/20181114/MESvWVmBBFkw.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181114/7cWPfFOsgbTf.png" alt="mark"></p>
+<h3 id="（2）创建镜像仓库"><a href="#（2）创建镜像仓库" class="headerlink" title="（2）创建镜像仓库"></a>（2）创建镜像仓库</h3><p><img src="https://md.mrxiexie.cn/images/20181114/MESvWVmBBFkw.png" alt="mark"></p>
 <p>创建命名空间，然后填写对应镜像信息，点击下一步。</p>
-<p><img src="http://md.mrxiexie.cn/images/20181114/nyov8Gfs7Gov.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181114/nyov8Gfs7Gov.png" alt="mark"></p>
 <p>选择本地仓库，创建镜像仓库</p>
-<p><img src="http://md.mrxiexie.cn/images/20181114/4FMiDiySF88b.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181114/4FMiDiySF88b.png" alt="mark"></p>
 <h3 id="（3）上传镜像到阿里云仓库"><a href="#（3）上传镜像到阿里云仓库" class="headerlink" title="（3）上传镜像到阿里云仓库"></a>（3）上传镜像到阿里云仓库</h3><p>镜像仓库中，选择对应的仓库，点击管理</p>
-<p><img src="http://md.mrxiexie.cn/images/20181114/YSit1IMIx3EU.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181114/YSit1IMIx3EU.png" alt="mark"></p>
 <p>根据第三步，推送对应的镜像到仓库</p>
-<p><img src="http://md.mrxiexie.cn/images/20181114/8K0IXhD9Ac2u.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181114/8K0IXhD9Ac2u.png" alt="mark"></p>
 <h3 id="（4）下拉镜像到本地"><a href="#（4）下拉镜像到本地" class="headerlink" title="（4）下拉镜像到本地"></a>（4）下拉镜像到本地</h3><p>根据第二步，下拉对应的镜像到本地</p>
-<p><img src="http://md.mrxiexie.cn/images/20181114/sGaYuM7nu8Bp.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181114/sGaYuM7nu8Bp.png" alt="mark"></p>
 
       
     </div>
@@ -851,7 +851,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2018-12-28
+    	本文最后更新于：2019-04-30
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>

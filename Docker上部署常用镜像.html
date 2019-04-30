@@ -99,15 +99,15 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="记录本人在开发过程中，各种docker镜像的安装部署（踩坑）～">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551768578910.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551846988583.png">
-<meta property="og:updated_time" content="2019-04-30T07:44:24.012Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1551768578910.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1551846988583.png">
+<meta property="og:updated_time" content="2019-04-30T14:49:31.917Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker上部署常用镜像">
 <meta name="twitter:description" content="记录本人在开发过程中，各种docker镜像的安装部署（踩坑）～">
-<meta name="twitter:image" content="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png">
 
 
 
@@ -467,7 +467,7 @@
 <p>3、运行镜像</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -p 80:80 --name nginx -d -v /root/nginx.conf:/etc/nginx/nginx.conf nginx</span><br></pre></td></tr></table></figure>
 <p>4、外网通过<code>wx.mrxiexie.cn</code>成功访问</p>
-<p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png" alt="1547104412905"></p>
+<p><img src="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1547104412905.png" alt="1547104412905"></p>
 <h2 id="四、Mysql"><a href="#四、Mysql" class="headerlink" title="四、Mysql"></a>四、Mysql</h2><p>1、<code>pull</code>最新的Mysql镜像</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo docker pull mysql</span><br></pre></td></tr></table></figure>
 <p>2、在mysql官网，下载最新版的mysql，并把配置文件<code>mysql.cnf</code>文件放在<code>/root/mysql/mysql.cnf</code>下</p>
@@ -480,7 +480,7 @@
 <p>2、启动<code>nexus3</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 8081:8081 --name nexus -v /root/nexus-data:/var/nexus-data --restart=always sonatype/nexus3</span><br></pre></td></tr></table></figure>
 <p>3、<code>nexus3</code>启动过程有点慢，稍后在浏览器输入<code>http://localhost:8081</code></p>
-<p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png" alt="1551369256534"></p>
+<p><img src="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1551369256534.png" alt="1551369256534"></p>
 <h2 id="六、ActiveMq"><a href="#六、ActiveMq" class="headerlink" title="六、ActiveMq"></a>六、ActiveMq</h2><p>1、官网下载最新版本的 <code>ActiveMq</code></p>
 <p>2、解压，并自定义自己需要修改的配置文件，若不需要修改可以跳过这步</p>
 <p>3、编写 <code>Dockerfile</code>，把 <code>Dockerfile</code> 保存在与解压文件夹同级目录下</p>
@@ -490,7 +490,7 @@
 <p>5、启动 <code>ActiveMq</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run --name activemq -d -p 8161:8161 -p 61616:61616 mrxiexie/activemq</span><br></pre></td></tr></table></figure>
 <p>6、浏览器输入 <code>http://127.0.0.1:8161</code> 即可正常访问</p>
-<p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551768578910.png" alt="1551768578910"></p>
+<p><img src="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1551768578910.png" alt="1551768578910"></p>
 <h2 id="七、Gitlab"><a href="#七、Gitlab" class="headerlink" title="七、Gitlab"></a>七、Gitlab</h2><p>1、pull最新的 <code>Gitlab</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker pull gitlab/gitlab-ce</span><br></pre></td></tr></table></figure>
 <p>2、启动 <code>Gitlab</code>，以下配置只为本地测试，使用了 <code>127.0.0.1</code> 本地ip，可以把ip换为公网ip，部署在云服务器</p>
@@ -498,7 +498,7 @@
 <p>3、修改 <code>~/.docker/srv/gitlab/config/gitlab.rb</code> 文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> For HTTP</span><br><span class="line">external_url "http://127.0.0.1:80"</span><br><span class="line"><span class="meta">#</span> For HTTPS (notice the https)</span><br><span class="line">external_url "https://127.0.0.1:443"</span><br><span class="line"><span class="meta">#</span> ssh port</span><br><span class="line">gitlab_rails['gitlab_shell_ssh_port'] = 66</span><br></pre></td></tr></table></figure>
 <p>4、浏览器输入 <code>http://127.0.0.1:80</code> 即可正常访问</p>
-<p><img src="http://md.mrxiexie.cn/images/Docker上部署常用镜像/1551846988583.png" alt="1551846988583"></p>
+<p><img src="https://md.mrxiexie.cn/images/Docker上部署常用镜像/1551846988583.png" alt="1551846988583"></p>
 
       
     </div>

@@ -99,19 +99,19 @@
 <meta property="og:site_name" content="MrXieXie">
 <meta property="og:description" content="简单记录springboot整合swagger2">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/U1VK2sYkyrW0.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/auEO4EYP6TPP.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/DiOwwGcNLFY1.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/bX5xJ1sUIeYK.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/o0S5BDJK643W.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/Nml227LXeymf.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/8CqoKpNewOhy.png">
-<meta property="og:image" content="http://md.mrxiexie.cn/images/20181203/22D1c37Jcs4d.png">
-<meta property="og:updated_time" content="2018-12-28T00:44:08.323Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/U1VK2sYkyrW0.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/auEO4EYP6TPP.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/DiOwwGcNLFY1.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/bX5xJ1sUIeYK.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/o0S5BDJK643W.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/Nml227LXeymf.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/8CqoKpNewOhy.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/20181203/22D1c37Jcs4d.png">
+<meta property="og:updated_time" content="2019-04-30T14:49:38.744Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot整合swagger2">
 <meta name="twitter:description" content="简单记录springboot整合swagger2">
-<meta name="twitter:image" content="http://md.mrxiexie.cn/images/20181203/U1VK2sYkyrW0.png">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/images/20181203/U1VK2sYkyrW0.png">
 
 
 
@@ -458,27 +458,27 @@
 <p>User：<code>@Data</code>和<code>@Accessors(chain = true)</code>是<code>lombok</code>的注解</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiModel</span>(value = <span class="string">"用户实体类"</span>, description = <span class="string">"用户实体类"</span>)</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Accessors</span>(chain = <span class="keyword">true</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"用户id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"用户名"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"手机"</span>)</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"地址"</span>)</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"年龄"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="四、访问在线文档"><a href="#四、访问在线文档" class="headerlink" title="四、访问在线文档"></a>四、访问在线文档</h2><p>浏览器访问<code>http://localhost:8081/swagger-ui.html</code>，端口号为你项目的端口号，我这里使用的是8081端口。</p>
-<p><img src="http://md.mrxiexie.cn/images/20181203/U1VK2sYkyrW0.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/U1VK2sYkyrW0.png" alt="mark"></p>
 <p><code>duang~</code>，除了我们原本注释上的中文，其余都是英文，下面我们来进行汉化。</p>
 <h2 id="五、汉化文档"><a href="#五、汉化文档" class="headerlink" title="五、汉化文档"></a>五、汉化文档</h2><p><code>双击shift</code>搜索<code>swagger-ui.html</code></p>
-<p><img src="http://md.mrxiexie.cn/images/20181203/auEO4EYP6TPP.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/auEO4EYP6TPP.png" alt="mark"></p>
 <p><code>springfox-swagger-ui-2.7.0.jar</code>下有对应的汉化包</p>
-<p><img src="http://md.mrxiexie.cn/images/20181203/DiOwwGcNLFY1.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/DiOwwGcNLFY1.png" alt="mark"></p>
 <p>复制<code>swagger-ui.html</code>文件到<code>META-INF.resources</code>下，并把以下代码复制到如图位置</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--国际化操作：选择中文版 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">'webjars/springfox-swagger-ui/lang/translator.js'</span> <span class="attr">type</span>=<span class="string">'text/javascript'</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">'webjars/springfox-swagger-ui/lang/zh-cn.js'</span> <span class="attr">type</span>=<span class="string">'text/javascript'</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="http://md.mrxiexie.cn/images/20181203/bX5xJ1sUIeYK.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/bX5xJ1sUIeYK.png" alt="mark"></p>
 <p>重新启动项目即可~，此时就能通过swagger在线测试api了，不再需要打开<code>postman</code>了</p>
 <h2 id="六、生成离线文档"><a href="#六、生成离线文档" class="headerlink" title="六、生成离线文档"></a>六、生成离线文档</h2><p><a href="https://github.com/Swagger2Markup/swagger2markup-maven-project-template.git" target="_blank" rel="noopener">传送门</a>，先把<strong>swagger2markup-maven-project-template</strong>项目拉到本地</p>
 <p>把示例文件删除，目录结构如下：</p>
-<p><img src="http://md.mrxiexie.cn/images/20181203/o0S5BDJK643W.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/o0S5BDJK643W.png" alt="mark"></p>
 <p>浏览器上输入<code>http://127.0.0.1:8081/v2/api-docs</code>，把内容替换至<code>swagger.json</code></p>
 <p>修改<code>build.gradle</code>，添加输出文件为中文配置</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">convertSwagger2markup &#123;</span><br><span class="line">    swaggerInput file(<span class="string">"src/docs/swagger/swagger.json"</span>).getAbsolutePath()</span><br><span class="line">    outputDir asciiDocOutputDir</span><br><span class="line">    config = [<span class="string">'swagger2markup.markupLanguage'</span>                           : <span class="string">'ASCIIDOC'</span>,</span><br><span class="line">              <span class="string">'swagger2markup.pathsGroupedBy'</span>                           : <span class="string">'TAGS'</span>,</span><br><span class="line">              <span class="string">'swagger2markup.extensions.dynamicDefinitions.contentPath'</span>: file(<span class="string">'src/docs/asciidoc/extensions/definitions'</span>).absolutePath,</span><br><span class="line">              <span class="string">'swagger2markup.extensions.dynamicOverview.contentPath'</span>   : file(<span class="string">'src/docs/asciidoc/extensions/overview'</span>).absolutePath,</span><br><span class="line">              <span class="string">'swagger2markup.extensions.dynamicPaths.contentPath'</span>      : file(<span class="string">'src/docs/asciidoc/extensions/paths'</span>).absolutePath,</span><br><span class="line">              <span class="string">'swagger2markup.extensions.dynamicSecurity.contentPath'</span>   : file(<span class="string">'src/docs/asciidoc/extensions/security'</span>).absolutePath,</span><br><span class="line">              <span class="string">'swagger2markup.outputLanguage'</span>                           : <span class="string">'ZH'</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="http://md.mrxiexie.cn/images/20181203/Nml227LXeymf.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/Nml227LXeymf.png" alt="mark"></p>
 <p>最后，执行<code>asciidoctor</code>即可在<code>build/asciidoc</code>目录下生成离线文档（默认会生成html和pdf）。</p>
-<p><img src="http://md.mrxiexie.cn/images/20181203/8CqoKpNewOhy.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/8CqoKpNewOhy.png" alt="mark"></p>
 <p>离线文档效果如下：</p>
-<p><img src="http://md.mrxiexie.cn/images/20181203/22D1c37Jcs4d.png" alt="mark"></p>
+<p><img src="https://md.mrxiexie.cn/images/20181203/22D1c37Jcs4d.png" alt="mark"></p>
 
       
     </div>
@@ -490,7 +490,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2018-12-28
+    	本文最后更新于：2019-04-30
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>

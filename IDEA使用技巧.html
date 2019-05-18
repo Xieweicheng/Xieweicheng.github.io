@@ -104,7 +104,9 @@
 <meta property="og:image" content="https://md.mrxiexie.cn/images/180809/iFhi659ggF.png">
 <meta property="og:image" content="https://md.mrxiexie.cn/images/180809/k1BlF4581i.png">
 <meta property="og:image" content="https://md.mrxiexie.cn/images/180920/jF09eAGI8I.png">
-<meta property="og:updated_time" content="2019-05-03T14:45:52.202Z">
+<meta property="og:image" content="https://xieweicheng.github.io/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/IDEA使用技巧.assets/1557891737849.png">
+<meta property="og:image" content="https://xieweicheng.github.io/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/IDEA使用技巧.assets/1557892026902.png">
+<meta property="og:updated_time" content="2019-05-15T03:50:33.383Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IDEA使用技巧">
 <meta name="twitter:description" content="本文主要介绍Idea的使用技巧~">
@@ -454,6 +456,14 @@
 <li>在文件末尾添加<code>-Dfile.encoding=UTF-8</code>，保存重启idea即可~</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-Xms128m</span><br><span class="line">-Xmx750m</span><br><span class="line">-XX:ReservedCodeCacheSize=240m</span><br><span class="line">-XX:+UseConcMarkSweepGC</span><br><span class="line">-XX:SoftRefLRUPolicyMSPerMB=50</span><br><span class="line">-ea</span><br><span class="line">-Dsun.io.useCanonCaches=false</span><br><span class="line">-Djava.net.preferIPv4Stack=true</span><br><span class="line">-Djdk.http.auth.tunneling.disabledSchemes=&quot;&quot;</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError</span><br><span class="line">-XX:-OmitStackTraceInFastThrow</span><br><span class="line">-Dfile.encoding=UTF-8</span><br></pre></td></tr></table></figure>
+<h2 id="七、项目结构中隐藏文件"><a href="#七、项目结构中隐藏文件" class="headerlink" title="七、项目结构中隐藏文件"></a>七、项目结构中隐藏文件</h2><ul>
+<li>IDEA 项目结构中会显示一些与项目无关的文件，如 <code>.idea</code> 和 <code>*.iml</code> 等文件</li>
+</ul>
+<p><img src="/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/IDEA使用技巧.assets/1557891737849.png" alt="1557891737849"></p>
+<ul>
+<li>只需在 <code>File -&gt; Settings -&gt; File Types</code> 中的底部 <code>ignore files and folders</code> 添加 <code>.idea;*.iml</code> 即可隐藏</li>
+</ul>
+<p><img src="/home/mrxiexie/Mine/project/GitPages/Note/source/_posts/IDEA使用技巧.assets/1557892026902.png" alt="1557892026902"></p>
 
       
     </div>
@@ -465,7 +475,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2019-05-03
+    	本文最后更新于：2019-05-15
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>
@@ -593,7 +603,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,7 +614,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -704,7 +714,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、设置IDEA默认设置"><span class="nav-text">一、设置IDEA默认设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、设置自动导入包，清除没用的包"><span class="nav-text">二、设置自动导入包，清除没用的包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、设置文件编码格式"><span class="nav-text">三、设置文件编码格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、使用Hierarchy查看类层次结构"><span class="nav-text">四、使用Hierarchy查看类层次结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、使用快捷键移动分割线"><span class="nav-text">五、使用快捷键移动分割线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、解决控制台乱码"><span class="nav-text">六、解决控制台乱码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、设置IDEA默认设置"><span class="nav-text">一、设置IDEA默认设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、设置自动导入包，清除没用的包"><span class="nav-text">二、设置自动导入包，清除没用的包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、设置文件编码格式"><span class="nav-text">三、设置文件编码格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、使用Hierarchy查看类层次结构"><span class="nav-text">四、使用Hierarchy查看类层次结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、使用快捷键移动分割线"><span class="nav-text">五、使用快捷键移动分割线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、解决控制台乱码"><span class="nav-text">六、解决控制台乱码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、项目结构中隐藏文件"><span class="nav-text">七、项目结构中隐藏文件</span></a></li></ol></div>
             
 
           </div>

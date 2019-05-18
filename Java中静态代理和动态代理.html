@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+  <meta name="baidu-site-verification" content="YO3l4cHORe" />
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="true" />
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="true" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/song.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/song.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/song.jpg?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Java,Proxy," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="详解Java中静态代理和动态代理">
+<meta name="keywords" content="Java,Proxy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中静态代理和动态代理">
+<meta property="og:url" content="https://xieweicheng.github.io/Java中静态代理和动态代理.html">
+<meta property="og:site_name" content="MrXieXie">
+<meta property="og:description" content="详解Java中静态代理和动态代理">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-15T03:51:28.303Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中静态代理和动态代理">
+<meta name="twitter:description" content="详解Java中静态代理和动态代理">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'MrXieXie'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xieweicheng.github.io/Java中静态代理和动态代理.html"/>
+
+
+
+
+
+  <title>Java中静态代理和动态代理 | MrXieXie</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MrXieXie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">无爱才要“坚持”，有爱只会“沉迷”</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/music/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音乐
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-article" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xieweicheng.github.io/Java中静态代理和动态代理.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MrXieXie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://md.mrxiexie.cn/song/180731/1H7LLFFcID.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrXieXie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Java中静态代理和动态代理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-05T15:34:32+08:00">
+                2019-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Java中静态代理和动态代理.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Java中静态代理和动态代理.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">
+                  <center>详解Java中静态代理和动态代理</center>
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>身为一枚程序员，多多少少会听过<strong>代理</strong>（Proxy）这个词，然而什么是代理呢？</p>
+<p>简单介绍一下生活中常见的代理模式：</p>
+<blockquote>
+<p>我们需要购买国外的产品时，我们可以坐飞机去国外某店购买，也可以去<strong>代购</strong>中购买，此时<strong>代购</strong>就是国外某店的代理，当我们购买到产品时，实际上是先购买请求发送给代购，代购再发送给某店，某店返回购买成功给代购，代购再返回成功给我们。某店我们可以理解为委托类（被代理类），代购可以理解为代理类。</p>
+</blockquote>
+<p>那么使用<strong>代理模式</strong>有什么优点呢？</p>
+<ul>
+<li>解耦<strong>调用者</strong>和<strong>被代理类</strong>，在不修改<strong>被代理类</strong>的前提下，对其进行逻辑控制</li>
+</ul>
+<p>其缺点也很明显</p>
+<ul>
+<li>由于<strong>调用者</strong>和<strong>被代理类</strong>之间添加了<strong>代理类</strong>，因此有些类型的代理模式可能会造成请求的处理速度变慢，而且<strong>代理类</strong>一般会有额外的工作，有些代理模式的实现非常复杂</li>
+</ul>
+<p>在 Java 中代理可以分为<strong>静态代理</strong>和<strong>动态代理</strong>，下面我们来详解这两种代理的区别</p>
+<h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3><p>代理类在程序运行前就已经存在，这种代理模式称为<strong>静态代理</strong>。一般情况下，<strong>代理类</strong>和<strong>被代理类</strong>都会实现同一接口。</p>
+<p>下面我们创建统一接口 <code>IProxyClass</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IProxyClass</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(Object o)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建<strong>被代理类</strong> <code>ProxyClassImpl</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyClassImpl</span> <span class="keyword">implements</span> <span class="title">IProxyClass</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我是被代理类 : "</span> + o);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建<strong>代理类</strong> <code>StaticProxyHandler</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticProxyHandler</span> <span class="keyword">implements</span> <span class="title">IProxyClass</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> IProxyClass iProxyClass;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">StaticProxyHandler</span><span class="params">(IProxyClass iProxyClass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.iProxyClass = iProxyClass;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        IProxyClass.doSomething(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> StaticProxyHandler(<span class="keyword">new</span> ProxyClassImpl()).doSomething(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>若现在我们需要记录 <code>doSomething</code> 的运行时间，或者添加某些判断要满足条件才执行，我们则不需修改<strong>被代理类</strong>，只需在<strong>代理类</strong>上做修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticProxyHandler</span> <span class="keyword">implements</span> <span class="title">IProxyClass</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    、、、</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (otherCondition()) &#123;</span><br><span class="line">            LocalDateTime begin = LocalDateTime.now();</span><br><span class="line">            System.out.println(<span class="string">"嘿嘿！我是代理类"</span>);</span><br><span class="line">            iProxyClass.doSomething(o);</span><br><span class="line">            LocalDateTime end = LocalDateTime.now();</span><br><span class="line">            System.out.println(<span class="string">"方法执行时长为："</span> + Duration.between(begin, end).toMillis());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从表面上，已经解决了我们的需求，但现在需求又变动了，要在该类的所有方法都添加同样的逻辑，若该类有 100 个方法，那我们只能当个 <strong>CV工程师</strong> 了</p>
+<p>由此可以看出<strong>静态代理</strong>的局限性，当类有多个方法时，重复的逻辑要反复实现</p>
+<p>程序员往往是很懒的，连 <strong>CV工程师</strong> 也不愿意当，<strong>动态代理</strong>就这么诞生了</p>
+<h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><p>顾名思义，动态代理就是在程序运行的时候动态生成的。生成动态代理的方法有两种，<code>JDK</code>自带的动态代理，还有第三方的<code>CGLIB</code>，下面我们分别对这两种方式进行实现。</p>
+<h4 id="JDK动态代理"><a href="#JDK动态代理" class="headerlink" title="JDK动态代理"></a>JDK动态代理</h4><p>使用<strong>JDK动态代理</strong>需要用到 <code>InvocationHandler</code> 接口，创建<strong>调用处理器</strong> <code>DynamicProxyHandler</code> 如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DynamicProxyHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object proxied;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> proxied 被代理对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DynamicProxyHandler</span><span class="params">(Object proxied)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.proxied = proxied;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回代理对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">newProxyInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Proxy.newProxyInstance(proxied.getClass().getClassLoader(), proxied.getClass().getInterfaces(), <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代理对象调用的方法</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> proxy  代理对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> method 代理方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args   方法参数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Throwable</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        String path = System.getProperty(<span class="string">"user.dir"</span>) + File.separator + <span class="string">"proxy"</span> + File.separator + <span class="string">"$Proxy0.class"</span>;</span><br><span class="line">        addClassToDisk(proxy.getClass().getName(), ProxyClassImpl.class, path);</span><br><span class="line">        System.out.println(<span class="string">"before"</span>);</span><br><span class="line">        System.out.println(<span class="string">"被调用的方法名 "</span> + method.getName());</span><br><span class="line">        <span class="comment">// 调用真正的方法</span></span><br><span class="line">        Object object = method.invoke(proxied, args);</span><br><span class="line">        System.out.println(<span class="string">"after"</span>);</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用于生成代理对象的字节码，并将其保存到硬盘上</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addClassToDisk</span><span class="params">(String className, Class&lt;?&gt; cl, String path)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 用于生成代理对象的字节码</span></span><br><span class="line">        <span class="keyword">byte</span>[] classFile = ProxyGenerator.generateProxyClass(className, cl.getInterfaces());</span><br><span class="line">        <span class="keyword">try</span> (FileOutputStream out = <span class="keyword">new</span> FileOutputStream(path)) &#123;</span><br><span class="line">            <span class="comment">// 将代理对象的 class 字节码写到硬盘上</span></span><br><span class="line">            out.write(classFile);</span><br><span class="line">            out.flush();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ProxyClassImpl proxied = <span class="keyword">new</span> ProxyClassImpl();</span><br><span class="line">        <span class="comment">// 生成代理对象</span></span><br><span class="line">        IProxyClass proxy = (IProxyClass) <span class="keyword">new</span> DynamicProxyHandler(proxied).newProxyInstance();</span><br><span class="line">        <span class="comment">// 通过代理类对象调用代理类方法，实际上会转到 invoke 方法调用</span></span><br><span class="line">        proxy.doSomething(<span class="number">5</span>);</span><br><span class="line">        proxy.equals(proxied);</span><br><span class="line">        proxy.hashCode();</span><br><span class="line">        proxy.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Proxy.newProxyInstance(loader, interfaces, h)</code>方法用于创建代理对象</p>
+<ul>
+<li>loader：定义了代理类的ClassLoader</li>
+<li>interfaces：代理类实现的接口列表 </li>
+<li>h：调用处理器</li>
+</ul>
+<p><code>invoke(proxy, method, args)</code>方法为代理对象实际调用的方法</p>
+<ul>
+<li>proxy：代理对象</li>
+<li>method：被代理的方法</li>
+<li>args：被代理的方法参数</li>
+</ul>
+<p><code>method.invoke(obj, args)</code>调用真正被代理对象的方法</p>
+<ul>
+<li>obj：被代理对象</li>
+<li>args：被代理的方法参数</li>
+</ul>
+<p>main 方法执行结果如下，从结果可以看出，<code>equals</code>、<code>hashCode</code> 和 <code>toString</code>三个方法都被动态代理了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">before</span><br><span class="line">被调用的方法名 doSomething</span><br><span class="line">我是被代理类 : 5</span><br><span class="line">after</span><br><span class="line">before</span><br><span class="line">被调用的方法名 equals</span><br><span class="line">after</span><br><span class="line">before</span><br><span class="line">被调用的方法名 hashCode</span><br><span class="line">after</span><br><span class="line">before</span><br><span class="line">被调用的方法名 toString</span><br><span class="line">after</span><br></pre></td></tr></table></figure>
+<p><code>addClassToDisk</code>方法把代理类的字节码保存在了硬盘上，字节码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> $<span class="title">Proxy0</span> <span class="keyword">extends</span> <span class="title">Proxy</span> <span class="keyword">implements</span> <span class="title">IProxyClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m1;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m3;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m2;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m0;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> $Proxy0(InvocationHandler var1) <span class="keyword">throws</span>  &#123;</span><br><span class="line">        <span class="keyword">super</span>(var1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object var1)</span> <span class="keyword">throws</span>  </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> (Boolean)<span class="keyword">super</span>.h.invoke(<span class="keyword">this</span>, m1, <span class="keyword">new</span> Object[]&#123;var1&#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RuntimeException | Error var3) &#123;</span><br><span class="line">            <span class="keyword">throw</span> var3;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var4) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(var4);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(Object var1)</span> <span class="keyword">throws</span>  </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">super</span>.h.invoke(<span class="keyword">this</span>, m3, <span class="keyword">new</span> Object[]&#123;var1&#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RuntimeException | Error var3) &#123;</span><br><span class="line">            <span class="keyword">throw</span> var3;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var4) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(var4);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">toString</span><span class="params">()</span> <span class="keyword">throws</span>  </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> (String)<span class="keyword">super</span>.h.invoke(<span class="keyword">this</span>, m2, (Object[])<span class="keyword">null</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RuntimeException | Error var2) &#123;</span><br><span class="line">            <span class="keyword">throw</span> var2;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var3) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(var3);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> <span class="keyword">throws</span>  </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> (Integer)<span class="keyword">super</span>.h.invoke(<span class="keyword">this</span>, m0, (Object[])<span class="keyword">null</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RuntimeException | Error var2) &#123;</span><br><span class="line">            <span class="keyword">throw</span> var2;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var3) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(var3);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            m1 = Class.forName(<span class="string">"java.lang.Object"</span>).getMethod(<span class="string">"equals"</span>, Class.forName(<span class="string">"java.lang.Object"</span>));</span><br><span class="line">            m3 = Class.forName(<span class="string">"cn.mrxiexie.proxy.IProxyClass"</span>).getMethod(<span class="string">"doSomething"</span>, Class.forName(<span class="string">"java.lang.Object"</span>));</span><br><span class="line">            m2 = Class.forName(<span class="string">"java.lang.Object"</span>).getMethod(<span class="string">"toString"</span>);</span><br><span class="line">            m0 = Class.forName(<span class="string">"java.lang.Object"</span>).getMethod(<span class="string">"hashCode"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException var2) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchMethodError(var2.getMessage());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException var3) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NoClassDefFoundError(var3.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代理类字节码可以看出，代理类继承了 <code>Proxy</code> 类并实现了我们的统一接口 <code>IProxyClass</code>，在静态代码块中，使用了反射把接口中的方法和三个 Object 内的方法实现出来，在构造方法中传入了我们的编写的 <code>DynamicProxyHandler</code> 类的对象给父类 <code>Proxy</code>，调用代理类的方法，实际上是调用父类 <code>Proxy</code> 的 <code>InvocationHandler</code>（即构造方法传入的<code>DynamicProxyHandler</code>） 的 <code>invoke</code> 方法，并把代理对象本身，反射得到对应的方法对象和方法参数传入。</p>
+<p>现在无论是需要记录方法的运行时长，还是记录日志等操作都可以在 <code>DynamicProxyHandler</code> 的 <code>invoke</code> 中完成。</p>
+<p>但是 <strong>JDK动态代理</strong> 是基于接口的，如果我们需要动态代理的类没有实现接口，我们该如何处理呢？这时候我们就需要用到 <strong>CGLIB动态代理</strong></p>
+<h4 id="CGLIB动态代理"><a href="#CGLIB动态代理" class="headerlink" title="CGLIB动态代理"></a>CGLIB动态代理</h4><p><strong>CGLIB</strong> (Code Generation Library) 是一个基于 <strong>ASM</strong> 的字节码生成库，它允许我们在运行时对字节码进行修改和动态生成。<strong>CGLIB</strong> 通过继承方式实现代理。</p>
+<p>导入<code>asm</code> 和 <code>cglib</code> 的 jar 包，或使用 <code>gradle</code> 引入以下依赖</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://mvnrepository.com/artifact/cglib/cglib</span></span><br><span class="line">implementation <span class="string">group:</span> <span class="string">'cglib'</span>, <span class="string">name:</span> <span class="string">'cglib'</span>, <span class="string">version:</span> <span class="string">'3.2.12'</span></span><br><span class="line"><span class="comment">// https://mvnrepository.com/artifact/org.ow2.asm/asm</span></span><br><span class="line">implementation <span class="string">group:</span> <span class="string">'org.ow2.asm'</span>, <span class="string">name:</span> <span class="string">'asm'</span>, <span class="string">version:</span> <span class="string">'7.1'</span></span><br></pre></td></tr></table></figure>
+<p>先创建不实现任何接口的<strong>被代理类</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CglibProxyClass</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我是被代理类 : "</span> + o);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doOtherSomething</span><span class="params">(Object o)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我是 final 方法 : "</span> + o);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>CGLIB动态代理</strong> 需要使用 <code>Enhancer</code></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CglibProxyHandler</span> <span class="keyword">implements</span> <span class="title">MethodInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Enhancer enhancer = <span class="keyword">new</span> Enhancer();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代理对象调用的方法</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> o           代理对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> method      被拦截的方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args        被拦截的方法参数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> methodProxy 用于调用非拦截方法，可以根据需要调用多次 &#123;<span class="doctag">@link</span> MethodProxy#invokeSuper(Object, Object[])&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> cglib 生成用来代替 Method 对象的一个对象，使用 MethodProxy 比调用 JDK 自身的 Method 直接执行方法效率会有提升</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] args,</span></span></span><br><span class="line"><span class="function"><span class="params">                            MethodProxy methodProxy)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"start "</span> + methodProxy.getSuperName());</span><br><span class="line">        System.out.println(<span class="string">"被调用的方法名 "</span> + method.getName());</span><br><span class="line">        Object o1 = methodProxy.invokeSuper(o, args);</span><br><span class="line">        <span class="comment">//Object o2 = method.invoke(o, args); 使用这种方式会发生死循环，因为方法会被拦截</span></span><br><span class="line">        System.out.println(<span class="string">"after "</span> + methodProxy.getSuperName());</span><br><span class="line">        <span class="keyword">return</span> o1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生成代理对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">newProxyInstance</span><span class="params">(Class&lt;?&gt; c)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 设置代理类的父类，即被代理类</span></span><br><span class="line">        enhancer.setSuperclass(c);</span><br><span class="line">        <span class="comment">// 设置 CallBack 接口的实例</span></span><br><span class="line">        enhancer.setCallback(<span class="keyword">this</span>);</span><br><span class="line">        <span class="comment">// 使用默认无参数的构造函数创建目标对象</span></span><br><span class="line">        <span class="keyword">return</span> enhancer.create();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 该设置用于输出cglib动态代理产生的类</span></span><br><span class="line">        String path = System.getProperty(<span class="string">"user.dir"</span>) + File.separator + <span class="string">"proxy"</span> + File.separator + <span class="string">"proxy"</span>;</span><br><span class="line">        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, path);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 final 的类会出错，这是因为 cglib 的动态代理是通过继承来实现的</span></span><br><span class="line">        <span class="comment">// FinalCglibProxyClass proxy = (FinalCglibProxyClass) new CglibProxyHandler().newProxyInstance(FinalCglibProxyClass.class);</span></span><br><span class="line">        CglibProxyClass proxy = (CglibProxyClass) <span class="keyword">new</span> CglibProxyHandler().newProxyInstance(CglibProxyClass.class);</span><br><span class="line">        proxy.doSomething(<span class="number">5</span>);</span><br><span class="line">        proxy.equals(proxy);</span><br><span class="line">        proxy.hashCode();</span><br><span class="line">        proxy.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>enhancer.create()</code>使用无参构造器创建代理对象，调用该方法前需指定代理类字节码和指定回调接口，如下：</p>
+<ul>
+<li><code>enhancer.setSuperclass(superclass)</code>：指定父类的字节码，即代理类字节码</li>
+<li><code>enhancer.setCallback(callback)</code>：指定回调，<code>Callback</code> 是一个空接口，在 <code>cglib</code> 中有以下 6 种实现，这里我们使用的最为强大的 <code>MethodInterceptor</code> 接口，其用法类似与 <strong>JDK动态代理</strong> 中的 <code>InvocationHandler</code><ul>
+<li><code>MethodInterceptor</code></li>
+<li><code>NoOp</code></li>
+<li><code>LazyLoader</code></li>
+<li><code>Dispatcher</code></li>
+<li><code>InvocationHandler</code></li>
+<li><code>FixedValue</code></li>
+</ul>
+</li>
+</ul>
+<p>生成的字节码跟 <strong>JDK动态代理</strong> 类似，不过 <code>cglib</code> 使用的是继承，并实现 <code>Factory</code> 接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CglibProxyClass</span>$$<span class="title">EnhancerByCGLIB</span>$$<span class="title">e0eebff4</span> <span class="keyword">extends</span> <span class="title">CglibProxyClass</span> <span class="keyword">implements</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">    、、、</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">void</span> CGLIB$doSomething$<span class="number">0</span>(Object var1) &#123;</span><br><span class="line">        <span class="keyword">super</span>.doSomething(var1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(Object var1)</span> </span>&#123;</span><br><span class="line">        MethodInterceptor var10000 = <span class="keyword">this</span>.CGLIB$CALLBACK_0;</span><br><span class="line">        <span class="keyword">if</span> (var10000 == <span class="keyword">null</span>) &#123;</span><br><span class="line">            CGLIB$BIND_CALLBACKS(<span class="keyword">this</span>);</span><br><span class="line">            var10000 = <span class="keyword">this</span>.CGLIB$CALLBACK_0;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (var10000 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            var10000.intercept(<span class="keyword">this</span>, CGLIB$doSomething$<span class="number">0</span>$Method, <span class="keyword">new</span> Object[]&#123;var1&#125;, CGLIB$doSomething$<span class="number">0</span>$Proxy);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">super</span>.doSomething(var1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    、、、</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main 方法执行结果如下，从结果可以看出，<code>equals</code>、<code>hashCode</code> 和 <code>toString</code>三个方法都被动态代理了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">我是 final 方法 : 5</span><br><span class="line">start CGLIB$doSomething$0</span><br><span class="line">被调用的方法名 doSomething</span><br><span class="line">我是被代理类 : 5</span><br><span class="line">after CGLIB$doSomething$0</span><br><span class="line">start CGLIB$equals$1</span><br><span class="line">被调用的方法名 equals</span><br><span class="line">after CGLIB$equals$1</span><br><span class="line">start CGLIB$hashCode$3</span><br><span class="line">被调用的方法名 hashCode</span><br><span class="line">after CGLIB$hashCode$3</span><br><span class="line">start CGLIB$toString$2</span><br><span class="line">被调用的方法名 toString</span><br><span class="line">start CGLIB$hashCode$3</span><br><span class="line">被调用的方法名 hashCode</span><br><span class="line">after CGLIB$hashCode$3</span><br><span class="line">after CGLIB$toString$2</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，<code>CGLIB动态代理</code>使用的是继承的方式去实现动态代理，若被代理类为 <code>final</code>，不能被继承，运行时则会抛出 <code>java.lang.IllegalArgumentException: Cannot subclass final class cn.mrxiexie.proxy.cglibproxy.FinalCglibProxyClass</code> 异常，而且 <code>final</code> 方法犹豫不能被重载，所以不会被代理。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div>
+    
+    	本文最后更新于：2019-05-15
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+      </div>
+     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+            <a href="/tags/Proxy/" rel="tag"><i class="fa fa-tag"></i> Proxy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Java中序列化与反序列化.html" rel="next" title="Java中序列化与反序列化">
+                <i class="fa fa-chevron-left"></i> Java中序列化与反序列化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Java方法签名.html" rel="prev" title="Java方法签名">
+                Java方法签名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://md.mrxiexie.cn/song/180731/1H7LLFFcID.jpg"
+                alt="MrXieXie" />
+            
+              <p class="site-author-name" itemprop="name">MrXieXie</p>
+              <p class="site-description motion-element" itemprop="description">
+              无爱才要“坚持”，有爱只会“沉迷”
+              </p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+          
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Xieweicheng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leancloud.cn/" title="LeanCloud" target="_blank">LeanCloud</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://fontawesome.com/" title="FontAwesome" target="_blank">FontAwesome</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://mp.weixin.qq.com/wiki/" title="微信公众号" target="_blank">微信公众号</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://developers.weixin.qq.com/miniprogram/dev/" title="微信小程序" target="_blank">微信小程序</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.bootcdn.cn/" title="BootCDN" target="_blank">BootCDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://developer.android.google.cn/" title="Android" target="_blank">Android</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.wsmo.cn/web/login" title="WSMO" target="_blank">WSMO</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://tool.oschina.net/" title="Tool" target="_blank">Tool</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态代理"><span class="nav-text">静态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态代理"><span class="nav-text">动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK动态代理"><span class="nav-text">JDK动态代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CGLIB动态代理"><span class="nav-text">CGLIB动态代理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MrXieXie</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'V16bYqaNwv0QPIufTJ7OoneM-gzGzoHsz',
+        appKey: 'PtqWWujBSHpHlT3eRixWM2kO',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊！注册Gravatar，输入注册邮箱，就可以看到自己的头像啦~',
+        avatar:'',
+        meta:guest,
+        pageSize:'5' || 10,
+        visitor: false
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":100,"height":200,"hOffset":-20,"vOffset":-20},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -80,7 +80,7 @@
 
 
 
-  <meta name="keywords" content="MrXieXie" />
+  <meta name="keywords" content="Java,JNI," />
 
 
 
@@ -91,18 +91,18 @@
 
 
 
-<meta name="description" content="查看源码时多多少少会接触到 native 这个关键字，例如 Math.sqrt(double a) 方法，底层使用的就是 public static native double sqrt(double a) 。那什么是 native 方法？ Native Method 其实就是一个 Java 调用非 Java 代码的接口。 JNI 是 Java Native Interface 的缩写，它提供了若">
-<meta name="keywords" content="MrXieXie">
+<meta name="description" content="本文简单介绍什么是JNI，并简单介绍如何实现JNI～">
+<meta name="keywords" content="Java,JNI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MrXieXie">
+<meta property="og:title" content="简单了解JNI">
 <meta property="og:url" content="https://xieweicheng.github.io/简单了解JNI.html">
 <meta property="og:site_name" content="MrXieXie">
-<meta property="og:description" content="查看源码时多多少少会接触到 native 这个关键字，例如 Math.sqrt(double a) 方法，底层使用的就是 public static native double sqrt(double a) 。那什么是 native 方法？ Native Method 其实就是一个 Java 调用非 Java 代码的接口。 JNI 是 Java Native Interface 的缩写，它提供了若">
+<meta property="og:description" content="本文简单介绍什么是JNI，并简单介绍如何实现JNI～">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-20T08:22:20.344Z">
+<meta property="og:updated_time" content="2019-05-20T08:27:47.824Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MrXieXie">
-<meta name="twitter:description" content="查看源码时多多少少会接触到 native 这个关键字，例如 Math.sqrt(double a) 方法，底层使用的就是 public static native double sqrt(double a) 。那什么是 native 方法？ Native Method 其实就是一个 Java 调用非 Java 代码的接口。 JNI 是 Java Native Interface 的缩写，它提供了若">
+<meta name="twitter:title" content="简单了解JNI">
+<meta name="twitter:description" content="本文简单介绍什么是JNI，并简单介绍如何实现JNI～">
 
 
 
@@ -138,7 +138,7 @@
 
 
 
-  <title> | MrXieXie</title>
+  <title>简单了解JNI | MrXieXie</title>
   
 
 
@@ -313,7 +313,7 @@
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-article" itemscope itemtype="http://schema.org/Article">
   
   
   
@@ -335,7 +335,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline"></h2>
+          <h2 class="post-title" itemprop="name headline">简单了解JNI</h2>
         
 
         <div class="post-meta">
@@ -347,8 +347,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-20T16:24:25+08:00">
-                2019-05-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-17T10:54:09+08:00">
+                2019-05-17
               </time>
             
 
@@ -357,6 +357,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -386,6 +408,10 @@
 
           
 
+          
+              <div class="post-description">
+                  <center>本文简单介绍什么是JNI，并简单介绍如何实现JNI～</center>
+              </div>
           
 
         </div>
@@ -554,6 +580,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+            <a href="/tags/JNI/" rel="tag"><i class="fa fa-tag"></i> JNI</a>
+          
+        </div>
+      
 
       
       
@@ -563,8 +597,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/Java方法签名.html" rel="next" title="Java方法签名">
-                <i class="fa fa-chevron-left"></i> Java方法签名
+              <a href="/Java中静态代理和动态代理.html" rel="next" title="Java中静态代理和动态代理">
+                <i class="fa fa-chevron-left"></i> Java中静态代理和动态代理
               </a>
             
           </div>
@@ -572,6 +606,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Java方法签名.html" rel="prev" title="Java方法签名">
+                Java方法签名 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -599,6 +637,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -672,7 +717,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

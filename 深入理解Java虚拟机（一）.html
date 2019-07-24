@@ -91,20 +91,30 @@
 
 
 
-<meta name="description" content="《深入理解Java虚拟机》的第一部分 走进Java 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta name="description" content="《深入理解Java虚拟机》的 「第一部分 走进Java」 学习笔记，仅仅记录本人认为重要的知识点～">
 <meta name="keywords" content="Java,JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解Java虚拟机（一）">
 <meta property="og:url" content="https://xieweicheng.github.io/深入理解Java虚拟机（一）.html">
 <meta property="og:site_name" content="MrXieXie">
-<meta property="og:description" content="《深入理解Java虚拟机》的第一部分 走进Java 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta property="og:description" content="《深入理解Java虚拟机》的 「第一部分 走进Java」 学习笔记，仅仅记录本人认为重要的知识点～">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/123.png">
 <meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1562165479688.png">
-<meta property="og:updated_time" content="2019-07-03T15:30:24.217Z">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563787821695.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563788107041.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563861058156.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563861187006.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563861372718.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563863979099.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563863860960.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563864089126.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563864380608.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563864461032.png">
+<meta property="og:updated_time" content="2019-07-24T02:30:02.140Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Java虚拟机（一）">
-<meta name="twitter:description" content="《深入理解Java虚拟机》的第一部分 走进Java 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta name="twitter:description" content="《深入理解Java虚拟机》的 「第一部分 走进Java」 学习笔记，仅仅记录本人认为重要的知识点～">
 <meta name="twitter:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/123.png">
 
 
@@ -413,7 +423,7 @@
 
           
               <div class="post-description">
-                  <center>《深入理解Java虚拟机》的第一部分 走进Java 学习笔记，仅仅记录本人认为重要的知识点～</center>
+                  <center>《深入理解Java虚拟机》的 「第一部分 走进Java」 学习笔记，仅仅记录本人认为重要的知识点～</center>
               </div>
           
 
@@ -464,11 +474,36 @@
 <li>HotSpot VM：是目前 SUN JDK 和 OpenJDK 中所带的虚拟机，也是目前使用范围最广的 Java 虚拟机，它名称中的 HotSpot 指的就是它的热点代码探测技术。</li>
 </ul>
 <h3 id="3-编译-JDK-源码"><a href="#3-编译-JDK-源码" class="headerlink" title="3. 编译 JDK 源码"></a>3. 编译 JDK 源码</h3><p>开发中使用的是 Java8，这里以 OpenJDK8 为例，在 Linux 下进行编译，开发常用的笔记本为 ArchLinux 内核版本为 5.1.15-arch1-1-ARCH，可能是由于 gcc/g++ 版本太高导致有奇奇怪怪的问题发生，下面演示的是使用 centos 内核版本为 2.6.32-754.el6.x86_64。</p>
-<p>下载最新版本的 OpenJDK8，下载地址为 <a href="http://jdk.java.net/" target="_blank" rel="noopener">传送门</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 先下载一个 jdk</span></span><br><span class="line">yum install java-1.8.0-openjdk</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载源码包</span></span><br><span class="line">[root@localhost jvm] wget http://download.java.net/openjdk/jdk8/promoted/b132/openjdk-8-src-b132-03_mar_2014.zip</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压</span></span><br><span class="line">[root@localhost jvm] unzip openjdk-8-src-b132-03_mar_2014.zip</span><br><span class="line"><span class="meta">#</span><span class="bash"> 切入 openjdk 目录</span></span><br><span class="line">[root@localhost jvm] cd openjdk</span><br><span class="line"><span class="meta">#</span><span class="bash"> 给 configure 添加执行权限</span></span><br><span class="line">[root@localhost openjdk] chmod +x configure</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行 configure，若报错，照着提示处理即可</span></span><br><span class="line">[root@localhost openjdk] ./configure</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译，等待编译完成即可</span></span><br><span class="line">[root@localhost openjdk] make</span><br></pre></td></tr></table></figure>
+<p>下载最新版本的 OpenJDK8，下载地址为 <a href="https://jdk.java.net/" target="_blank" rel="noopener">传送门</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 先下载一个 jdk</span></span><br><span class="line">yum install java-1.8.0-openjdk</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载源码包</span></span><br><span class="line">[root@localhost jvm] wget https://download.java.net/openjdk/jdk8/promoted/b132/openjdk-8-src-b132-03_mar_2014.zip</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压</span></span><br><span class="line">[root@localhost jvm] unzip openjdk-8-src-b132-03_mar_2014.zip</span><br><span class="line"><span class="meta">#</span><span class="bash"> 切入 openjdk 目录</span></span><br><span class="line">[root@localhost jvm] cd openjdk</span><br><span class="line"><span class="meta">#</span><span class="bash"> 给 configure 添加执行权限</span></span><br><span class="line">[root@localhost openjdk] chmod +x configure</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行 configure，若报错，照着提示处理即可</span></span><br><span class="line">[root@localhost openjdk] ./configure</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译，等待编译完成即可</span></span><br><span class="line">[root@localhost openjdk] make</span><br></pre></td></tr></table></figure>
 <p>若编译过程中遇到一些奇葩问题，可以参照一下后面的链接 <a href="https://focusvirtualization.blogspot.com/2016/11/current-java-version-on-my-ubuntu-gcc.html" target="_blank" rel="noopener">传送门</a></p>
 <p>编译完成后会生成 build 目录</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost openjdk] cd build/linux-x86_64-normal-server-release/jdk/bin</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行 java</span></span><br><span class="line">[root@localhost bin] ./java -version</span><br></pre></td></tr></table></figure>
+<h3 id="4-NetBeans-中进行源码调试"><a href="#4-NetBeans-中进行源码调试" class="headerlink" title="4. NetBeans 中进行源码调试"></a>4. NetBeans 中进行源码调试</h3><p>下载最新版的 <code>netbeans</code>，下载地址为 <a href="https://netbeans.apache.org/download/index.html" target="_blank" rel="noopener">传送门</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载最新版本的 netbeans，我这里使用的是 11.0 版本</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/incubator/netbeans/incubating-netbeans/incubating-11.0/incubating-netbeans-11.0-bin.zip </span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压</span></span><br><span class="line">unzip incubating-netbeans-11.0-bin.zip</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行 netbeans</span></span><br><span class="line">./netbeans/bin/netbeans</span><br></pre></td></tr></table></figure>
+<p>下载 <code>c/c++</code> 插件，点击 <code>Tools -&gt; Plugins -&gt; Settings</code> 中选中 <code>NetBeans 8.2 Plugins Portal</code></p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563787821695.png" alt="1563787821695"></p>
+<p>选中 <code>Available Plugins -&gt; Check for Newest</code>，选中 <code>C/C++</code> 复选框，然后点击 <code>Install</code> 下载插件</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563788107041.png" alt="1563788107041"></p>
+<p>创建新项目： <code>File -&gt; New Project -&gt; C/C++ -&gt; 基于先有源代码的 C/C++ 项目 -&gt; Next</code></p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563861058156.png" alt="1563861058156"></p>
+<p>选择模式：<code>浏览</code> 至源码根目录，我这里的根目录是 <code>/root/openjdk</code>，选择 <code>定制</code> 然后 <code>Next</code></p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563861187006.png" alt="1563861187006"></p>
+<p>预构建操作：我这里把参数一栏清空，然后一路 <code>Next</code> 到最后，然后等待运行完成即可</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563861372718.png" alt="1563861372718"></p>
+<p>下面开始 运行源码吧。先创建 <code>Hello.java</code> 文件，内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello JVM"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 <code>javac Hello.java</code>  编译生成 <code>Hello.class</code> 文件，并在 <code>项目属性 -&gt; 运行</code> 的运行命令中指向 <code>Hello.class</code> 的位置</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563863979099.png" alt="1563863979099"></p>
+<p>点击如下方箭头，运行，并选择源码编译后的 <code>java</code> 命令运行</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563863860960.png" alt="1563863860960"></p>
+<p>输出结果如下：</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563864089126.png" alt="1563864089126"></p>
+<p><strong>DEBUG</strong></p>
+<p><code>System.out.println(...)</code> 的调用将由 <code>jdk/src/share/native/java/io/io_util.c</code> 文件中的 <code>writeBytes</code> 函数处理，在 154 行打上断点</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563864380608.png" alt="1563864380608"></p>
+<p>最后使用 <code>DEBUG</code> 运行，现在我们就可以随心所欲的查看 <code>JVM</code> 都做了什么了</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（一）/1563864461032.png" alt="1563864461032"></p>
 
       
     </div>
@@ -480,7 +515,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2019-07-03
+    	本文最后更新于：2019-07-24
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>
@@ -521,6 +556,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/深入理解Java虚拟机（二）.html" rel="prev" title="深入理解Java虚拟机（二）">
+                深入理解Java虚拟机（二） <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -606,7 +645,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -717,7 +756,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一部分-走进Java"><span class="nav-text">第一部分 走进Java</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-走进Java"><span class="nav-text">第一章 走进Java</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-技术体系"><span class="nav-text">1. Java 技术体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Java虚拟机发展史"><span class="nav-text">2. Java虚拟机发展史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-编译-JDK-源码"><span class="nav-text">3. 编译 JDK 源码</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一部分-走进Java"><span class="nav-text">第一部分 走进Java</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-走进Java"><span class="nav-text">第一章 走进Java</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-技术体系"><span class="nav-text">1. Java 技术体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Java虚拟机发展史"><span class="nav-text">2. Java虚拟机发展史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-编译-JDK-源码"><span class="nav-text">3. 编译 JDK 源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-NetBeans-中进行源码调试"><span class="nav-text">4. NetBeans 中进行源码调试</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+  <meta name="baidu-site-verification" content="YO3l4cHORe" />
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="true" />
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="true" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/song.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/song.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/song.jpg?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Java,JVM," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="《深入理解Java虚拟机》的 「第二部分 自动内存管理机制」 之 「第二章 Java 垃圾收集器与内存分配策略」 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta name="keywords" content="Java,JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Java虚拟机（三）">
+<meta property="og:url" content="https://xieweicheng.github.io/深入理解Java虚拟机（三）.html">
+<meta property="og:site_name" content="MrXieXie">
+<meta property="og:description" content="《深入理解Java虚拟机》的 「第二部分 自动内存管理机制」 之 「第二章 Java 垃圾收集器与内存分配策略」 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564041669339.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564105495922.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564105751291.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564106232136.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/27df7474.jpg">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/b1ac068e.jpg">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/481e1ca1.jpg">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/367020d3.jpg">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/6e965e83.jpg">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/367020d3-1564124302029.jpg">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1d022e13-1564124310221.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/5f8cbd42-1564124329039.png">
+<meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/10c8999f-1564124338496.jpg">
+<meta property="og:updated_time" content="2019-07-26T07:53:51.300Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Java虚拟机（三）">
+<meta name="twitter:description" content="《深入理解Java虚拟机》的 「第二部分 自动内存管理机制」 之 「第二章 Java 垃圾收集器与内存分配策略」 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta name="twitter:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564041669339.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'MrXieXie'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xieweicheng.github.io/深入理解Java虚拟机（三）.html"/>
+
+
+
+
+
+  <title>深入理解Java虚拟机（三） | MrXieXie</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MrXieXie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">无爱才要“坚持”，有爱只会“沉迷”</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/music/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音乐
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xieweicheng.github.io/深入理解Java虚拟机（三）.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MrXieXie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://md.mrxiexie.cn/song/180731/1H7LLFFcID.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrXieXie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深入理解Java虚拟机（三）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-25T15:10:38+08:00">
+                2019-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/深入理解Java虚拟机（三）.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/深入理解Java虚拟机（三）.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">
+                  <center>《深入理解Java虚拟机》的 「第二部分 自动内存管理机制」 之 「第二章 Java 垃圾收集器与内存分配策略」 学习笔记，仅仅记录本人认为重要的知识点～</center>
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="第二部分-自动内存管理机制"><a href="#第二部分-自动内存管理机制" class="headerlink" title="第二部分 自动内存管理机制"></a>第二部分 自动内存管理机制</h1><h2 id="第三章-Java-垃圾收集器与内存分配策略"><a href="#第三章-Java-垃圾收集器与内存分配策略" class="headerlink" title="第三章 Java 垃圾收集器与内存分配策略"></a>第三章 Java 垃圾收集器与内存分配策略</h2><p>经过半个多世纪的发展，目前内存的<strong>动态分配</strong>与<strong>内存回收</strong>技术已经相当成熟，一切看起来都进入了<strong>“自动化”</strong>时代，那为什么我们还要去了解GC和内存分配呢？答案很简单：当需要排查各种<strong>内存溢出</strong>、<strong>内存泄漏</strong>问题时，当垃圾收集成为系统达到更高并发量的瓶颈时，我们就需要对这些“自动化”的技术实施必要的监控和调节。</p>
+<p>Java内存运行时区域的各个部分，其中<strong>程序计数器</strong>、<strong>虚拟机栈</strong>、<strong>本地方法栈</strong> 3 个区域随线程而生，随线程而灭；栈中的栈帧随着方法的进入和退出而有条不紊地执行着出栈和入栈操作。每一个栈帧中分配多少内存基本上是在类结构确定下来时就已知的（尽管在运行期会由JIT编译器进行一些优化，但在本章基于概念模型的讨论中，大体上可以认为是编译期可知的），<strong>因此这几个区域的内存分配和回收都具备确定性，在这几个区域内就不需要过多考虑回收的问题</strong>，因为方法结束或者线程结束时，内存自然就跟随着回收了。而<strong>Java堆</strong>和<strong>方法区</strong>则不一样，一个接口中的多个实现类需要的内存可能不一样，一个方法中的多个分支需要的内存也可能不一样，我们只有在程序处于运行期间时才能知道会创建哪些对象，这部分内存的分配和回收都是动态的，垃圾收集器所关注的是这部分内存，本章后续讨论中的<strong>“内存”</strong>分配与回收也仅指这一部分内存。</p>
+<p>主要思考 GC 需要完成的 3 件事情：</p>
+<ul>
+<li><strong>哪些内存需要回收？</strong></li>
+<li><strong>什么时候回收？</strong></li>
+<li><strong>如何回收？</strong></li>
+</ul>
+<h3 id="一-对象已死吗？"><a href="#一-对象已死吗？" class="headerlink" title="一. 对象已死吗？"></a>一. 对象已死吗？</h3><p>在堆里面存放着Java世界中几乎所有的对象实例，垃圾收集器在对堆进行回收前，第一件事情就是要确定这些对象之中哪些还“存活”着，哪些已经“死去”（即不可能再被任何途径使用的对象）。</p>
+<h4 id="1-引用计数算法"><a href="#1-引用计数算法" class="headerlink" title="1. 引用计数算法"></a>1. 引用计数算法</h4><p>引用计数算法是这样的：<strong>给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1；当引用失效时，计数器值就减1；任何时刻计数器为0的对象就是不可能再被使用的。</strong></p>
+<p>客观地说，<strong>引用计数算法（Reference Counting）</strong>的实现简单，判定效率也很高，在大部分情况下它都是一个不错的算法。但是，至少主流的Java虚拟机里面没有选用引用计数算法来管理内存，其中最主要的原因是它<strong>很难解决对象之间相互循环引用的问题</strong>。</p>
+<p>若使用引用计数算法，下面的例子将不会回收 objA 和 objB，可以在运行程序时添加 <code>-XX:+PrintGCDetails</code> JVM参数，可看出对象已被回收，说明 JVM 并不是使用引用计数算法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * testGC()方法执行后，objA和objB会不会被GC呢？ </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReferenceCountingGC</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object instance = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> _1MB = <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 这个成员属性的唯一意义就是占点内存，以便在能在GC日志中看清楚是否有回收过</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] bigSize = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2</span> * _1MB];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testGC</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ReferenceCountingGC objA = <span class="keyword">new</span> ReferenceCountingGC();</span><br><span class="line">        ReferenceCountingGC objB = <span class="keyword">new</span> ReferenceCountingGC();</span><br><span class="line">        objA.instance = objB;</span><br><span class="line">        objB.instance = objA;</span><br><span class="line"></span><br><span class="line">        objA = <span class="keyword">null</span>;</span><br><span class="line">        objB = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 假设在这行发生GC，objA和objB是否能被回收？</span></span><br><span class="line">        System.gc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-可达性计数算法"><a href="#2-可达性计数算法" class="headerlink" title="2. 可达性计数算法"></a>2. 可达性计数算法</h4><p>在主流的商用程序语言的主流实现中，都是称通过<strong>可达性分析（Reachability Analysis）</strong>来判定对象是否存活的。这个算法的基本思路就是通过一系列的称为<strong>“GC Roots”</strong>的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为<strong>引用链（Reference Chain）</strong>，当一个对象到 GC Roots 没有任何引用链相连（用图论的话来说，就是从 GC Roots 到这个对象不可达）时，则证明此对象是不可用的。如下图所示，对象 object 5、object 6、object 7 虽然互相有关联，但是它们到GC Roots是不可达的，所以它们将会被判定为是可回收的对象。</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564041669339.png" alt="1564041669339"></p>
+<p>可作为 GC Roots 的对象包括下面几种：</p>
+<ul>
+<li><strong>虚拟机栈（栈帧中的本地变量表）中引用的对象。</strong></li>
+<li><strong>方法区中类静态属性引用的对象。</strong></li>
+<li><strong>方法区中常量引用的对象。</strong></li>
+<li><strong>本地方法栈中JNI（即一般说的Native方法）引用的对象。</strong></li>
+</ul>
+<p>看到这里你可能要问，选择这些对象的依据是什么呢？</p>
+<p>可以概括得出，可作为 GC Roots 的节点主要在<strong>全局性的引用</strong>与<strong>执行上下文</strong>中。要明确的是，tracing gc 必须<strong>以当前存活的对象集为 Roots</strong>，因此必须选取确定存活的引用类型对象。GC 管理的区域是Java堆，<strong>虚拟机栈</strong>、<strong>方法区</strong>和<strong>本地方法栈</strong>不被 GC 所管理，因此选用这些区域内引用的对象作为 GC Roots，是<strong>不会被 GC 所回收</strong>的。其中虚拟机栈和本地方法栈都是线程私有的内存区域，只要线程没有终止，就能确保它们中引用的对象的存活。而方法区中类静态属性引用的对象是显然存活的。常量引用的对象在当前可能存活，因此，也可能是 GC roots 的一部分。</p>
+<h4 id="3-再谈引用"><a href="#3-再谈引用" class="headerlink" title="3. 再谈引用"></a>3. 再谈引用</h4><p>无论是通过<strong>引用计数算法</strong>判断对象的引用数量，还是通过<strong>可达性分析算法</strong>判断对象的引用链是否可达，判定对象是否存活都与“引用”有关。在JDK 1.2以前，Java中的引用的定义很传统：如果reference类型的数据中存储的数值代表的是另外一块内存的起始地址，就称这块内存代表着一个引用。这种定义很纯粹，但是太过狭隘，一个对象在这种定义下只有被引用或者没有被引用两种状态，对于如何描述一些<strong>“食之无味，弃之可惜”</strong>的对象就显得无能为力。我们希望能描述这样一类对象：当内存空间还足够时，则能保留在内存之中；如果内存空间在进行垃圾收集后还是非常紧张，则可以抛弃这些对象。很多系统的缓存功能都符合这样的应用场景。</p>
+<p>JDK1.2之后，Java 提供了四种强度不同的引用类型。</p>
+<h5 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h5><p>只要强引用还存在，垃圾收集器永远不会回收掉被引用的对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br></pre></td></tr></table></figure>
+<h5 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h5><p>用来描述一些还有用但并非必需的对象。对于软引用关联着的对象，在系统将要发生<strong>内存溢出异常之前</strong>，将会把这些对象列进回收范围之中进行第二次回收。如果这次回收还没有足够的内存，才会抛出内存溢出异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">SoftReference&lt;Object&gt; sf = <span class="keyword">new</span> SoftReference&lt;Object&gt;(obj);</span><br><span class="line">obj = <span class="keyword">null</span>; <span class="comment">// 使对象只被软引用关联</span></span><br></pre></td></tr></table></figure>
+<h5 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h5><p>用来描述非必需对象的，但是它的强度比软引用更弱一些，<strong>被弱引用关联的对象只能生存到下一次垃圾收集发生之前</strong>。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">WeakReference&lt;Object&gt; wf = <span class="keyword">new</span> WeakReference&lt;Object&gt;(obj);</span><br><span class="line">obj = <span class="keyword">null</span>; <span class="comment">// 使对象只被弱引用关联</span></span><br></pre></td></tr></table></figure>
+<h5 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h5><p>虚引用也称为<strong>幽灵引用</strong>或者<strong>幻影引用</strong>，它是最弱的一种引用关系。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。<strong>为一个对象设置虚引用关联的唯一目的就是能在这个对象被收集器回收时收到一个系统通知。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">PhantomReference&lt;Object&gt; pf = <span class="keyword">new</span> PhantomReference&lt;Object&gt;(obj);</span><br><span class="line">obj = <span class="keyword">null</span>; <span class="comment">// 使对象只被虚引用关联</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-两次标记与-finalize-方法"><a href="#4-两次标记与-finalize-方法" class="headerlink" title="4. 两次标记与 finalize() 方法"></a>4. 两次标记与 finalize() 方法</h4><p>即使在可达性分析算法中不可达的对象，也并非是“非死不可”的，这时候它们暂时处于<strong>“缓刑”</strong>阶段，要真正宣告一个对象死亡，<strong>至少要经历两次标记过程</strong>：<strong>如果对象在进行可达性分析后发现没有与GC Roots相连接的引用链，那它将会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行 <code>finalize()</code> 方法。当对象没有覆盖 <code>finalize()</code> 方法，或者 <code>finalize()</code> 方法已经被虚拟机调用过，虚拟机将这两种情况都视为“没有必要执行”。</strong></p>
+<p>如果这个对象被判定为有必要执行 <code>finalize()</code> 方法，那么这个对象将会放置在一个叫做 <strong>F-Queue</strong> 的队列之中，并在稍后由一个由虚拟机自动建立的、低优先级的 <strong>Finalizer</strong> 线程去执行它。这里所谓的“执行”是指虚拟机会触发这个方法，<strong>但并不承诺会等待它运行结束</strong>，这样做的原因是，如果一个对象在 <code>finalize()</code> 方法中执行缓慢，或者发生了死循环（更极端的情况），将很可能会导致F-Queue队列中其他对象永久处于等待，甚至导致整个内存回收系统崩溃。</p>
+<p><code>finalize()</code>方法是对象逃脱死亡命运的最后一次机会，稍后GC将对F-Queue中的对象进行第二次小规模的标记，如果对象要在 <code>finalize()</code> 中成功拯救自己——<strong>只要重新与引用链上的任何一个对象建立关联即可，譬如把自己（this关键字）赋值给某个类变量或者对象的成员变量，那在第二次标记时它将被移除出“即将回收”的集合；</strong>如果对象这时候还没有逃脱，那基本上它就真的被回收了。</p>
+<p>值得注意的是，如果代码中有两段一模一样的代码段，执行结果却是一次逃脱成功，一次失败。这是因为任何一个对象的<code>finalize()</code>方法都只会被系统调用一次，如果对象面临下一次回收，它的<code>finalize()</code>方法不会再被执行，因此第二次逃脱行动失败。</p>
+<p>需要说明的是，使用<code>finalize()</code>方法来“拯救”对象是不值得提倡的，因为它不是C/C++中的析构函数，而是Java刚诞生时为了使C/C++程序员更容易接受它所做的一个妥协。<strong>它的运行代价高昂，不确定性大，无法保证各个对象的调用顺序。</strong><code>finalize()</code>能做的工作，使用<code>try-finally</code>或者其它方法都更适合、及时，所以笔者建议大家可以忘掉此方法存在。</p>
+<h4 id="5-回收方法区"><a href="#5-回收方法区" class="headerlink" title="5. 回收方法区"></a>5. 回收方法区</h4><p>很多人认为方法区（或者HotSpot虚拟机中的永久代）是没有垃圾收集的，Java虚拟机规范中确实说过可以不要求虚拟机在方法区实现垃圾收集，而且在方法区中进行垃圾收集的“性价比”一般比较低：在堆中，尤其是在新生代中，常规应用进行一次垃圾收集一般可以回收70%～95%的空间，而永久代的垃圾收集效率远低于此。</p>
+<p>永久代的垃圾收集主要回收两部分内容：</p>
+<ul>
+<li><p><strong>废弃常量</strong></p>
+<p>回收废弃常量与回收Java堆中的对象非常类似。以常量池中字面量的回收为例，假如一个字符串“abc”已经进入了常量池中，但是当前系统没有任何一个String对象是叫做“abc”的，换句话说，<strong>就是没有任何String对象引用常量池中的“abc”常量，也没有其他地方引用了这个字面量</strong>，如果这时发生内存回收，而且必要的话，这个“abc”常量就会被系统清理出常量池。常量池中的其他类（接口）、方法、字段的符号引用也与此类似。</p>
+</li>
+<li><p><strong>无用的类</strong></p>
+<p>判定一个类是否是“无用的类”的条件相对苛刻许多。类需要同时满足下面3个条件才能算是<strong>“无用的类”</strong>：</p>
+<ul>
+<li><strong>该类所有的实例都已经被回收，也就是Java堆中不存在该类的任何实例。</strong></li>
+<li><strong>加载该类的 ClassLoader 已经被回收。</strong></li>
+<li><strong>该类对应的 java.lang.Class 对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。</strong></li>
+</ul>
+<p>虚拟机可以对满足上述3个条件的无用类进行回收，这里说的仅仅是<strong>“可以”</strong>，而并不是和对象一样，不使用了就必然会回收。是否对类进行回收，HotSpot虚拟机提供了<code>-Xnoclassgc</code>参数进行控制，还可以使用<code>-verbose:class</code>以及-<code>XX:+TraceClassLoading</code>、<code>-XX:+TraceClassUnLoading</code>查看类加载和卸载信息，其中<code>-verbose:class</code>和<code>-XX:+TraceClassLoading</code>可以在Product版的虚拟机中使用，<code>-XX:+TraceClassUnLoading</code>参数需要FastDebug版的虚拟机支持。</p>
+<p>在大量使用反射、动态代理、CGLib等ByteCode框架、动态生成JSP以及OSGi这类频繁自定义ClassLoader的场景都需要虚拟机具备类卸载的功能，以保证永久代不会溢出。</p>
+</li>
+</ul>
+<h3 id="二-垃圾收集算法"><a href="#二-垃圾收集算法" class="headerlink" title="二. 垃圾收集算法"></a>二. 垃圾收集算法</h3><h4 id="1-标记-清除算法"><a href="#1-标记-清除算法" class="headerlink" title="1. 标记-清除算法"></a>1. 标记-清除算法</h4><p><strong>“标记-清除”（Mark-Sweep）算法</strong>，如同它的名字一样，算法分为<strong>“标记”</strong>和<strong>“清除”</strong>两个阶段：首先标记出所有需要回收的对象，<strong>在标记完成后统一回收所有被标记的对象</strong>，它的标记过程其实在前一节讲述对象标记判定时已经介绍过了。之所以说它是最基础的收集算法，是因为后续的收集算法都是基于这种思路并对其不足进行改进而得到的。它的主要不足有两个：</p>
+<ul>
+<li><strong>效率问题：</strong>标记和清除两个过程的效率都不高</li>
+<li><strong>空间问题：</strong>标记清除之后会产生大量不连续的内存碎片，空间碎片太多可能会导致以后在程序运行过程中需要分配较大对象时，无法找到足够的连续内存而不得不提前触发另一次垃圾收集动作。标记—清除算法的执行过程如下图所示：</li>
+</ul>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564105495922.png" alt="1564105495922"></p>
+<h4 id="2-复制算法（新生代）"><a href="#2-复制算法（新生代）" class="headerlink" title="2. 复制算法（新生代）"></a>2. 复制算法（新生代）</h4><p>为了解决效率问题，一种称为<strong>“复制”（Copying）</strong>的收集算法出现了，<strong>它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，就将还存活着的对象复制到另外一块上面，然后再把已使用过的内存空间一次清理掉</strong>。这样使得每次都是对整个半区进行内存回收，内存分配时也就不用考虑内存碎片等复杂情况，只要移动堆顶指针，按顺序分配内存即可，实现简单，运行高效。只是这种算法的代价是将内存缩小为了原来的一半，未免太高了一点。复制算法的执行过程如下图所示：</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564105751291.png" alt="1564105751291"></p>
+<p><strong>现在的商业虚拟机都采用这种收集算法来回收新生代</strong>，IBM公司的专门研究表明，新生代中的对象98%是“朝生夕死”的，所以并不需要按照<code>1:1</code>的比例来划分内存空间，而是将内存分为一块较大的<strong>Eden空间</strong>和两块较小的<strong>Survivor空间</strong>，<strong>每次使用Eden和其中一块Survivor</strong>。<strong>当回收时，将Eden和Survivor中还存活着的对象一次性地复制到另外一块Survivor空间上，最后清理掉Eden和刚才用过的Survivor空间</strong>。HotSpot虚拟机默认Eden和Survivor的大小比例是<code>8:1</code>，也就是每次新生代中可用内存空间为整个新生代容量的90%（80%+10%），只有10%的内存会被“浪费”。</p>
+<p>当然，98%的对象可回收只是一般场景下的数据，我们没有办法保证每次回收都只有不多于10%的对象存活，当Survivor空间不够用时，需要依赖其他内存（这里指<strong>老年代</strong>）进行<strong>分配担保（Handle Promotion）</strong>。</p>
+<h4 id="3-标记-整理算法（老年代）"><a href="#3-标记-整理算法（老年代）" class="headerlink" title="3. 标记-整理算法（老年代）"></a>3. 标记-整理算法（老年代）</h4><p><strong>复制收集算法在对象存活率较高时就要进行较多的复制操作，效率将会变低。</strong>更关键的是，如果不想浪费50%的空间，就需要有额外的空间进行分配担保，以应对被使用的内存中所有对象都100%存活的极端情况，所以在老年代一般不能直接选用这种算法。</p>
+<p>根据老年代的特点，有人提出了另外一种<strong>“标记-整理”（Mark-Compact）算法</strong>，标记过程仍然与“标记-清除”算法一样，但后续步骤不是直接对可回收对象进行清理，<strong>而是让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存</strong>，“标记-整理”算法的示意图如下图所示：</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1564106232136.png" alt="1564106232136"></p>
+<h4 id="4-分代收集算法"><a href="#4-分代收集算法" class="headerlink" title="4. 分代收集算法"></a>4. 分代收集算法</h4><p>当前商业虚拟机的垃圾收集都采用<strong>“分代收集”（Generational Collection）算法</strong>，这种算法并没有什么新的思想，只是根据对象存活周期的不同将内存划分为几块。一般是把<strong>Java堆</strong>分为<strong>新生代</strong>和<strong>老年代</strong>，这样就可以根据各个年代的特点采用最适当的收集算法。<strong>在新生代中，每次垃圾收集时都发现有大批对象死去，只有少量存活，那就选用复制算法，只需要付出少量存活对象的复制成本就可以完成收集</strong>。<strong>而老年代中因为对象存活率高、没有额外空间对它进行分配担保，就必须使用“标记—清理”或者“标记—整理”算法来进行回收</strong>。</p>
+<h3 id="三-HotSpot的算法实现"><a href="#三-HotSpot的算法实现" class="headerlink" title="三. HotSpot的算法实现"></a>三. HotSpot的算法实现</h3><p>上谅解介绍了<strong>对象存活判定算法</strong>和<strong>垃圾收集算法</strong>，而在 HotSpot 虚拟机上实现这些算法时，必须对算法的执行效率有严格的考量，才能保证虚拟机高效运行。</p>
+<h4 id="1-枚举根节点"><a href="#1-枚举根节点" class="headerlink" title="1. 枚举根节点"></a>1. 枚举根节点</h4><p>从可达性分析中从<strong>GC Roots</strong>节点找引用链这个操作为例，可作为GC Roots的节点主要在<strong>全局性的引用</strong>（例如常量或类静态属性）与<strong>执行上下文</strong>（例如栈帧中的本地变量表）中，现在很多应用仅仅方法区就有数百兆，如果要逐个检查这里面的引用，那么必然会消耗很多时间。</p>
+<p><strong>GC停顿（”Stop The World”）</strong></p>
+<p>另外，可达性分析对执行时间的敏感还体现在<strong>GC停顿</strong>上，因为这项分析工作必须在一个能确保一致性的快照中进行——这里<strong>“一致性”</strong>的意思是<strong>指在整个分析期间整个执行系统看起来就像被冻结在某个时间点上</strong>，不可以出现分析过程中对象引用关系还在不断变化的情况，该点不满足的话分析结果准确性就无法得到保证。这点是导致GC进行时<strong>必须停顿所有Java执行线程</strong>（Sun将这件事情称为<strong>“Stop The World”</strong>）的其中一个重要原因，即使是在号称（几乎）不会发生停顿的CMS收集器中，枚举根节点时也是必须要停顿的。</p>
+<p><strong>准确式GC与OopMap</strong></p>
+<p>由于目前的主流Java虚拟机使用的都是<strong>准确式GC（即使用准确式内存管理，虚拟机可用知道内存中某个位置的数据具体是什么类型）</strong>，所以当执行系统停顿下来后，并不需要一个不漏地检查完所有执行上下文和全局的引用位置，虚拟机应当是有办法直接得知哪些地方存放着对象引用。在HotSpot的实现中，是使用一组称为<strong>OopMap的数据结构</strong>来达到这个目的的，在类加载完成的时候，<strong>HotSpot就把对象内什么偏移量上是什么类型的数据计算出来</strong>，在JIT编译过程中，也会在特定的位置记录下<strong>栈和寄存器中哪些位置是引用</strong>。这样，GC在扫描时就可以直接得知这些信息了。</p>
+<h4 id="2-安全点（Safepoint）——进行GC时程序停顿的位置"><a href="#2-安全点（Safepoint）——进行GC时程序停顿的位置" class="headerlink" title="2. 安全点（Safepoint）——进行GC时程序停顿的位置"></a>2. 安全点（Safepoint）——进行GC时程序停顿的位置</h4><p>在OopMap的协助下，HotSpot可以快速且准确地完成GC Roots枚举，但一个很现实的问题随之而来：<strong>可能导致引用关系变化，或者说OopMap内容变化的指令非常多，如果为每一条指令都生成对应的OopMap，那将会需要大量的额外空间，这样GC的空间成本将会变得很高</strong>。</p>
+<p>为此，HotSpot选择不为每条指令都生成OopMap，而是只在“特定的位置”记录这些信息，这些位置便被称为<strong>安全点（Safepoint）</strong>。<strong>即程序执行时并非在所有地方都能停顿下来开始GC，只有在到达安全点时才能暂停</strong>。Safepoint的选定既不能太少以致于让GC等待时间太长，也不能过于频繁以致于过分增大运行时的负荷。所以，安全点的选定基本上是以程序<strong>“是否具有让程序长时间执行的特征”</strong>为标准进行选定的——因为每条指令执行的时间都非常短暂，程序不太可能因为指令流长度太长这个原因而过长时间运行，“长时间执行”的最明显特征就是<strong>指令序列复用</strong>，例如<strong>方法调用</strong>、<strong>循环跳转</strong>、<strong>异常跳转</strong>等，所以具有这些功能的指令才会产生Safepoint。</p>
+<p>对于Sefepoint，另一个需要考虑的问题是如何在GC发生时让所有线程（这里不包括执行JNI调用的线程）都“跑”到最近的安全点上再停顿下来。这里有两种方案可供选择：</p>
+<ul>
+<li><strong>抢先式中断（Preemptive Suspension）：</strong>其中抢先式中断不需要线程的执行代码主动去配合，<strong>在GC发生时，首先把所有线程全部中断，如果发现有线程中断的地方不在安全点上，就恢复线程，让它“跑”到安全点上。</strong>现在几乎没有虚拟机实现采用抢先式中断来暂停线程从而响应GC事件。</li>
+<li><strong>主动式中断（Voluntary Suspension）：</strong>而主动式中断的思想是当GC需要中断线程的时候，不直接对线程操作，仅仅简单地<strong>设置一个标志</strong>，各个线程执行时主动去轮询这个标志，发现中断标志为真时就自己中断挂起。<strong>轮询标志的地方和安全点是重合的</strong>，另外<strong>再加上创建对象需要分配内存的地方</strong>。</li>
+</ul>
+<h4 id="3-安全区域（Safe-Region）"><a href="#3-安全区域（Safe-Region）" class="headerlink" title="3. 安全区域（Safe Region）"></a>3. 安全区域（Safe Region）</h4><p><strong>Safepoint</strong>机制保证了<strong>程序执行时</strong>，在不太长的时间内就会遇到可进入GC的Safepoint。但是，<strong>程序“不执行”的时候（如线程处于Sleep状态或Blocked状态）</strong>，这时线程无法响应JVM的中断请求，“走到”安全的地方去中断挂起，这时候就需要<strong>安全区域（Safe Region）</strong>来解决。</p>
+<p>安全区域是指<strong>在一段代码片段之中，引用关系不会发生变化。在这个区域中的任意地方开始GC都是安全的。</strong>我们也可以把Safe Region看做是被扩展了的Safepoint。</p>
+<p>在线程执行到Safe Region中的代码时，首先<strong>标识自己已经进入了Safe Region</strong>，那样，当在这段时间里JVM要发起GC时，就不用管标识自己为Safe Region状态的线程了。<strong>在线程要离开Safe Region时，它要检查系统是否已经完成了根节点枚举（或者是整个GC过程）</strong>，如果完成了，那线程就继续执行，否则它就必须等待直到收到可以安全离开Safe Region的信号为止。</p>
+<h3 id="四-垃圾收集器"><a href="#四-垃圾收集器" class="headerlink" title="四. 垃圾收集器"></a>四. 垃圾收集器</h3><p>如果说收集算法是内存回收的方法论，那么垃圾收集器就是内存回收的具体实现。Java虚拟机规范中对垃圾收集器应该如何实现并没有任何规定，因此不同的厂商、不同版本的虚拟机所提供的垃圾收集器都可能会有很大差别，并且一般都会提供参数供用户根据自己的应用特点和要求组合出各个年代所使用的收集器。这里讨论的收集器基于JDK 1.7 Update 14之后的HotSpot虚拟机（在这个版本中正式提供了商用的G1收集器，之前G1仍处于实验状态），这个虚拟机包含的所有收集器如下图所示：</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/27df7474.jpg" alt="27df7474"></p>
+<p>以上为 Hotspot 虚拟机中的 7 种作用于不同分代的收集器，<strong>如果两个收集器之间存在连线，就说明它们可以搭配使用。虚拟机所处的区域，则表示它是属于新生代收集器还是老年代收集器。</strong>接下来将逐一介绍这些收集器的特性、基本原理和使用场景，并重点分析CMS和G1这两款相对复杂的收集器，了解它们的部分运作细节。</p>
+<ul>
+<li><strong>单线程与多线程</strong>：单线程指的是垃圾收集器只使用一个线程进行收集，而多线程使用多个线程；</li>
+<li><strong>串行与并行</strong>：串行指的是垃圾收集器与用户程序交替执行，这意味着在执行垃圾收集的时候需要停顿用户程序；并行指的是垃圾收集器和用户程序同时执行。除了 CMS 和 G1 之外，其它垃圾收集器都是以串行的方式执行。</li>
+</ul>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a><strong>相关概念</strong></h4><h5 id="并行和并发"><a href="#并行和并发" class="headerlink" title="并行和并发"></a>并行和并发</h5><ul>
+<li><strong>并行（Parallel）</strong>：指多条垃圾收集线程并行工作，但此时用户线程仍然处于等待状态。</li>
+<li><strong>并发（Concurrent）</strong>：指用户线程与垃圾收集线程同时执行（但不一定是并行的，可能会交替执行），用户程序在继续运行。而垃圾收集程序运行在另一个CPU上。</li>
+</ul>
+<h5 id="吞吐量（Throughput）"><a href="#吞吐量（Throughput）" class="headerlink" title="吞吐量（Throughput）"></a>吞吐量（Throughput）</h5><p>吞吐量就是<strong>CPU用于运行用户代码的时间</strong>与<strong>CPU总消耗时间</strong>的比值，即</p>
+<p><strong>吞吐量 = 运行用户代码时间 /（运行用户代码时间 + 垃圾收集时间）。</strong></p>
+<p>假设虚拟机总共运行了100分钟，其中垃圾收集花掉1分钟，那吞吐量就是99%。</p>
+<h5 id="Minor-GC-和-Full-GC"><a href="#Minor-GC-和-Full-GC" class="headerlink" title="Minor GC 和 Full GC"></a>Minor GC 和 Full GC</h5><ul>
+<li><strong>新生代GC（Minor GC）：</strong>指发生在新生代的垃圾收集动作，因为Java对象大多都具备朝生夕灭的特性，所以 Minor GC 非常频繁，一般回收速度也比较快。</li>
+<li><strong>老年代GC（Major GC / Full GC）：</strong>指发生在老年代的 GC，出现了 Major GC，经常会伴随至少一次的 Minor GC（但非绝对的，在 Parallel Scavenge 收集器的收集策略里就有直接进行 Major GC 的策略选择过程）。Major GC的速度一般会比 Minor GC 慢10倍以上。</li>
+</ul>
+<h4 id="1-Serial-收集器"><a href="#1-Serial-收集器" class="headerlink" title="1. Serial 收集器"></a>1. Serial 收集器</h4><p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/b1ac068e.jpg" alt="b1ac068e"></p>
+<p>Serial 翻译为串行，<strong>也就是说它以串行的方式执行</strong>。</p>
+<p>它是单线程的收集器，<strong>只会使用一个线程进行垃圾收集工作</strong>。</p>
+<p>它的优点是简单高效，对于单个 CPU 环境来说，由于没有线程交互的开销，因此拥有最高的单线程收集效率。</p>
+<p><strong>它是 Client 模式下的默认新生代收集器</strong>，因为在该应用场景下，分配给虚拟机管理的内存一般来说不会很大。Serial 收集器收集几十兆甚至一两百兆的新生代停顿时间可以控制在一百多毫秒以内，只要不是太频繁，这点停顿是可以接受的</p>
+<h4 id="2-ParNew-收集器"><a href="#2-ParNew-收集器" class="headerlink" title="2. ParNew 收集器"></a>2. ParNew 收集器</h4><p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/481e1ca1.jpg" alt="481e1ca1"></p>
+<p><strong>它是 Serial 收集器的多线程版本</strong>。</p>
+<p><strong>它是 Server 模式下的虚拟机首选新生代收集器</strong>，除了性能原因外，主要是因为除了 Serial 收集器，只有它能与 CMS 收集器配合工作。</p>
+<p>默认开启的线程数量与 CPU 数量相同，可以使用 <code>-XX:ParallelGCThreads</code> 参数来设置线程数</p>
+<h4 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h4><p><strong>与 ParNew 一样是多线程收集器。</strong></p>
+<p>其它收集器关注点是尽可能<strong>缩短垃圾收集时用户线程的停顿时间</strong>，而它的目标是达到一个<strong>可控制的吞吐量</strong>，它被称为<strong>“吞吐量优先”收集器</strong>。<strong>这里的吞吐量指 CPU 用于运行用户代码的时间占总时间的比值</strong>。</p>
+<p>停顿时间越短就越适合需要与用户交互的程序，良好的响应速度能提升用户体验。而高吞吐量则可以高效率地利用 CPU 时间，尽快完成程序的运算任务，适合在后台运算而不需要太多交互的任务。</p>
+<p>Parallel Scavenge收集器提供了两个参数用于精确控制吞吐量，分别是控制最大垃圾收集停顿时间的<code>-XX:MaxGCPauseMillis</code>参数以及直接设置吞吐量大小的<code>-XX:GCTimeRatio</code>参数。</p>
+<p><strong>MaxGCPauseMillis</strong> 参数允许的值是一个大于 0 的毫秒数，收集器将尽可能地保证内存回收花费的时间不超过设定值。<strong>缩短停顿时间是以牺牲吞吐量和新生代空间来换取的：新生代空间变小，垃圾回收变得频繁，导致吞吐量下降。</strong></p>
+<p><strong>GCTimeRatio</strong> 参数的值应当是一个大于 0 且小于 100 的整数，也就是垃圾收集时间占总时间的比率，相当于是吞吐量的倒数。如果把此参数设置为19，那允许的最大GC时间就占总时间的5%（即1/(1+19)），默认值为 99，就是允许最大 1%（即1/(1+99)）的垃圾收集时间。</p>
+<p>可以通过一个开关参数（-XX:+UseAdaptiveSizePolicy）打开 GC <strong>自适应的调节策略（GC Ergonomics）</strong>，就不需要手工指定新生代的大小（-Xmn）、Eden 和 Survivor 区的比例（-XX:SurvivorRatio）、晋升老年代对象年龄（-XX:PretenureSizeThreshold）等细节参数了。虚拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的停顿时间或者最大的吞吐量。</p>
+<p><strong>自适应调节策略也是Parallel Scavenge收集器与ParNew收集器的一个重要区别。</strong></p>
+<h4 id="4-Serial-Old收集器"><a href="#4-Serial-Old收集器" class="headerlink" title="4. Serial Old收集器"></a>4. Serial Old收集器</h4><p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/367020d3.jpg" alt="367020d3"></p>
+<p><strong>是 Serial 收集器的老年代版本，使用“标记-整理”算法，也是给 Client 模式下的虚拟机使用</strong>。如果用在 Server 模式下，它有两大用途：</p>
+<ul>
+<li>在 JDK 1.5 以及之前版本（Parallel Old 诞生以前）中与 Parallel Scavenge 收集器搭配使用。</li>
+<li>作为 CMS 收集器的后备预案，在并发收集发生 Concurrent Mode Failure 时使用</li>
+</ul>
+<h4 id="5-Parallel-Old-收集器"><a href="#5-Parallel-Old-收集器" class="headerlink" title="5. Parallel Old 收集器"></a>5. Parallel Old 收集器</h4><p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/6e965e83.jpg" alt="6e965e83"></p>
+<p><strong>是 Parallel Scavenge 收集器的老年代版本，使用“标记-整理”算法。</strong></p>
+<p>在注重吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge 加 Parallel Old 收集器。</p>
+<h4 id="6-CMS-收集器"><a href="#6-CMS-收集器" class="headerlink" title="6. CMS 收集器"></a>6. CMS 收集器</h4><p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/367020d3-1564124302029.jpg" alt="367020d3"></p>
+<p><strong>CMS（Concurrent Mark Sweep），Mark Sweep 指的是标记 - 清除算法。</strong></p>
+<p>分为以下四个流程：</p>
+<ul>
+<li><strong>初始标记：</strong>仅仅只是标记一下 GC Roots 能直接关联到的对象，速度很快，需要停顿。</li>
+<li><strong>并发标记：</strong>进行 GC Roots Tracing 的过程，它在整个回收过程中耗时最长，不需要停顿。</li>
+<li><strong>重新标记：</strong>为了修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，需要停顿。</li>
+<li><strong>并发清除：</strong>不需要停顿。</li>
+</ul>
+<p>在整个过程中耗时最长的并发标记和并发清除过程中，收集器线程都可以与用户线程一起工作，不需要进行停顿。</p>
+<p>具有以下缺点：</p>
+<ul>
+<li><strong>吞吐量低：</strong>低停顿时间是以牺牲吞吐量为代价的，导致 CPU 利用率不够高。</li>
+<li><strong>无法处理浮动垃圾</strong>，可能出现 Concurrent Mode Failure。浮动垃圾是指并发清除阶段由于用户线程继续运行而产生的垃圾，这部分垃圾只能到下一次 GC 时才能进行回收。由于浮动垃圾的存在，因此需要预留出一部分内存，意味着 CMS 收集不能像其它收集器那样等待老年代快满的时候再回收。在 JDK 1.5 的默认设置下，CMS 收集器当老年代使用了 68% 的空间后就会被激活，这是一个偏保守的设置，如果在应用中老年代增长不是太快，可以适当调高参数 <code>-XX:CMSInitiatingOccupancyFraction</code> 的值来提高触发百分比，以便降低内存回收次数从而获取更好的性能，在 JDK 1.6 中，CMS 收集器的启动阈值已经提升至 92%。如果预留的内存不够存放浮动垃圾，就会出现 Concurrent Mode Failure，这时虚拟机将临时启用 Serial Old 来替代 CMS，这样停顿时间就很长了。所以说参数 <code>-XX:CM SInitiatingOccupancyFraction</code> 设置得太高很容易导致大量 Concurrent Mode Failure 失败，性能反而降低。</li>
+<li><strong>标记 - 清除算法导致的空间碎片，往往出现老年代空间剩余，但无法找到足够大连续空间来分配当前对象，不得不提前触发一次 Full GC。</strong>为了解决这个问题，CMS 收集器提供了一个 <code>-XX:+UseCMSCompactAtFullCollection</code>开关参数（默认就是开启的），用于在 CMS 收集器顶不住要进行 FullGC 时开启内存碎片的合并整理过程，内存整理的过程是无法并发的，空间碎片问题没有了，但停顿时间不得不变长。虚拟机设计者还提供了另外一个参数 <code>-XX:CMSFullGCsBeforeCompaction</code>，这个参数是用于设置执行多少次不压缩的 Full GC 后，跟着来一次带压缩的（默认值为0，表示每次进入 Full GC 时都进行碎片整理）。</li>
+</ul>
+<h4 id="7-G1-收集器"><a href="#7-G1-收集器" class="headerlink" title="7. G1 收集器"></a>7. G1 收集器</h4><p>G1（Garbage-First），它是一款面向服务端应用的垃圾收集器，在多 CPU 和大内存的场景下有很好的性能。HotSpot 开发团队赋予它的使命是未来可以替换掉 CMS 收集器。</p>
+<p><strong>堆被分为新生代和老年代，其它收集器进行收集的范围都是整个新生代或者老年代，而 G1 可以直接对新生代和老年代一起回收。</strong></p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/1d022e13-1564124310221.png" alt="1d022e13"></p>
+<p><strong>G1 把堆划分成多个大小相等的独立区域（Region），新生代和老年代不再物理隔离。</strong></p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/5f8cbd42-1564124329039.png" alt="5f8cbd42"></p>
+<p>通过引入 Region 的概念，从而将原来的一整块内存空间划分成多个的小空间，使得每个小空间可以单独进行垃圾回收。这种划分方法带来了很大的灵活性，使得可预测的停顿时间模型成为可能。通过记录每个 Region 垃圾回收时间以及回收所获得的空间（这两个值是通过过去回收的经验获得），并维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的 Region。</p>
+<p>每个 Region 都有一个 Remembered Set，用来记录该 Region 对象的引用对象所在的 Region。通过使用 Remembered Set，在做可达性分析的时候就可以避免全堆扫描。</p>
+<p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（三）/10c8999f-1564124338496.jpg" alt="10c8999f"></p>
+<p>如果不计算维护 Remembered Set 的操作，G1 收集器的运作大致可划分为以下几个步骤：</p>
+<ul>
+<li><strong>初始标记</strong></li>
+<li><strong>并发标记</strong></li>
+<li><strong>最终标记：</strong>为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录，虚拟机将这段时间对象变化记录在线程的 Remembered Set Logs 里面，最终标记阶段需要把 Remembered Set Logs 的数据合并到 Remembered Set 中。这阶段需要停顿线程，但是可并行执行。</li>
+<li><strong>筛选回收：</strong>首先对各个 Region 中的回收价值和成本进行排序，根据用户所期望的 GC 停顿时间来制定回收计划。此阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分 Region，时间是用户可控制的，而且停顿用户线程将大幅度提高收集效率。</li>
+</ul>
+<p>具备如下特点：</p>
+<ul>
+<li><strong>空间整合：</strong>整体来看是基于“标记 - 整理”算法实现的收集器，从局部（两个 Region 之间）上来看是基于“复制”算法实现的，这意味着运行期间不会产生内存空间碎片。</li>
+<li><strong>可预测的停顿：</strong>能让使用者明确指定在一个长度为 M 毫秒的时间片段内，消耗在 GC 上的时间不得超过 N 毫秒。</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">收集器</th>
+<th style="text-align:center">串行、并行or并发</th>
+<th style="text-align:center">新生代/老年代</th>
+<th style="text-align:center">算法</th>
+<th style="text-align:center">目标</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>Serial</strong></td>
+<td style="text-align:center">串行</td>
+<td style="text-align:center">新生代</td>
+<td style="text-align:center">复制算法</td>
+<td style="text-align:center">响应速度优先</td>
+<td>单CPU环境下的Client模式</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Serial Old</strong></td>
+<td style="text-align:center">串行</td>
+<td style="text-align:center">老年代</td>
+<td style="text-align:center">标记-整理</td>
+<td style="text-align:center">响应速度优先</td>
+<td>单CPU环境下的Client模式、CMS的后备预案</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ParNew</strong></td>
+<td style="text-align:center">并行</td>
+<td style="text-align:center">新生代</td>
+<td style="text-align:center">复制算法</td>
+<td style="text-align:center">响应速度优先</td>
+<td>多CPU环境时在Server模式下与CMS配合</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Parallel Scavenge</strong></td>
+<td style="text-align:center">并行</td>
+<td style="text-align:center">新生代</td>
+<td style="text-align:center">复制算法</td>
+<td style="text-align:center">吞吐量优先</td>
+<td>在后台运算而不需要太多交互的任务</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Parallel Old</strong></td>
+<td style="text-align:center">并行</td>
+<td style="text-align:center">老年代</td>
+<td style="text-align:center">标记-整理</td>
+<td style="text-align:center">吞吐量优先</td>
+<td>在后台运算而不需要太多交互的任务</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>CMS</strong></td>
+<td style="text-align:center">并发</td>
+<td style="text-align:center">老年代</td>
+<td style="text-align:center">标记-清除</td>
+<td style="text-align:center">响应速度优先</td>
+<td>集中在互联网站或B/S系统服务端上的Java应用</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>G1</strong></td>
+<td style="text-align:center">并发</td>
+<td style="text-align:center">both</td>
+<td style="text-align:center">标记-整理+复制算法</td>
+<td style="text-align:center">响应速度优先</td>
+<td>面向服务端应用，将来替换CMS</td>
+</tr>
+</tbody>
+</table>
+<h3 id="五-内存分配与回收策略"><a href="#五-内存分配与回收策略" class="headerlink" title="五. 内存分配与回收策略"></a>五. 内存分配与回收策略</h3><p>Java的自动内存管理最终可以归结为自动化地解决了两个问题：</p>
+<ul>
+<li><strong>给对象分配内存</strong></li>
+<li><strong>回收分配给对象的内存</strong></li>
+</ul>
+<p>对象的内存分配通常是在堆上分配（除此以外还有可能经过JIT编译后被拆散为标量类型并间接地栈上分配），对象主要分配在新生代的Eden区上，如果启动了本地线程分配缓冲，将按线程优先在TLAB上分配。少数情况下也可能会直接分配在老年代中，分配的规则并不是固定的，实际取决于垃圾收集器的具体组合以及虚拟机中与内存相关的参数的设置。至于内存回收策略，在上文已经描述得很详尽了。</p>
+<p>下面的是在使用Serial/Serial Old收集器下（ParNew/Serial Old收集器组合的规则也基本一致）的内存分配和回收的策略。</p>
+<h4 id="1-对象优先在Eden分配"><a href="#1-对象优先在Eden分配" class="headerlink" title="1. 对象优先在Eden分配"></a>1. 对象优先在Eden分配</h4><p>大多数情况下，对象在新生代的Eden区中分配。<strong>当Eden区没有足够空间进行分配时，虚拟机将发起一次Minor GC。</strong></p>
+<h4 id="2-大对象直接进入老年代"><a href="#2-大对象直接进入老年代" class="headerlink" title="2. 大对象直接进入老年代"></a>2. 大对象直接进入老年代</h4><p>所谓的大对象是指，需要大量连续内存空间的Java对象，<strong>最典型的大对象就是很长的字符串以及数组</strong>。大对象对虚拟机的内存分配来说是一个坏消息（尤其是遇到朝生夕灭的“短命大对象”，写程序时应避免），<strong>经常出现大对象容易导致内存还有不少空间时就提前触发GC以获取足够的连续空间来安置它们</strong>。</p>
+<p>虚拟机提供了一个<strong>-XX:PretenureSizeThreshold</strong>参数，令大于这个设置值的对象直接在老年代分配。这样做的目的是<strong>避免在Eden区及两个Survivor区之间发生大量的内存复制</strong>（新生代采用复制算法回收内存）。</p>
+<h4 id="3-长期存活的对象将进入老年代"><a href="#3-长期存活的对象将进入老年代" class="headerlink" title="3. 长期存活的对象将进入老年代"></a>3. 长期存活的对象将进入老年代</h4><p>既然虚拟机采用了分代收集的思想来管理内存，那么内存回收时就必须能识别哪些对象应放在新生代，哪些对象应放在老年代中。为了做到这点，虚拟机给每个对象定义了一个<strong>对象年龄（Age）计数器</strong>。<strong>如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Survivor容纳的话，将被移动到Survivor空间中，并且对象年龄设为1。对象在Survivor区中每“熬过”一次Minor GC，年龄就增加1岁，当它的年龄增加到一定程度（默认为15岁），就将会被晋升到老年代中。</strong>对象晋升老年代的年龄阈值，可以通过参数<strong>-XX:MaxTenuringThreshold</strong>设置。</p>
+<h4 id="4-动态对象年龄判定"><a href="#4-动态对象年龄判定" class="headerlink" title="4. 动态对象年龄判定"></a>4. 动态对象年龄判定</h4><p>为了能更好地适应不同程序的内存状况，虚拟机并不是永远地要求对象的年龄必须达到了<strong>MaxTenuringThreshold</strong>才能晋升老年代，<strong>如果在Survivor空间中相同年龄所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代</strong>，无须等到<strong>MaxTenuringThreshold</strong>中要求的年龄。</p>
+<h4 id="5-空间分配担保"><a href="#5-空间分配担保" class="headerlink" title="5. 空间分配担保"></a>5. 空间分配担保</h4><p><strong>在发生Minor GC之前</strong>，虚拟机会先检查老年代最大可用的连续空间是否大于新生代所有对象总空间，如果这个条件成立，那么Minor GC可以确保是安全的。如果不成立，则虚拟机会查看<strong>HandlePromotionFailure</strong>设置值是否允许担保失败。如果允许，那么会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，将尝试着进行一次Minor GC，尽管这次Minor GC是有风险的；如果小于，或者<strong>HandlePromotionFailure</strong>设置不允许冒险，那这时也要改为进行一次<strong>Full GC</strong>。</p>
+<p>前面提到过，新生代使用复制收集算法，但为了内存利用率，只使用其中一个Survivor空间来作为轮换备份，因此<strong>当出现大量对象在Minor GC后仍然存活的情况（最极端的情况就是内存回收后新生代中所有对象都存活），就需要老年代进行分配担保，把Survivor无法容纳的对象直接进入老年代。</strong>与生活中的贷款担保类似，老年代要进行这样的担保，前提是老年代本身还有容纳这些对象的剩余空间，一共有多少对象会活下来在实际完成内存回收之前是无法明确知道的，所以只好取之前每一次回收晋升到老年代对象容量的平均大小值作为经验值，与老年代的剩余空间进行比较，决定是否进行Full GC来让老年代腾出更多空间。</p>
+<p>取平均值进行比较其实仍然是一种动态概率的手段，也就是说，如果某次Minor GC存活后的对象突增，远远高于平均值的话，依然会导致<strong>担保失败（Handle Promotion Failure）</strong>。如果出现了<strong>HandlePromotionFailure</strong>失败，那就只好在失败后重新发起一次Full GC。虽然担保失败时绕的圈子是最大的，但大部分情况下都还是会将<strong>HandlePromotionFailure</strong>开关打开，避免Full GC过于频繁。</p>
+<p><strong>在JDK 6 Update 24之后，HandlePromotionFailure 参数不会再影响到虚拟机的空间分配担保策略</strong>，观察OpenJDK中的源码变化，虽然源码中还定义了 HandlePromotionFailure 参数，但是在代码中已经不会再使用它。JDK 6 Update 24之后的规则变为<strong>只要老年代的连续空间大于新生代对象总大小或者历次晋升的平均大小就会进行Minor GC，否则将进行Full GC。</strong></p>
+<h3 id="六-Full-GC的触发条件"><a href="#六-Full-GC的触发条件" class="headerlink" title="六. Full GC的触发条件"></a>六. Full GC的触发条件</h3><p>对于Minor GC，其触发条件非常简单，当Eden区空间满时，就将触发一次Minor GC。而Full GC则相对复杂，因此本节我们主要介绍Full GC的触发条件。</p>
+<h4 id="调用System-gc"><a href="#调用System-gc" class="headerlink" title="调用System.gc()"></a>调用System.gc()</h4><p>此方法的调用是建议JVM进行Full GC,虽然只是建议而非一定,但很多情况下它会触发 Full GC,从而增加Full GC的频率,也即增加了间歇性停顿的次数。因此强烈建议能不使用此方法就不要使用，让虚拟机自己去管理它的内存，可通过<strong>-XX:+ DisableExplicitGC</strong>来禁止RMI调用System.gc()。</p>
+<h4 id="老年代空间不足"><a href="#老年代空间不足" class="headerlink" title="老年代空间不足"></a>老年代空间不足</h4><p>老年代空间不足的常见场景为前文所讲的<strong>大对象直接进入老年代</strong>、<strong>长期存活的对象进入老年代</strong>等，当执行Full GC后空间仍然不足，则抛出如下错误：<br><code>Java.lang.OutOfMemoryError: Java heap space</code><br>为避免以上两种状况引起的Full GC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。</p>
+<h4 id="空间分配担保失败"><a href="#空间分配担保失败" class="headerlink" title="空间分配担保失败"></a>空间分配担保失败</h4><p>前文介绍过，使用复制算法的Minor GC需要老年代的内存空间作担保，如果出现了<strong>HandlePromotionFailure</strong>担保失败，则会触发Full GC。</p>
+<h4 id="JDK-1-7及以前的永久代空间不足"><a href="#JDK-1-7及以前的永久代空间不足" class="headerlink" title="JDK 1.7及以前的永久代空间不足"></a>JDK 1.7及以前的永久代空间不足</h4><p>在JDK 1.7及以前，HotSpot虚拟机中的方法区是用永久代实现的，永久代中存放的为一些class的信息、常量、静态变量等数据，当系统中要加载的类、反射的类和调用的方法较多时，Permanet Generation可能会被占满，在未配置为采用CMS GC的情况下也会执行Full GC。如果经过Full GC仍然回收不了，那么JVM会抛出如下错误信息：<br><code>java.lang.OutOfMemoryError: PermGen space</code><br>为避免PermGen占满造成Full GC现象，可采用的方法为增大PermGen空间或转为使用CMS GC。</p>
+<p>在JDK 1.8中用元空间替换了永久代作为方法区的实现，元空间是本地内存，因此减少了一种Full GC触发的可能性。</p>
+<h4 id="Concurrent-Mode-Failure"><a href="#Concurrent-Mode-Failure" class="headerlink" title="Concurrent Mode Failure"></a>Concurrent Mode Failure</h4><p>执行CMS GC的过程中同时有对象要放入老年代，而此时老年代空间不足（有时候“空间不足”是CMS GC时当前的浮动垃圾过多导致暂时性的空间不足触发Full GC），便会报<code>Concurrent Mode Failure</code>错误，并触发Full GC。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div>
+    
+    	本文最后更新于：2019-07-26
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+      </div>
+     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/深入理解Java虚拟机（二）.html" rel="next" title="深入理解Java虚拟机（二）">
+                <i class="fa fa-chevron-left"></i> 深入理解Java虚拟机（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://md.mrxiexie.cn/song/180731/1H7LLFFcID.jpg"
+                alt="MrXieXie" />
+            
+              <p class="site-author-name" itemprop="name">MrXieXie</p>
+              <p class="site-description motion-element" itemprop="description">
+              无爱才要“坚持”，有爱只会“沉迷”
+              </p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+          
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Xieweicheng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leancloud.cn/" title="LeanCloud" target="_blank">LeanCloud</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://fontawesome.com/" title="FontAwesome" target="_blank">FontAwesome</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://mp.weixin.qq.com/wiki/" title="微信公众号" target="_blank">微信公众号</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://developers.weixin.qq.com/miniprogram/dev/" title="微信小程序" target="_blank">微信小程序</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.bootcdn.cn/" title="BootCDN" target="_blank">BootCDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://developer.android.google.cn/" title="Android" target="_blank">Android</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.wsmo.cn/web/login" title="WSMO" target="_blank">WSMO</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://tool.oschina.net/" title="Tool" target="_blank">Tool</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第二部分-自动内存管理机制"><span class="nav-text">第二部分 自动内存管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-Java-垃圾收集器与内存分配策略"><span class="nav-text">第三章 Java 垃圾收集器与内存分配策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-对象已死吗？"><span class="nav-text">一. 对象已死吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-引用计数算法"><span class="nav-text">1. 引用计数算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-可达性计数算法"><span class="nav-text">2. 可达性计数算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-再谈引用"><span class="nav-text">3. 再谈引用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#强引用"><span class="nav-text">强引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#软引用"><span class="nav-text">软引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#弱引用"><span class="nav-text">弱引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#虚引用"><span class="nav-text">虚引用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-两次标记与-finalize-方法"><span class="nav-text">4. 两次标记与 finalize() 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-回收方法区"><span class="nav-text">5. 回收方法区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-垃圾收集算法"><span class="nav-text">二. 垃圾收集算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-标记-清除算法"><span class="nav-text">1. 标记-清除算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-复制算法（新生代）"><span class="nav-text">2. 复制算法（新生代）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-标记-整理算法（老年代）"><span class="nav-text">3. 标记-整理算法（老年代）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-分代收集算法"><span class="nav-text">4. 分代收集算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-HotSpot的算法实现"><span class="nav-text">三. HotSpot的算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-枚举根节点"><span class="nav-text">1. 枚举根节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-安全点（Safepoint）——进行GC时程序停顿的位置"><span class="nav-text">2. 安全点（Safepoint）——进行GC时程序停顿的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安全区域（Safe-Region）"><span class="nav-text">3. 安全区域（Safe Region）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四-垃圾收集器"><span class="nav-text">四. 垃圾收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关概念"><span class="nav-text">相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#并行和并发"><span class="nav-text">并行和并发</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#吞吐量（Throughput）"><span class="nav-text">吞吐量（Throughput）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Minor-GC-和-Full-GC"><span class="nav-text">Minor GC 和 Full GC</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Serial-收集器"><span class="nav-text">1. Serial 收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ParNew-收集器"><span class="nav-text">2. ParNew 收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Parallel-Scavenge-收集器"><span class="nav-text">3. Parallel Scavenge 收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Serial-Old收集器"><span class="nav-text">4. Serial Old收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Parallel-Old-收集器"><span class="nav-text">5. Parallel Old 收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-CMS-收集器"><span class="nav-text">6. CMS 收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-G1-收集器"><span class="nav-text">7. G1 收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五-内存分配与回收策略"><span class="nav-text">五. 内存分配与回收策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-对象优先在Eden分配"><span class="nav-text">1. 对象优先在Eden分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-大对象直接进入老年代"><span class="nav-text">2. 大对象直接进入老年代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-长期存活的对象将进入老年代"><span class="nav-text">3. 长期存活的对象将进入老年代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动态对象年龄判定"><span class="nav-text">4. 动态对象年龄判定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-空间分配担保"><span class="nav-text">5. 空间分配担保</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六-Full-GC的触发条件"><span class="nav-text">六. Full GC的触发条件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调用System-gc"><span class="nav-text">调用System.gc()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#老年代空间不足"><span class="nav-text">老年代空间不足</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空间分配担保失败"><span class="nav-text">空间分配担保失败</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-1-7及以前的永久代空间不足"><span class="nav-text">JDK 1.7及以前的永久代空间不足</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Concurrent-Mode-Failure"><span class="nav-text">Concurrent Mode Failure</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MrXieXie</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'V16bYqaNwv0QPIufTJ7OoneM-gzGzoHsz',
+        appKey: 'PtqWWujBSHpHlT3eRixWM2kO',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊！注册Gravatar，输入注册邮箱，就可以看到自己的头像啦~',
+        avatar:'',
+        meta:guest,
+        pageSize:'5' || 10,
+        visitor: false
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  <canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:99999999;pointer-events:none;"></canvas>
+  <script type="text/javascript" src="/js/src/click.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":100,"height":200,"hOffset":-20,"vOffset":-20},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

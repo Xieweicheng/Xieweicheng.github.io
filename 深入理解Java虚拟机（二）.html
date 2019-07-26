@@ -102,7 +102,7 @@
 <meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（二）/深度截图_选择区域_20190720143413.png">
 <meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（二）/1563889769824.png">
 <meta property="og:image" content="https://md.mrxiexie.cn/images/深入理解Java虚拟机（二）/1563889865827.png">
-<meta property="og:updated_time" content="2019-07-24T02:29:03.386Z">
+<meta property="og:updated_time" content="2019-07-26T07:07:25.691Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Java虚拟机（二）">
 <meta name="twitter:description" content="《深入理解Java虚拟机》的 「第二部分 自动内存管理机制」 之 「第二章 Java 内存区域与内存」 学习笔记，仅仅记录本人认为重要的知识点～">
@@ -431,7 +431,7 @@
       
 
       
-        <h1 id="第二部分-自动内存管理机制"><a href="#第二部分-自动内存管理机制" class="headerlink" title="第二部分 自动内存管理机制"></a>第二部分 自动内存管理机制</h1><h2 id="第二章-Java-内存区域与内存"><a href="#第二章-Java-内存区域与内存" class="headerlink" title="第二章 Java 内存区域与内存"></a>第二章 Java 内存区域与内存</h2><h3 id="1-运行时数据区域"><a href="#1-运行时数据区域" class="headerlink" title="1. 运行时数据区域"></a>1. 运行时数据区域</h3><p>下图为我自己画的一张未完成的「Java虚拟机运行时数据区」 图，简单介绍可以直接看图中的文字</p>
+        <h1 id="第二部分-自动内存管理机制"><a href="#第二部分-自动内存管理机制" class="headerlink" title="第二部分 自动内存管理机制"></a>第二部分 自动内存管理机制</h1><h2 id="第二章-Java-内存区域与内存"><a href="#第二章-Java-内存区域与内存" class="headerlink" title="第二章 Java 内存区域与内存"></a>第二章 Java 内存区域与内存</h2><h3 id="一-运行时数据区域"><a href="#一-运行时数据区域" class="headerlink" title="一. 运行时数据区域"></a>一. 运行时数据区域</h3><p>下图为我自己画的一张未完成的「Java虚拟机运行时数据区」 图，简单介绍可以直接看图中的文字</p>
 <p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（二）/深度截图_选择区域_20190720143413.png" alt="深度截图_选择区域_20190720143413"></p>
 <p>以下记录各个数据区域的详细介绍（直接 copy 的原文）：</p>
 <h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><ul>
@@ -497,7 +497,7 @@
 <li><p>显然，本机直接内存的分配不会受到Java堆大小的限制，但是，既然是内存，肯定还是会受到本机总内存（包括RAM以及SWAP区或者分页文件）大小以及处理器寻址空间的限制。服务器管理员在配置虚拟机参数时，会根据实际内存设置-Xmx等参数信息，但经常忽略直接内存，使得各个内存区域总和大于物理内存限制（包括物理的和操作系统级的限制），从而导致动态扩展时出现<strong>OutOfMemoryError</strong>异常。</p>
 </li>
 </ul>
-<h3 id="2-从-Java-堆中探讨对象的创建流程"><a href="#2-从-Java-堆中探讨对象的创建流程" class="headerlink" title="2. 从 Java 堆中探讨对象的创建流程"></a>2. 从 Java 堆中探讨对象的创建流程</h3><p>Java的对象创建大致有如下四种方式：</p>
+<h3 id="二-从-Java-堆中探讨对象的创建流程"><a href="#二-从-Java-堆中探讨对象的创建流程" class="headerlink" title="二. 从 Java 堆中探讨对象的创建流程"></a>二. 从 Java 堆中探讨对象的创建流程</h3><p>Java的对象创建大致有如下四种方式：</p>
 <ul>
 <li><strong>new关键字</strong><br>这应该是我们最常见和最常用最简单的创建对象的方式。</li>
 <li><strong>使用newInstance()方法</strong><br>这里包括<strong>Class</strong>类的<code>newInstance()</code>方法和<strong>Constructor</strong>类的<code>newInstance()</code>方法（前者其实也是调用的后者）。</li>
@@ -520,7 +520,7 @@
 <h4 id="3-初始化"><a href="#3-初始化" class="headerlink" title="3. 初始化"></a>3. 初始化</h4><p>内存分配完成后，虚拟机需要将分配到的内存空间都初始化为零值<strong>（不包括对象头）</strong>，如果使用TLAB，这一工作过程也可以提前至TLAB分配时进行。这一步操作保证了对象的实例字段在Java代码中可以不赋初始值就直接使用，程序能访问到这些字段的数据类型所对应的零值。</p>
 <h4 id="4-设置对象头"><a href="#4-设置对象头" class="headerlink" title="4. 设置对象头"></a>4. 设置对象头</h4><p>接下来，虚拟机要对对象进行必要的设置，例如这个对象是哪个类的实例、如何才能找到类的<strong>元数据信息</strong>、<strong>对象的哈希码</strong>、<strong>对象的GC分代年龄</strong>等信息。这些信息存放在对象的对象头（Object Header）之中。根据虚拟机当前的运行状态的不同，如是否启用偏向锁等，对象头会有不同的设置方式。关于对象头的具体内容，稍后再做详细介绍。</p>
 <h4 id="5-执行-lt-init-gt-方法"><a href="#5-执行-lt-init-gt-方法" class="headerlink" title="5. 执行 &lt;init&gt; 方法"></a>5. 执行 <code>&lt;init&gt;</code> 方法</h4><p>在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从Java程序的视角来看，对象创建才刚刚开始——<code>&lt;init&gt;</code>方法还没有执行，所有的字段都还为零。所以，一般来说（由字节码中是否跟随<strong>invokespecial</strong>指令所决定），执行new指令之后会接着执行<code>&lt;init&gt;</code>方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</p>
-<h3 id="3-对象的内存布局"><a href="#3-对象的内存布局" class="headerlink" title="3. 对象的内存布局"></a>3. 对象的内存布局</h3><p>对象在内存中存储的布局可以分为3块区域：<strong>对象头（Header）</strong>、<strong>实例数据（Instance Data）</strong>和<strong>对齐填充（Padding）</strong></p>
+<h3 id="三-对象的内存布局"><a href="#三-对象的内存布局" class="headerlink" title="三. 对象的内存布局"></a>三. 对象的内存布局</h3><p>对象在内存中存储的布局可以分为3块区域：<strong>对象头（Header）</strong>、<strong>实例数据（Instance Data）</strong>和<strong>对齐填充（Padding）</strong></p>
 <h4 id="1-对象头（Header）"><a href="#1-对象头（Header）" class="headerlink" title="1. 对象头（Header）"></a>1. 对象头（Header）</h4><p>HotSpot虚拟机的对象头包括两部分信息：</p>
 <ul>
 <li><strong>对象自身的运行时数据 “Mark Word”</strong>：</li>
@@ -568,7 +568,7 @@
 <p>对象头的另外一部分是<strong>类型指针</strong>，<strong>即对象指向它的类元数据的指针</strong>，虚拟机通过这个指针来确定这个对象是哪个类的实例。并不是所有的虚拟机实现都必须在对象数据上保留类型指针，换句话说，<strong>查找对象的元数据信息并不一定要经过对象本身</strong>。另外，如果对象是一个Java数组，那在对象头中还必须有一块用于<strong>记录数组长度</strong>的数据，因为虚拟机可以通过普通Java对象的元数据信息确定Java对象的大小，但是从数组的元数据中却无法确定数组的大小。</p>
 <h4 id="2-实例数据（Instance-Data）"><a href="#2-实例数据（Instance-Data）" class="headerlink" title="2. 实例数据（Instance Data）"></a>2. 实例数据（Instance Data）</h4><p>对象真实存储的有效信息，也是在程序代码中所定义的<strong>各种类型的字段内容</strong>。无论是从父类继承下来的，还是在子类中定义的，都需要记录起来。这部分的存储顺序会受到虚拟机分配策略参数（FieldsAllocationStyle）和字段在Java源码中定义顺序的影响。HotSpot虚拟机默认的分配策略为longs/doubles、ints、shorts/chars、bytes/booleans、oops（Ordinary Object Pointers），从分配策略中可以看出，相同宽度的字段总是被分配到一起。在满足这个前提条件的情况下，在父类中定义的变量会出现在子类之前。如果CompactFields参数值为true（默认为true），那么子类之中较窄的变量也可能会插入到父类变量的空隙之中。</p>
 <h4 id="3-对齐填充"><a href="#3-对齐填充" class="headerlink" title="3. 对齐填充"></a>3. 对齐填充</h4><p>第三部分对齐填充并不是必然存在的，也没有特别的含义，它仅仅起着占位符的作用。由于HotSpot VM的自动内存管理系统要求对象起始地址必须是8字节的整数倍，换句话说，就是对象的大小必须是8字节的整数倍。而对象头部分正好是8字节的倍数（1倍或者2倍），因此，当对象实例数据部分没有对齐时，就需要通过对齐填充来补全。</p>
-<h3 id="4-对象的访问定位"><a href="#4-对象的访问定位" class="headerlink" title="4. 对象的访问定位"></a>4. 对象的访问定位</h3><p>我们的Java程序需要通过<strong>栈上的对象引用（reference）数据（存储在栈上的局部变量表中）</strong>来操作堆上的具体对象。由于reference类型在Java虚拟机规范里面也只规定了是一个指向对象的引用，并没有定义这个引用的具体实现，对象访问方式也是取决于虚拟机实现而定的。主流的访问方式有使用<strong>句柄</strong>和<strong>直接指针</strong>两种。</p>
+<h3 id="四-对象的访问定位"><a href="#四-对象的访问定位" class="headerlink" title="四. 对象的访问定位"></a>四. 对象的访问定位</h3><p>我们的Java程序需要通过<strong>栈上的对象引用（reference）数据（存储在栈上的局部变量表中）</strong>来操作堆上的具体对象。由于reference类型在Java虚拟机规范里面也只规定了是一个指向对象的引用，并没有定义这个引用的具体实现，对象访问方式也是取决于虚拟机实现而定的。主流的访问方式有使用<strong>句柄</strong>和<strong>直接指针</strong>两种。</p>
 <h4 id="1-句柄访问"><a href="#1-句柄访问" class="headerlink" title="1. 句柄访问"></a>1. 句柄访问</h4><p>如果使用<strong>句柄访问</strong>的话，那么Java堆中将会划分出一块内存来作为<strong>句柄池</strong>，reference中存储的就是对象的<strong>句柄地址</strong>，而句柄中包含了<strong>对象实例数据</strong>与<strong>类型数据</strong>各自的<strong>具体地址信息</strong></p>
 <p><img src="https://md.mrxiexie.cn/images/深入理解Java虚拟机（二）/1563889769824.png" alt="1563889769824"></p>
 <h4 id="2-直接指针访问"><a href="#2-直接指针访问" class="headerlink" title="2. 直接指针访问"></a>2. 直接指针访问</h4><p>如果使用<strong>直接指针访问</strong>，那么Java堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而reference中存储的直接就是<strong>对象地址</strong></p>
@@ -593,7 +593,7 @@
       <div>
         <div>
     
-    	本文最后更新于：2019-07-24
+    	本文最后更新于：2019-07-26
         <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
     
 </div>
@@ -634,6 +634,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/深入理解Java虚拟机（三）.html" rel="prev" title="深入理解Java虚拟机（三）">
+                深入理解Java虚拟机（三） <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -719,7 +723,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -830,7 +834,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第二部分-自动内存管理机制"><span class="nav-text">第二部分 自动内存管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-Java-内存区域与内存"><span class="nav-text">第二章 Java 内存区域与内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-运行时数据区域"><span class="nav-text">1. 运行时数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器"><span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java堆"><span class="nav-text">Java堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法区"><span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行时常量池"><span class="nav-text">运行时常量池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接内存"><span class="nav-text">直接内存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-从-Java-堆中探讨对象的创建流程"><span class="nav-text">2. 从 Java 堆中探讨对象的创建流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类加载检查"><span class="nav-text">1. 类加载检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-分配内存"><span class="nav-text">2. 分配内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-初始化"><span class="nav-text">3. 初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-设置对象头"><span class="nav-text">4. 设置对象头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行-lt-init-gt-方法"><span class="nav-text">5. 执行 &lt;init&gt; 方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-对象的内存布局"><span class="nav-text">3. 对象的内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-对象头（Header）"><span class="nav-text">1. 对象头（Header）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-实例数据（Instance-Data）"><span class="nav-text">2. 实例数据（Instance Data）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-对齐填充"><span class="nav-text">3. 对齐填充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-对象的访问定位"><span class="nav-text">4. 对象的访问定位</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-句柄访问"><span class="nav-text">1. 句柄访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-直接指针访问"><span class="nav-text">2. 直接指针访问</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第二部分-自动内存管理机制"><span class="nav-text">第二部分 自动内存管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-Java-内存区域与内存"><span class="nav-text">第二章 Java 内存区域与内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-运行时数据区域"><span class="nav-text">一. 运行时数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器"><span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java堆"><span class="nav-text">Java堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法区"><span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行时常量池"><span class="nav-text">运行时常量池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接内存"><span class="nav-text">直接内存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-从-Java-堆中探讨对象的创建流程"><span class="nav-text">二. 从 Java 堆中探讨对象的创建流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类加载检查"><span class="nav-text">1. 类加载检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-分配内存"><span class="nav-text">2. 分配内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-初始化"><span class="nav-text">3. 初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-设置对象头"><span class="nav-text">4. 设置对象头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行-lt-init-gt-方法"><span class="nav-text">5. 执行 &lt;init&gt; 方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-对象的内存布局"><span class="nav-text">三. 对象的内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-对象头（Header）"><span class="nav-text">1. 对象头（Header）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-实例数据（Instance-Data）"><span class="nav-text">2. 实例数据（Instance Data）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-对齐填充"><span class="nav-text">3. 对齐填充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四-对象的访问定位"><span class="nav-text">四. 对象的访问定位</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-句柄访问"><span class="nav-text">1. 句柄访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-直接指针访问"><span class="nav-text">2. 直接指针访问</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

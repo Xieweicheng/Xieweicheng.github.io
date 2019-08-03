@@ -464,7 +464,7 @@
 <h2 id="三、简单例子"><a href="#三、简单例子" class="headerlink" title="三、简单例子"></a>三、简单例子</h2><ul>
 <li>以下例子是将命令 <code>cal</code> 的输出结果每隔一分钟输出到 <code>/home/1.txt</code> 文件中</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 编辑定时任务</span></span><br><span class="line">crontab -e</span><br><span class="line"><span class="meta">#</span><span class="bash"> 输入 i 进入插入模式</span></span><br><span class="line">i</span><br><span class="line"><span class="meta">#</span><span class="bash"> 输入如下命令</span></span><br><span class="line">*/1 * * * * cal &gt;&gt; /home/1.txt</span><br><span class="line"><span class="meta">#</span><span class="bash"> 按 esc 键，然后 :wq 保存退出</span></span><br><span class="line">:wq</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 编辑定时任务</span><br><span class="line">crontab -e</span><br><span class="line"><span class="meta">#</span> 输入 i 进入插入模式</span><br><span class="line">i</span><br><span class="line"><span class="meta">#</span> 输入如下命令</span><br><span class="line">*/1 * * * * cal &gt;&gt; /home/1.txt</span><br><span class="line"><span class="meta">#</span> 按 esc 键，然后 :wq 保存退出</span><br><span class="line">:wq</span><br></pre></td></tr></table></figure>
 <ul>
 <li>当然也可以把命令放在 <code>sh</code> 文件中</li>
 <li>如下为<code>/home/1.sh</code>文件内容：</li>
@@ -681,7 +681,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

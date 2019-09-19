@@ -430,7 +430,7 @@
         <h2 id="一、不借助manifest文件"><a href="#一、不借助manifest文件" class="headerlink" title="一、不借助manifest文件"></a>一、<strong>不借助manifest文件</strong></h2><blockquote>
 <p>若有<code>a.jar</code>，<code>b.jar</code>，<code>c.jar</code>在同一目录下，主方法所在类全类名为<code>cn.mrxiexie.jar.Main</code></p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> jar包使用`:`分开，最后指定主方法所在类全类名即可</span><br><span class="line">java -classpath a.jar:b.jar:c.jar cn.mrxiexie.jar.Main</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> jar包使用`:`分开，最后指定主方法所在类全类名即可</span></span><br><span class="line">java -classpath a.jar:b.jar:c.jar cn.mrxiexie.jar.Main</span><br></pre></td></tr></table></figure>
 <h2 id="二、借助manifest文件"><a href="#二、借助manifest文件" class="headerlink" title="二、借助manifest文件"></a>二、借助manifest文件</h2><blockquote>
 <p>若有<code>a.jar</code>，<code>b.jar</code>，<code>c.jar</code>在同一目录下，主方法所在类全类名为<code>cn.mrxiexie.jar.Main</code>且在<code>a.jar</code>中</p>
 <p>修改<code>a.jar</code>中的<code>MANIFEST</code>如下</p>
@@ -592,7 +592,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -445,7 +445,7 @@
 <h2 id="二、开机自动联网、自定义IP"><a href="#二、开机自动联网、自定义IP" class="headerlink" title="二、开机自动联网、自定义IP"></a>二、开机自动联网、自定义IP</h2><ul>
 <li>自定义ip地址，需要编辑 <code>/ect/sysconfig/network-scripts/ifcfg-eth0</code> 文件</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vim `/ect/sysconfig/network-scripts/ifcfg-eth0`</span><br><span class="line"><span class="meta">#</span> 开机启动网络</span><br><span class="line">ONBOOT=yes </span><br><span class="line"><span class="meta">#</span> 静态方式获取ip</span><br><span class="line">BOOTPROTO=static</span><br><span class="line"><span class="meta">#</span> 指定ip</span><br><span class="line">IPADDR=192.168.184.130</span><br><span class="line"><span class="meta">#</span> 指定网关</span><br><span class="line">GATEWAY=192.168.184.2</span><br><span class="line"><span class="meta">#</span> 指定NDS服务器（与网关一致即可）</span><br><span class="line">DNS1=192.168.184.2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vim `/ect/sysconfig/network-scripts/ifcfg-eth0`</span><br><span class="line"><span class="meta">#</span><span class="bash"> 开机启动网络</span></span><br><span class="line">ONBOOT=yes </span><br><span class="line"><span class="meta">#</span><span class="bash"> 静态方式获取ip</span></span><br><span class="line">BOOTPROTO=static</span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定ip</span></span><br><span class="line">IPADDR=192.168.184.130</span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定网关</span></span><br><span class="line">GATEWAY=192.168.184.2</span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定NDS服务器（与网关一致即可）</span></span><br><span class="line">DNS1=192.168.184.2</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -585,7 +585,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+  <meta name="baidu-site-verification" content="YO3l4cHORe" />
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="true" />
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="true" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/song.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/song.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/song.jpg?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Java,JVM," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="《深入理解Java虚拟机》的 「第四部分 程序编译与代码优化」 之 「第十章 早期（编译期）优化」「第十一章 晚期（运行期优化）」 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta name="keywords" content="Java,JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Java虚拟机（六）">
+<meta property="og:url" content="https://xieweicheng.github.io/深入理解Java虚拟机（六）.html">
+<meta property="og:site_name" content="MrXieXie">
+<meta property="og:description" content="《深入理解Java虚拟机》的 「第四部分 程序编译与代码优化」 之 「第十章 早期（编译期）优化」「第十一章 晚期（运行期优化）」 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/Javac 的编译过程.png">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/Javac 编译过程的主体代码.png">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/1570714435705.png">
+<meta property="og:image" content="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/1570714447637.png">
+<meta property="og:updated_time" content="2019-10-11T03:34:58.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Java虚拟机（六）">
+<meta name="twitter:description" content="《深入理解Java虚拟机》的 「第四部分 程序编译与代码优化」 之 「第十章 早期（编译期）优化」「第十一章 晚期（运行期优化）」 学习笔记，仅仅记录本人认为重要的知识点～">
+<meta name="twitter:image" content="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/Javac 的编译过程.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'MrXieXie'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xieweicheng.github.io/深入理解Java虚拟机（六）.html"/>
+
+
+
+
+
+  <title>深入理解Java虚拟机（六） | MrXieXie</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MrXieXie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">无爱才要“坚持”，有爱只会“沉迷”</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/music/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音乐
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-article" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xieweicheng.github.io/深入理解Java虚拟机（六）.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MrXieXie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://md.mrxiexie.cn/song/180731/1H7LLFFcID.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrXieXie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深入理解Java虚拟机（六）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-08T11:38:13+08:00">
+                2019-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/深入理解Java虚拟机（六）.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/深入理解Java虚拟机（六）.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">
+                  <center>《深入理解Java虚拟机》的 「第四部分 程序编译与代码优化」 之 「第十章 早期（编译期）优化」「第十一章 晚期（运行期优化）」 学习笔记，仅仅记录本人认为重要的知识点～</center>
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="第四部分-程序编译与代码优化"><a href="#第四部分-程序编译与代码优化" class="headerlink" title="第四部分 程序编译与代码优化"></a>第四部分 程序编译与代码优化</h1><h2 id="第十章-早期（编译期）优化"><a href="#第十章-早期（编译期）优化" class="headerlink" title="第十章 早期（编译期）优化"></a>第十章 早期（编译期）优化</h2><h3 id="一-概述"><a href="#一-概述" class="headerlink" title="一. 概述"></a>一. 概述</h3><p>Java 语言的“编译器”其实是一段“不确定”的操作过程，因为它可能是指一个前端编译器（编译器的前端）把 <em>.java 文件转变成 </em>.class 文件的过程；也可能是指虚拟机的后端运行期编译器（JIT编译器，Just In Time Compiler）把字节码转变成机器码的过程；还可能是指使用静态提前编译器（AOT编译器，Ahead Of Time Compiler）直接把 *.java 文件编译成本地机器代码的过程。</p>
+<ul>
+<li><strong>前端编译器</strong>：Sun 的 Javac、Eclipse JDT 中的增量式编译器（ECJ）</li>
+<li><strong>JIT编译器</strong>：HotSpot VM 的 C1、C2 编译器</li>
+<li><strong>AOT编译器</strong>：GNU Compiler for the Java（GCJ）、Excelsior JET</li>
+</ul>
+<h3 id="二-Javac-编译器"><a href="#二-Javac-编译器" class="headerlink" title="二. Javac 编译器"></a>二. Javac 编译器</h3><p>Javac 是由 java 进行编写的，编译过程大致可以分为三个过程：</p>
+<ul>
+<li>解析与填充符号表过程</li>
+<li>插入式注解处理器的注解处理过程</li>
+<li>分析与字节码生成过程</li>
+</ul>
+<p><img src="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/Javac 的编译过程.png" alt="Javac 的编译过程"></p>
+<p>以下为 Javac 编译过程的主体代码</p>
+<p><img src="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/Javac 编译过程的主体代码.png" alt="Javac 编译过程的主体代码" title="Javac 编译过程的主体代码"></p>
+<h4 id="1-解析与填充符号表过程"><a href="#1-解析与填充符号表过程" class="headerlink" title="1. 解析与填充符号表过程"></a>1. 解析与填充符号表过程</h4><p><strong>词法、语法分析</strong></p>
+<p><strong>词法分析</strong>：是将源代码的字符流转变为标记（Token）集合，单个字符是程序编写过程的最小元素，而标记则是编译过程的最小元素，关键字、变量名、字面量、运算符都可以成为标记，如 <code>int a=b+2</code>这句代码包含了6个标记，分别是int、a、=、b、+、2，虽然关键字int由3个字符构成，但是它只是一个Token，不可再拆分。在Javac的源码中，词法分析过程由 <code>com.sun.tools.javac.parser.Scanner</code> 类来实现。</p>
+<p><strong>语法分析</strong>：是根据 Token 序列构造抽象语法树的过程，抽象语法树（Abstract Syntax Tree,AST）是一种用来描述程序代码语法结构的树形表示方式，语法树的每一个节点都代表着程序代码中的一个语法结构（Construct），例如包、类型、修饰符、运算符、接口、返回值甚至代码注释等都可以是一个语法结构。在Javac的源码中，语法分析过程由 <code>com.sun.tools.javac.parser.Parser</code> 类实现，这个阶段产出的抽象语法树由 <code>com.sun.tools.javac.tree.JCTree</code> 类表示，经过这个步骤之后，编译器就基本不会再对源码文件进行操作了，后续的操作都建立在抽象语法树之上。</p>
+<p><strong>填充符号表</strong></p>
+<p>完成了语法分析和词法分析之后，下一步就是填充符号表的过程，也就是上图中 <code>enterTrees()</code> 方法（上图中的过程1.2）所做的事情。符号表（Symbol Table）是由一组符号地址和符号信息构成的表格，读者可以把它想象成哈希表中K-V值对的形式（实际上符号表不一定是哈希表实现，可以是有序符号表、树状符号表、栈结构符号表等）。符号表中所登记的信息在编译的不同阶段都要用到。在语义分析中，符号表所登记的内容将用于语义检查（如检查一个名字的使用和原先的说明是否一致）和产生中间代码。在目标代码生成阶段，当对符号名进行地址分配时，符号表是地址分配的依据。</p>
+<p>在 Javac 源代码中，填充符号表的过程由 <code>com.sun.tools.javac.comp.Enter</code> 类实现，此过程的出口是一个待处理列表（To Do List），包含了每一个编译单元的抽象语法树的顶级节点，以及 package-info.java（如果存在的话）的顶级节点。</p>
+<h4 id="2-注解处理器"><a href="#2-注解处理器" class="headerlink" title="2. 注解处理器"></a>2. 注解处理器</h4><p>在JDK 1.5之后，Java 语言提供了对注解（Annotation）的支持，这些注解与普通的 Java 代码一样，是在运行期间发挥作用的。在JDK 1.6中实现了 JSR-269 规范，提供了一组插入式注解处理器的标准 API 在编译期间对注解进行处理，我们可以把它看做是一组编译器的插件，在这些插件里面，可以读取、修改、添加抽象语法树中的任意元素。如果这些插件在处理注解期间对语法树进行了修改，编译器将回到解析及填充符号表的过程重新处理，直到所有插入式注解处理器都没有再对语法树进行修改为止，每一次循环称为一个 Round，也就是上图（Javac 编译过程的主体代码）的回环过程。</p>
+<p>有了编译器注解处理的标准 API 后，我们的代码才有可能干涉编译器的行为，由于语法树中的任意元素，甚至包括代码注释都可以在插件之中访问到，所以通过插入式注解处理器实现的插件在功能上有很大的发挥空间。只要有足够的创意，程序员可以使用插入式注解处理器来实现许多原本只能在编码中完成的事情，本章最后会给出一个使用插入式注解处理器的简单实战。</p>
+<p>在Javac源码中，插入式注解处理器的初始化过程是在 <code>initPorcessAnnotations()</code> 方法中完成的，而它的执行过程则是在 <code>processAnnotations()</code> 方法中完成的，这个方法判断是否还有新的注解处理器需要执行，如果有的话，通过 <code>com.sun.tools.javac.processing.JavacProcessingEnvironment类的doProcessing()</code> 方法生成一个新的 JavaCompiler 对象对编译的后续步骤进行处理。</p>
+<h4 id="3-语义分析与字节码生成"><a href="#3-语义分析与字节码生成" class="headerlink" title="3. 语义分析与字节码生成"></a>3. 语义分析与字节码生成</h4><p>语法分析之后，编译器获得了程序代码的抽象语法树表示，语法树能表示一个结构正确的源程序的抽象，但无法保证源程序是符合逻辑的。而语义分析的主要任务是对结构上正确的源程序进行上下文有关性质的审查，如进行类型审查。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">boolean</span> b = <span class="keyword">false</span>;</span><br><span class="line"><span class="keyword">char</span> c = <span class="number">2</span>;</span><br><span class="line"><span class="comment">// 只有第一种的写法在语义上是没有问题的，能够通过编译，其余两种在 Java 语言中是不合逻辑的，无法编译。</span></span><br><span class="line"><span class="keyword">int</span> d = a + c;</span><br><span class="line"><span class="keyword">int</span> d = b + c;</span><br><span class="line"><span class="keyword">char</span> d = a + c;</span><br></pre></td></tr></table></figure>
+<p>Javac 的编译过程中，语义分析过程分为<strong>标注检查</strong>以及<strong>数据及控制流分析</strong>两个步骤，分别由上图（Javac 编译过程的主体代码）中所示的 <code>attribute()</code> 和 <code>flow()</code> 方法完成。</p>
+<p><strong>标注检查</strong></p>
+<p>标注检查步骤检查的内容包括诸如变量使用前是否已被声明、变量与赋值之间的数据类型是否能够匹配等。在标注检查步骤中，还有一个重要的动作称为常量折叠，如果我们在代码中写了如下定义：<code>int a = 1 + 2</code>。那么在语法树上仍然能看到字面量“1”、“2”以及操作符“+”，但是在经过常量折叠之后，它们将会被折叠为字面量“3”。</p>
+<p>标注检查步骤在Javac源码中的实现类是 <code>com.sun.tools.javac.comp.Attr</code> 类和 <code>com.sun.tools.javac.comp.Check</code> 类。</p>
+<p><strong>数据及控制流分析</strong></p>
+<p>数据及控制流分析是对程序上下文逻辑更进一步的验证，它可以检查出诸如程序局部变量在使用前是否有赋值、方法的每条路径是否都有返回值、是否所有的受查异常都被正确处理了等问题。编译时期的数据及控制流分析与类加载时的数据及控制流分析的目的基本上是一致的，但校验范围有所区别，有一些校验项只有在编译期或运行期才能进行。</p>
+<p>数据及控制流分析步骤在Javac源码中的实现类是 由<code>com.sun.tools.javac.comp.Flow</code> 类。</p>
+<p><strong>解语法糖</strong></p>
+<p>Java 中最常用的语法糖主要是前面提到过的泛型（泛型并不一定都是语法糖实现，如 C# 的泛型就是直接由 CLR 支持的）、变长参数、自动装箱/拆箱等，虚拟机运行时不支持这些语法，它们在编译阶段还原回简单的基础语法结构，这个过程称为解语法糖。</p>
+<p>解语法糖的过程由 <code>desugar()</code>方法触发，在 <code>com.sun.tools.javac.comp.TransTypes</code> 类和 <code>com.sun.tools.javac.comp.Lower</code> 类中完成。</p>
+<p><strong>字节码生成</strong></p>
+<p>字节码生成是Javac编译过程的最后一个阶段，在 Javac 源码里面由 <code>com.sun.tools.javac.jvm.Gen</code> 类来完成。字节码生成阶段不仅仅是把前面各个步骤所生成的信息（语法树、符号表）转化成字节码写到磁盘中，编译器还进行了少量的代码添加和转换工作。</p>
+<p>例如，前面章节中多次提到的实例构造器 <code>&lt;init&gt;()</code> 方法和类构造器 <code>&lt;clinit&gt;()</code> 方法就是在这个阶段添加到语法树之中的（注意，这里的实例构造器并不是指默认构造函数，如果用户代码中没有提供任何构造函数，那编译器将会添加一个没有参数的、访问性（public、protected 或 private）与当前类一致的默认构造函数，这个工作在填充符号表阶段就已经完成），这两个构造器的产生过程实际上是一个代码收敛的过程，编译器会把语句块（对于实例构造器而言是“{}”块，对于类构造器而言是 “static{}” 块）、变量初始化（实例变量和类变量）、调用父类的实例构造器（仅仅是实例构造器， <code>&lt;clinit&gt;()</code> 方法中无须调用父类的 <code>&lt;clinit&gt;()</code>方法，虚拟机会自动保证父类构造器的执行，但在 <code>&lt;clinit&gt;()</code> 方法中经常会生成调用 java.lang.Object 的 <code>&lt;init&gt;()</code> 方法的代码）等操作收敛到 <code>&lt;init&gt;()</code> 和 <code>&lt;clinit&gt;()</code> 方法之中，并且保证一定是按先执行父类的实例构造器，然后初始化变量，最后执行语句块的顺序进行，上面所述的动作由 <code>Gen.normalizeDefs()</code> 方法来实现。除了生成构造器以外，还有其他的一些代码替换工作用于优化程序的实现逻辑，如把字符串的加操作替换为 StringBuffer 或 StringBuilder（取决于目标代码的版本是否大于或等于 JDK 1.5）的 <code>append()</code> 操作等。</p>
+<p>完成了对语法树的遍历和调整之后，就会把填充了所有所需信息的符号表交给 <code>com.sun.tools.javac.jvm.ClassWriter</code> 类，由这个类的 <code>writeClass()</code> 方法输出字节码，生成最终的 Class 文件，到此为止整个编译过程宣告结束。</p>
+<h3 id="三-Java-语法糖的味道"><a href="#三-Java-语法糖的味道" class="headerlink" title="三. Java 语法糖的味道"></a>三. Java 语法糖的味道</h3><p>几乎各种语言或多或少都提供过一些语法糖来方便程序员的代码开发，这些语法糖虽然不会提供实质性的功能改进，但是它们或能提高效率，或能提升语法的严谨性，或能减少编码出错的机会。不过也有一种观点认为语法糖并不一定都是有益的，大量添加和使用“含糖”的语法，容易让程序员产生依赖，无法看清语法糖的糖衣背后，程序代码的真实面目。</p>
+<p>总而言之，语法糖可以看做是编译器实现的一些“小把戏”，这些“小把戏”可能会使得效率“大提升”，但我们也应该去了解这些“小把戏”背后的真实世界，那样才能利用好它们，而不是被它们所迷惑。</p>
+<h4 id="1-泛型与类型擦除"><a href="#1-泛型与类型擦除" class="headerlink" title="1. 泛型与类型擦除"></a>1. 泛型与类型擦除</h4><p>泛型是 JDK 1.5 的一项新增特性，它的本质是参数化类型（Parametersized Type）的应用，也就是说所操作的数据类型被指定为一个参数。这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口和泛型方法。</p>
+<p>Java语言中的泛型则不一样，它只在程序源码中存在，在编译后的字节码文件中，就已经替换为原来的原生类型（Raw Type，也称为裸类型）了，并且在相应的地方插入了强制转型代码，因此，对于运行期的 Java 语言来说，<code>ArrayList&lt;Integer&gt;</code> 与 <code>ArrayList&lt;String&gt;</code> 就是同一个类，所以泛型技术实际上是 Java 语言的一颗语法糖，Java 语言中的泛型实现方法称为类型擦除，基于这种方法实现的泛型称为伪泛型。</p>
+<p>以下两个方法由于类型擦除的原因，导致无法重载：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">(List&lt;Integer&gt; xx)</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">(List&lt;String&gt; xx)</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-自动装箱、拆箱与遍历循环"><a href="#2-自动装箱、拆箱与遍历循环" class="headerlink" title="2. 自动装箱、拆箱与遍历循环"></a>2. 自动装箱、拆箱与遍历循环</h4><p>以下包含了泛型、自动装箱、自动拆箱、遍历循环与变长参数5种语法糖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i : list) &#123;</span><br><span class="line">    sum += i;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(sum);</span><br></pre></td></tr></table></figure>
+<p>自动装箱、拆箱与遍历循环编译之后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">List list = Arrays.asList(<span class="keyword">new</span> Integer[]&#123;</span><br><span class="line">    Integer.valueOf(<span class="number">1</span>),</span><br><span class="line">    Integer.valueOf(<span class="number">2</span>),</span><br><span class="line">    Integer.valueOf(<span class="number">3</span>),</span><br><span class="line">    Integer.valueOf(<span class="number">4</span>)&#125;);</span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (Iterator localIterator = list.iterator(); localIterator.hasNext(); ) &#123;</span><br><span class="line">    <span class="keyword">int</span> i = ((Integer) localIterator.next()).intValue();</span><br><span class="line">    sum += i;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(sum);</span><br></pre></td></tr></table></figure>
+<p>自动装箱的陷阱：包装类的 <code>==</code> 运算在不遇到算术运算的情况下不会自动拆箱，以及它们 <code>equals()</code> 方法不处理数据转型的关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Integer a = <span class="number">1</span>;</span><br><span class="line">Integer b = <span class="number">2</span>;</span><br><span class="line">Integer c = <span class="number">3</span>;</span><br><span class="line">Integer d = <span class="number">3</span>;</span><br><span class="line">Integer e = <span class="number">127</span>;</span><br><span class="line">Integer f = <span class="number">127</span>;</span><br><span class="line">Long g = <span class="number">3L</span>;</span><br><span class="line">System.out.println(c == d); <span class="comment">// true</span></span><br><span class="line">System.out.println(e == f); <span class="comment">// true</span></span><br><span class="line">System.out.println(c == (a + b)); <span class="comment">// true</span></span><br><span class="line">System.out.println(c.equals(a + b)); <span class="comment">// true</span></span><br><span class="line">System.out.println(g == (a + b)); <span class="comment">// true</span></span><br><span class="line">System.out.println(g.equals(a + b)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-条件编译"><a href="#3-条件编译" class="headerlink" title="3. 条件编译"></a>3. 条件编译</h4><p>使用条件为常量的 if 语句，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">   System.out.println(<span class="string">"block 1"</span>); </span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">"block 2"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译后会变为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">"block 1"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="四-本章小结"><a href="#四-本章小结" class="headerlink" title="四. 本章小结"></a>四. 本章小结</h3><p>在本章中，我们从编译器源码实现的层次上了解了 Java 源代码编译为字节码的过程，分析了 Java 语言中泛型、主动装箱/拆箱、条件编译等多种语法糖的前因后果，并实战练习了如何使用插入式注解处理器来完成一个检查程序命名规范的编译器插件。如本章概述中所说的那样，在前端编译器中，“优化”手段主要用于提升程序的编码效率，之所以把 Javac 这类将 Java 代码转变为字节码的编译器称做“前端编译器”，是因为它只完成了从程序到抽象语法树或中间字节码的生成，而在此之后，还有一组内置于虚拟机内部的“后端编译器”完成了从字节码生成本地机器码的过程，即前面多次提到的即时编译器或JIT编译器，这个编译器的编译速度及编译结果的优劣，是衡量虚拟机性能一个很重要的指标。在第 11 章中，我们将会介绍即时编译器的运作和优化过程。</p>
+<h2 id="第十一章-晚期（运行期）优化"><a href="#第十一章-晚期（运行期）优化" class="headerlink" title="第十一章 晚期（运行期）优化"></a>第十一章 晚期（运行期）优化</h2><h3 id="一-概述-1"><a href="#一-概述-1" class="headerlink" title="一. 概述"></a>一. 概述</h3><p>在部分的商用虚拟机（Sun HotSpot、IBM J9）中，Java程序最初是通过解释器（Interpreter）进行解释执行的，当虚拟机发现某个方法或代码块的运行特别频繁时，就会把这些代码认定为“热点代码”（Hot Spot Code）。为了提高热点代码的执行效率，在运行时，虚拟机将会把这些代码编译成与本地平台相关的机器码，并进行各种层次的优化，完成这个任务的编译器称为即时编译器（Just In Time Compiler，下文中简称JIT编译器）。</p>
+<h3 id="二-HotSpot虚拟机内的即时编译器"><a href="#二-HotSpot虚拟机内的即时编译器" class="headerlink" title="二. HotSpot虚拟机内的即时编译器"></a>二. HotSpot虚拟机内的即时编译器</h3><h4 id="1-解释器与编译器"><a href="#1-解释器与编译器" class="headerlink" title="1. 解释器与编译器"></a>1. 解释器与编译器</h4><p>主流的商用虚拟机都同时包含解释器和编译器。</p>
+<p>解释器和编译器各有优势：</p>
+<ul>
+<li>当程序需要迅速启动和执行的时候，解释器可以首先发挥作用，省去编译的时间，立即执行。</li>
+<li>在程序运行后，随着时间的推移，编译器逐渐发挥作用，把越来越多的代码编译成本地代码之后，可以获得更高的执行效率。</li>
+<li>当程序运行环境中内存资源限制较大（如部分嵌入式系统中），可以使用解释执行节约内存，反之可以使用编译执行来提升效率。</li>
+<li>同时，解释器还可以作为编译器激进优化时的一个“逃生门”，让编译器根据概率选择一些大多数时候都能提升运行速度的优化手段，当激进优化的假设不成立，如加载了新类后类型继承结构出现变化、出现“罕见陷阱”（Uncommon Trap）时可以通过逆优化（Deoptimization）退回到解释状态继续执行（部分没有解释器的虚拟机中也会采用不进行激进优化的C1编译器<a href="javascript:void(0" target="_blank" rel="noopener">[2]</a>)担任“逃生门”的角色），因此，在整个虚拟机执行架构中，解释器与编译器经常配合工作</li>
+</ul>
+<p>HotSpot 虚拟机内置了两个即时编译器，分别为：</p>
+<ul>
+<li>Client Compiler（C1 编译器）</li>
+<li>Server Compiler（C2 编译器）</li>
+</ul>
+<p>HotSpot 虚拟机会根据自身版本与宿主机器的硬件性能自动选择运行模式</p>
+<p><strong>混合模式</strong>：无论采用 C1 还是 C2，解释器与编译器搭配使用的方式</p>
+<p><strong>解释模式</strong>：<code>-Xint</code> 强制只使用解释器</p>
+<p><strong>编译模式</strong>：<code>-XComp</code> 优先采用编译方式执行，但是解释器仍然要在编译无法进行的情况下介入执行过程。</p>
+<p><strong>分层编译策略</strong></p>
+<p>由于即时编译器编译本地代码需要占用程序运行时间，要编译出优化程度更高的代码，所花费的时间可能更长；而且想要编译出优化程度更高的代码，解释器可能还要替编译器收集性能监控信息，这对解释执行的速度也有影响。为了在程序启动响应速度与运行效率之间达到最佳平衡，HotSpot虚拟机还会逐渐启用分层编译（Tiered Compilation）的策略。分层编译根据编译器编译、优化的规模与耗时，划分出不同的编译层次，其中包括：</p>
+<ul>
+<li>第0层，程序解释执行，解释器不开启性能监控功能（Profiling），可触发第1层编译。</li>
+<li>第1层，也称为C1编译，将字节码编译为本地代码，进行简单、可靠的优化，如有必要将加入性能监控的逻辑。</li>
+<li>第2层（或2层以上），也称为C2编译，也是将字节码编译为本地代码，但是会启用一些编译耗时较长的优化，甚至会根据性能监控信息进行一些不可靠的激进优化。</li>
+</ul>
+<p>实施分层编译后，Client Compiler 和 Server Compiler 将会同时工作，许多代码都可能会被多次编译，用 Client Compiler 获取更高的编译速度，用 Server Compiler 来获取更好的编译质量，在解释执行的时候也无须再承担收集性能监控信息的任务。</p>
+<h4 id="2-编译对象与触发条件"><a href="#2-编译对象与触发条件" class="headerlink" title="2.编译对象与触发条件"></a>2.编译对象与触发条件</h4><p>在运行过程中会被即时编译器编译的“热点代码”有两类，即： </p>
+<ul>
+<li>被多次调用的方法</li>
+<li>被多次执行的循环体</li>
+</ul>
+<p>以上两种情况都会以整个方法作为编译对象。这种编译方式因为编译发生在方法执行过程之中，因此形象地称之为栈上替换（On Stack Replacement，简称为OSR编译，即方法栈帧还在栈上，方法就被替换了）。</p>
+<p><strong>热点探测</strong></p>
+<p>判断一段代码是不是热点代码，是不是需要触发即时编译，这样的行为称为热点探测（Hot Spot Detection），其实进行热点探测并不一定要知道方法具体被调用了多少次，目前主要的热点探测判定方式有两种，分别如下：</p>
+<ul>
+<li><strong>基于采样的热点探测（Sample Based Hot Spot Detection）</strong>：采用这种方法的虚拟机会周期性地检查各个线程的栈顶，如果发现某个（或某些）方法经常出现在栈顶，那这个方法就是“热点方法”。基于采样的热点探测的好处是实现简单、高效，还可以很容易地获取方法调用关系（将调用堆栈展开即可），缺点是很难精确地确认一个方法的热度，容易因为受到线程阻塞或别的外界因素的影响而扰乱热点探测。</li>
+<li><strong>基于计数器的热点探测（Counter Based Hot Spot Detection）</strong>：采用这种方法的虚拟机会为每个方法（甚至是代码块）建立计数器，统计方法的执行次数，如果执行次数超过一定的阈值就认为它是“热点方法”。这种统计方法实现起来麻烦一些，需要为每个方法建立并维护计数器，而且不能直接获取到方法的调用关系，但是它的统计结果相对来说更加精确和严谨。<strong>（HotSpot使用这种热点探测）</strong></li>
+</ul>
+<p><strong>基于计数器的热点探测</strong></p>
+<p>该热点探测准备了两类计数器，这两个计数器都有一个确定的阈值，当计数器超过阈值溢出了，就会触发JIT编译，分别为：</p>
+<p><strong>方法调用计数器</strong>：统计方法被调用的次数，它的默认阈值在 Client 模式下是 1500 次，在 Server 模式下是 10 000 次，这个阈值可以通过虚拟机参数 <code>-XX：CompileThreshold</code> 来人为设定</p>
+<p><strong>回边计数器</strong>：统计一个方法中循环体代码执行的次数</p>
+<h3 id="三-编译优化技术"><a href="#三-编译优化技术" class="headerlink" title="三. 编译优化技术"></a>三. 编译优化技术</h3><p><img src="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/1570714435705.png" alt="1570714435705"></p>
+<p><img src="http://md.mrxiexie.cn/images/深入理解Java虚拟机（六）/1570714447637.png" alt="1570714447637"></p>
+<h4 id="1-公共子表达式消除"><a href="#1-公共子表达式消除" class="headerlink" title="1. 公共子表达式消除"></a>1. 公共子表达式消除</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 其中 b * c 为公共子表达式</span></span><br><span class="line"><span class="keyword">int</span> d = (c * b) * <span class="number">12</span> + a + (a + b * c);</span><br><span class="line"><span class="comment">// 会优化为</span></span><br><span class="line"><span class="keyword">int</span> d = E * <span class="number">12</span> + a + (a + E)</span><br><span class="line"><span class="comment">// 也可能优化为</span></span><br><span class="line"><span class="keyword">int</span> d = E * <span class="number">13</span> + a * <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-数组边界检查消除"><a href="#2-数组边界检查消除" class="headerlink" title="2. 数组边界检查消除"></a>2. 数组边界检查消除</h4><p>对于虚拟机的执行子系统来说，每次数组元素的读写都带有一次隐含的条件判定操作，对于拥有大量数组访问的程序代码，这无疑也是一种性能负担。解决方案如下：</p>
+<ul>
+<li>把运行期检查提前到编译期完成，通过语义，断定不会异常的就不检查。</li>
+<li>隐式异常处理，直接访问，然后捕获 segment_fault，转化抛出该抛的异常。</li>
+</ul>
+<h4 id="3-方法内联"><a href="#3-方法内联" class="headerlink" title="3. 方法内联"></a>3. 方法内联</h4><p>把目标方法的代码“复制”到发起调用的方法之中，避免发生真实的方法调用。</p>
+<p>非虚方法（invokespecial 指令调用的<strong>私有方法</strong>、<strong>实例构造器</strong>、<strong>父类方法</strong>以及使用 invokestatic 指令进行调用的<strong>静态方法</strong>，<strong>Final 方法</strong>）会在编译期，进行内联</p>
+<p>虚方法由于在编译期无法确认指向，虚拟机设计团队引入了“类型继承关系分析”（Class Hierarchy Analysis，CHA）技术去解决这个问题。在许多情况下虚拟机进行的内联都是一种激进优化</p>
+<h4 id="4-逃逸分析"><a href="#4-逃逸分析" class="headerlink" title="4. 逃逸分析"></a>4. 逃逸分析</h4><p>它与类型继承关系分析一样，并不是直接优化代码的手段，而是为其他优化手段提供依据的分析技术。</p>
+<p>逃逸分析的基本行为就是分析对象动态作用域：</p>
+<ul>
+<li>当一个对象在方法中被定义后，它可能被外部方法所引用，例如作为调用参数传递到其他方法中，称为<strong>方法逃逸</strong>。</li>
+<li>甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为<strong>线程逃逸</strong>。</li>
+</ul>
+<p>如果能证明一个对象不会逃逸到方法或线程之外，也就是别的方法或线程无法通过任何途径访问到这个对象，则可能为这个变量进行一些高效的优化，如下所示：</p>
+<ul>
+<li><strong>栈上分配（Stack Allocation）</strong>：Java 虚拟机中，在Java堆上分配创建对象的内存空间几乎是 Java 程序员都清楚的常识了，Java堆中的对象对于各个线程都是共享和可见的，只要持有这个对象的引用，就可以访问堆中存储的对象数据。虚拟机的垃圾收集系统可以回收堆中不再使用的对象，但回收动作无论是筛选可回收对象，还是回收和整理内存都需要耗费时间。如果确定一个对象不会逃逸出方法之外，那让这个对象在栈上分配内存将会是一个很不错的主意，对象所占用的内存空间就可以随栈帧出栈而销毁。在一般应用中，不会逃逸的局部对象所占的比例很大，如果能使用栈上分配，那大量的对象就会随着方法的结束而自动销毁了，垃圾收集系统的压力将会小很多。</li>
+<li><strong>同步消除（Synchronization Elimination）</strong>：线程同步本身是一个相对耗时的过程，如果逃逸分析能够确定一个变量不会逃逸出线程，无法被其他线程访问，那这个变量的读写肯定就不会有竞争，对这个变量实施的同步措施也就可以消除掉。</li>
+<li><strong>标量替换（Scalar Replacement）</strong>：标量（Scalar）是指一个数据已经无法再分解成更小的数据来表示了，Java 虚拟机中的原始数据类型（int、long 等数值类型以及 reference 类型等）都不能再进一步分解，它们就可以称为标量。相对的，如果一个数据可以继续分解，那它就称作聚合量（Aggregate），Java 中的对象就是最典型的聚合量。如果把一个 Java 对象拆散，根据程序访问的情况，将其使用到的成员变量恢复原始类型来访问就叫做标量替换。如果逃逸分析证明一个对象不会被外部访问，并且这个对象可以被拆散的话，那程序真正执行的时候将可能不创建这个对象，而改为直接创建它的若干个被这个方法使用到的成员变量来代替。将对象拆分后，除了可以让对象的成员变量在栈上（栈上存储的数据，有很大的概率会被虚拟机分配至物理机器的高速寄存器中存储）分配和读写之外，还可以为后续进一步的优化手段创建条件。</li>
+</ul>
+<h4 id="四-Java-与-C-C-的编译器对比"><a href="#四-Java-与-C-C-的编译器对比" class="headerlink" title="四. Java 与 C/C++ 的编译器对比"></a>四. Java 与 C/C++ 的编译器对比</h4><p>Java虚拟机的即时编译器与C/C++的静态优化编译器相比，可能会由于下列这些原因而导致输出的本地代码有一些劣势（下面列举的也包括一些虚拟机执行子系统的性能劣势）：</p>
+<ul>
+<li>第一，因为即时编译器运行占用的是用户程序的运行时间，具有很大的时间压力，它能提供的优化手段也严重受制于编译成本。如果编译速度不能达到要求，那用户将在启动程序或程序的某部分察觉到重大延迟，这点使得即时编译器不敢随便引入大规模的优化技术，而编译的时间成本在静态优化编译器中并不是主要的关注点。</li>
+<li>第二，Java语言是动态的类型安全语言，这就意味着需要由虚拟机来确保程序不会违反语言语义或访问非结构化内存。从实现层面上看，这就意味着虚拟机必须频繁地进行动态检查，如实例方法访问时检查空指针、数组元素访问时检查上下界范围、类型转换时检查继承关系等。对于这类程序代码没有明确写出的检查行为，尽管编译器会努力进行优化，但是总体上仍然要消耗不少的运行时间。</li>
+<li>第三，Java语言中虽然没有virtual关键字，但是使用虚方法的频率却远远大于C/C++语言，这意味着运行时对方法接收者进行多态选择的频率要远远大于C/C++语言，也意味着即时编译器在进行一些优化（如前面提到的方法内联）时的难度要远大于C/C++的静态优化编译器。</li>
+<li>第四，Java语言是可以动态扩展的语言，运行时加载新的类可能改变程序类型的继承关系，这使得很多全局的优化都难以进行，因为编译器无法看见程序的全貌，许多全局的优化措施都只能以激进优化的方式来完成，编译器不得不时刻注意并随着类型的变化而在运行时撤销或重新进行一些优化。</li>
+<li>第五，Java语言中对象的内存分配都是堆上进行的，只有方法中的局部变量才能在栈上分配。而C/C++的对象则有多种内存分配方式，既可能在堆上分配，又可能在栈上分配，如果可以在栈上分配线程私有的对象，将减轻内存回收的压力。另外，C/C++中主要由用户程序代码来回收分配的内存，这就不存在无用对象筛选的过程，因此效率上（仅指运行效率，排除了开发效率）也比垃圾收集机制要高。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div>
+    
+    	本文最后更新于：2019-10-11
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+      </div>
+     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/深入理解Java虚拟机（五）.html" rel="next" title="深入理解Java虚拟机（五）">
+                <i class="fa fa-chevron-left"></i> 深入理解Java虚拟机（五）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/深入理解Java虚拟机（七）.html" rel="prev" title="深入理解Java虚拟机（七）">
+                深入理解Java虚拟机（七） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://md.mrxiexie.cn/song/180731/1H7LLFFcID.jpg"
+                alt="MrXieXie" />
+            
+              <p class="site-author-name" itemprop="name">MrXieXie</p>
+              <p class="site-description motion-element" itemprop="description">
+              无爱才要“坚持”，有爱只会“沉迷”
+              </p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+          
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Xieweicheng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leancloud.cn/" title="LeanCloud" target="_blank">LeanCloud</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://fontawesome.com/" title="FontAwesome" target="_blank">FontAwesome</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://mp.weixin.qq.com/wiki/" title="微信公众号" target="_blank">微信公众号</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://developers.weixin.qq.com/miniprogram/dev/" title="微信小程序" target="_blank">微信小程序</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.bootcdn.cn/" title="BootCDN" target="_blank">BootCDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://developer.android.google.cn/" title="Android" target="_blank">Android</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.wsmo.cn/web/login" title="WSMO" target="_blank">WSMO</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://tool.oschina.net/" title="Tool" target="_blank">Tool</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第四部分-程序编译与代码优化"><span class="nav-text">第四部分 程序编译与代码优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第十章-早期（编译期）优化"><span class="nav-text">第十章 早期（编译期）优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-概述"><span class="nav-text">一. 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-Javac-编译器"><span class="nav-text">二. Javac 编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-解析与填充符号表过程"><span class="nav-text">1. 解析与填充符号表过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-注解处理器"><span class="nav-text">2. 注解处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-语义分析与字节码生成"><span class="nav-text">3. 语义分析与字节码生成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-Java-语法糖的味道"><span class="nav-text">三. Java 语法糖的味道</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-泛型与类型擦除"><span class="nav-text">1. 泛型与类型擦除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-自动装箱、拆箱与遍历循环"><span class="nav-text">2. 自动装箱、拆箱与遍历循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-条件编译"><span class="nav-text">3. 条件编译</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四-本章小结"><span class="nav-text">四. 本章小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十一章-晚期（运行期）优化"><span class="nav-text">第十一章 晚期（运行期）优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-概述-1"><span class="nav-text">一. 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-HotSpot虚拟机内的即时编译器"><span class="nav-text">二. HotSpot虚拟机内的即时编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-解释器与编译器"><span class="nav-text">1. 解释器与编译器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-编译对象与触发条件"><span class="nav-text">2.编译对象与触发条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-编译优化技术"><span class="nav-text">三. 编译优化技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-公共子表达式消除"><span class="nav-text">1. 公共子表达式消除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数组边界检查消除"><span class="nav-text">2. 数组边界检查消除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-方法内联"><span class="nav-text">3. 方法内联</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-逃逸分析"><span class="nav-text">4. 逃逸分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四-Java-与-C-C-的编译器对比"><span class="nav-text">四. Java 与 C/C++ 的编译器对比</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MrXieXie</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'V16bYqaNwv0QPIufTJ7OoneM-gzGzoHsz',
+        appKey: 'PtqWWujBSHpHlT3eRixWM2kO',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊！注册Gravatar，输入注册邮箱，就可以看到自己的头像啦~',
+        avatar:'',
+        meta:guest,
+        pageSize:'5' || 10,
+        visitor: false
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  <canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:99999999;pointer-events:none;"></canvas>
+  <script type="text/javascript" src="/js/src/click.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":100,"height":200,"hOffset":-20,"vOffset":-20},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
